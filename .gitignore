@@ -1,0 +1,9 @@
+# IntelliJ stuff
+.idea/
+/*.iml
+
+# Typst build outputs
+*.pdf
+
+# Krita temporary files
+*.*~
