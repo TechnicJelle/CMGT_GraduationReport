@@ -1,0 +1,21 @@
+name: Typst Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v2.0.1
+      - name: Compile report with Typst
+        run: ./compile.sh
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: report.pdf
