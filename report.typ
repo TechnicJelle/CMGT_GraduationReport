@@ -5,10 +5,10 @@
 // report.
 
 
-#import "src/00-setup.typ": style
+#import "lib/00-setup.typ": style
 #show: style
 
-#import "src/01-front.typ": front_page
+#import "lib/01-front.typ": front_page
 #show: front_page
 
 = Abstract
@@ -21,7 +21,7 @@ How to Write an Abstract
 
 #pagebreak()
 
-#import "src/02-toc.typ": toc
+#import "lib/02-toc.typ": toc
 #show: toc
 
 = Introduction
