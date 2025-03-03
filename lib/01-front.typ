@@ -38,7 +38,7 @@
 		],
 		align(center)[
 			*Internship Coach* \
-			Taco van Loon \
+			Yiwei Jiang \
 			Saxion University of Applied Sciences \
 			Creative Media and Game Technologies \
 			#link("https://www.saxion.edu/programmes/bachelor/creative-media-and-game-technologies")[
