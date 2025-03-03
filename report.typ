@@ -187,6 +187,9 @@ and what aspects need to be strengthened as a young professional, and how you wo
 the industry. It’s valuable to not only look back but also ahead to the industry you will soon enter. Please
 note that you will have to move the self-reflection to the annexes before posting it on Post it
 
+//Stop numbering headings from here on out
+#set heading(numbering: none)
+
 = Appendices
 
 == Competences Reflection

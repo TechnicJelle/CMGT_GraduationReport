@@ -7,13 +7,13 @@
 		strong(delta: 100, h)
 	}
 
-	//TODO: When Typst 0.13 releases, this will work to hide the dots of the first indentation level
-	//#show outline.entry.where(level: 1): set outline.entry(fill: none)
+	//Heading level 1 does not have dotted lines
+	show outline.entry.where(level: 1): set outline.entry(fill: none)
 
-	outline(
-		indent: auto,
-		fill: align(right, repeat(text(weight: 100, "."), gap: 10pt, justify: false)),
-	)
+	//Replace the default dotted lines with slightly more subtle ones
+	set outline.entry(fill: align(right, repeat(text(weight: 100, "."), gap: 1pt, justify: false)))
+
+	outline()
 
 	pagebreak()
 
