@@ -4,6 +4,7 @@
 
 # Typst build outputs
 *.pdf
+*.html
 
 # Krita temporary files
 *.*~
