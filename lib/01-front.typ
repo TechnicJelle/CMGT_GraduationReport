@@ -10,13 +10,22 @@
 
 	v(54pt)
 
+	//Allow overriding my name with the $TYPST_NAME environment variable (see compile.sh)
+	let default_name = "TechnicJelle"
+	let input_name = sys.inputs.at("NAME", default: default_name)
+	let name = if input_name.len() > 0 {
+		input_name
+	} else {
+		default_name
+	}
+
 	show link: name => underline(text(rgb("#0000AA"), [#name]))
 	let image_height = 150pt
 	grid(
 		columns: (1fr, 1fr, 1fr),
 		align(center)[
 			*Student & Author* \
-			TechnicJelle \
+			#name \
 			510576 \
 			Saxion University of Applied Sciences \
 			Creative Media and Game Technologies \
