@@ -4,6 +4,9 @@
 // recommendations related to the assignment. A reflection on the graduation period is also part of the
 // report.
 
+// Limits: +/- 10 000 words | +/- 25 pages  (+/- 10%)
+//  Excluding preface, abstract, references, appendices.
+
 
 #import "lib/00-setup.typ": style
 #show: style
@@ -28,6 +31,9 @@ How to Write an Abstract
 
 Your report starts, of course, with the Introduction, which should include:
 - A general description of the assignment
+- The (preliminary) problem
+- The (end-)user
+- The indicators of success of the client
 - The parties and/or individuals involved in the development of your project
 	- and their interests regarding your solution
 
