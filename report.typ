@@ -37,6 +37,20 @@ _Your report starts, of course, with the Introduction, which should include:_
 - _The parties and/or individuals involved in the development of your project_
 	- _and their interests regarding your solution_
 
+Vulkan is a very low-level GPU API, which means it allows for a lot of control, at the cost of development effort.
+There are other GPU APIs, like DirectX and Metal, which are compatible with different OSes and platforms.
+For example, DirectX is only for Windows and Xbox, and Metal is only for Apple devices.
+Vulkan, however, is much more cross-platform than those, being supported on Windows, Linux *and* Android.
+There is also a very good translation layer for running Vulkan on Apple devices, called MoltenVK.
+
+Out of these GPU APIs, Vulkan is the most verbose, which is often used as ammunition to ridicule it, but being verbose has many advantages.
+It is much clearer about what it actually does, for example.
+And you have more control over what happens.
+
+However, when making actual applications, you don't want to have to be writing all of that code every single time.
+So that's when you make an abstraction overtop Vulkan, which you can reuse across multiple projects.
+In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
+
 == Client Company
 
 _A company outline, covering aspects such as:_
