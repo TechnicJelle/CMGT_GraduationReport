@@ -89,6 +89,10 @@ _More information can be found in the Applied Research section of the IMT&S modu
 These potential solutions are mostly just theoretical research.
 After I pick one or a few, I will continue on to the next section, where I will actually prototype them.
 
+In my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
+But, this is a good thing! It's good that there are so many different Vulkan abstraction layers.
+It makes it so there is something for everyone :)
+
 == Potential Solution 1
 
 Description
