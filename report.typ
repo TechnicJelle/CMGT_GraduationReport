@@ -16,11 +16,11 @@
 
 = Abstract
 
-The abstract is situated at the beginning of your report. However, you can only write it at the very end as it
+_The abstract is situated at the beginning of your report. However, you can only write it at the very end as it
 is meant to explain to any reader who will not read the entire report what information is in the report.
 Here, the reader will find your main question, the key topics you investigated, a basic overview of the
 iterations you made, and your conclusions and recommendations. You can use the guidelines from Scribbr:
-How to Write an Abstract
+How to Write an Abstract_
 
 #pagebreak()
 
@@ -29,42 +29,42 @@ How to Write an Abstract
 
 = Introduction
 
-Your report starts, of course, with the Introduction, which should include:
-- A general description of the assignment
-- The (preliminary) problem
-- The (end-)user
-- The indicators of success of the client
-- The parties and/or individuals involved in the development of your project
-	- and their interests regarding your solution
+_Your report starts, of course, with the Introduction, which should include:_
+- _A general description of the assignment_
+- _The (preliminary) problem_
+- _The (end-)user_
+- _The indicators of success of the client_
+- _The parties and/or individuals involved in the development of your project_
+	- _and their interests regarding your solution_
 
 == Client Company
 
-A company outline, covering aspects such as:
-- how the company is organized
-- the number of employees
-- the departments
-- the markets the company serves
-- your role within the company
-- etc.
+_A company outline, covering aspects such as:_
+- _how the company is organized_
+- _the number of employees_
+- _the departments_
+- _the markets the company serves_
+- _your role within the company_
+- _etc._
 
 = Preliminary Research
 
-To understand what will make your product valuable and useful, and to set the conditions of satisfaction,
+_To understand what will make your product valuable and useful, and to set the conditions of satisfaction,
 you need to gather a lot of information before you can start developing a solution. Regardless of the
 design model you use, you will need to gain knowledge about the company, the actual problem behind the
 question or idea that needs to be solved, the parties involved, what the client/user will do with the result,
 the market, the users, the competitors, the trends, the technological possibilities and restrictions, etc.
 Consider using the tools presented during Applied Research to structure this process, such as the people
-value canvas, the empathy map, and the consumer trend canvas.
+value canvas, the empathy map, and the consumer trend canvas._
 
-The questions and answers, including how you found the answers, form an important first part of your
+_The questions and answers, including how you found the answers, form an important first part of your
 report. They reflect how you critically approached the client's question
-and how you identified the actual main question of your graduation project.
+and how you identified the actual main question of your graduation project._
 
-The preliminary research and formulation of the main question cover the Empathize and Define phases of
+_The preliminary research and formulation of the main question cover the Empathize and Define phases of
 the Design Thinking method or the Discover and Define phases of the Double Diamond model. Detailed
 information about the preliminary research and main question can be found in the Applied Research
-section of the IMT&S module on Brightspace.
+section of the IMT&S module on Brightspace._
 
 == Problem Definition
 
@@ -72,19 +72,19 @@ section of the IMT&S module on Brightspace.
 
 = Possible Solutions
 
-Once the main question is formulated and acknowledged by your client, you can proceed to the next step
+_Once the main question is formulated and acknowledged by your client, you can proceed to the next step
 in the development process: generating ideas for possible solutions. We expect to see a range of possible
 solutions, an evaluation of these ideas, and the selection of the final solution. You can use the techniques
 for generating ideas presented during Applied Research. The evaluation can be conducted using a SWOT
-analysis or COCD box.
+analysis or COCD box._
 
-Showing and explaining the techniques you used to develop and select ideas in your report will provide
+_Showing and explaining the techniques you used to develop and select ideas in your report will provide
 insight into the creative process, so take the opportunity to showcase this. As highlighted in the design
 models, generating and selecting ideas is an iterative process, and it is expected that you will test a
 selection of the ideas with the client and the user. Be sure to incorporate the iterations, including the tests
-and results, in your report.
+and results, in your report._
 
-More information can be found in the Applied Research section of the IMT&S module on Brightspace.
+_More information can be found in the Applied Research section of the IMT&S module on Brightspace._
 
 These potential solutions are mostly just theoretical research.
 After I pick one or a few, I will continue on to the next section, where I will actually prototype them.
@@ -124,68 +124,68 @@ Why?
 
 = Prototype(s)
 
-Once you have selected the most promising idea or ideas, you can start working on the prototype(s). As
+_Once you have selected the most promising idea or ideas, you can start working on the prototype(s). As
 explained in the Design Thinking module in year 1, quartile 1, prototyping involves creating basic models
 or designs for a machine or other product. The prototyping phase will help you get closer to a valuable and
 usable product by validating the ideas you have generated. If done correctly, prototyping will create useful
-feedback that enables midflight corrections.
+feedback that enables midflight corrections._
 
-Prototypes can be anything a user can interact with, such as sketches, storyboards, posters, handmade
+_Prototypes can be anything a user can interact with, such as sketches, storyboards, posters, handmade
 gadgets, interactive applications, diagrams and frameworks, virtual models, videos, etc. Using a
 combination of high-fidelity and low-fidelity prototypes during the design process will provide valuable
-feedback that can be applied to make your design process iterative.
+feedback that can be applied to make your design process iterative._
 
-Use your report to justify the choices you made regarding the combination of prototypes and the various
-iterations you conducted.
+_Use your report to justify the choices you made regarding the combination of prototypes and the various
+iterations you conducted._
 
 
 = Testing
 
-To fully benefit from the prototypes you developed and to get the feedback needed to further narrow down
+_To fully benefit from the prototypes you developed and to get the feedback needed to further narrow down
 the number of ideas or improve your concept/product (i.e., to conduct the next iteration), the use of
 suitable test methods will be highly beneficial. The basis for this is a proper test plan to conduct one or
 more tests. Select the methods that were presented to you during Applied Research, choosing those that
-are suitable for professional practice within the context of your graduation project.
+are suitable for professional practice within the context of your graduation project._
 
-To write a test plan, you can use the template provided during Applied Research. The test plan and the
+_To write a test plan, you can use the template provided during Applied Research. The test plan and the
 results of the various tests are important components of your report. To find the best way to present the
-test results, you can refer to the relevant section of Applied Research on Brightspace
+test results, you can refer to the relevant section of Applied Research on Brightspace_
 
 
 = Conclusion
 
-You are heading towards the finalization of your graduation project and the conclusion of your report. This
+_You are heading towards the finalization of your graduation project and the conclusion of your report. This
 means you will round off your report by answering the main question you formulated at the start by
-drawing conclusions.
+drawing conclusions._
 
 
 = Recommendation
 
-Based on the conclusions, you will complete the project with recommendations,
-providing your view on valuable follow-up actions for your client.
+_Based on the conclusions, you will complete the project with recommendations,
+providing your view on valuable follow-up actions for your client._
 
-During Applied Research, it is explained how to present conclusions
-and recommendations. You will find this information in the relevant section on Brightspace.
+_During Applied Research, it is explained how to present conclusions
+and recommendations. You will find this information in the relevant section on Brightspace._
 
 = Discussion
 
-In the discussion chapter, you are expected to critically reflect on your design process and solution.
+_In the discussion chapter, you are expected to critically reflect on your design process and solution._
 
-You can ask questions such as:
-- how valid the research you conducted is
-- how reliable the test results are
-- the suitability of the methods used
-- what went well and what did not go so well
-- the value of the insights you presented to your client
-- and most importantly, to what extent you solved the problem of the client or the user
-It’s important to show a critical but fair view on these topics
+_You can ask questions such as:_
+- _how valid the research you conducted is_
+- _how reliable the test results are_
+- _the suitability of the methods used_
+- _what went well and what did not go so well_
+- _the value of the insights you presented to your client_
+- _and most importantly, to what extent you solved the problem of the client or the user_
+_It’s important to show a critical but fair view on these topics._
 
 = Self-Reflection
 
-At the end of your report, you will include a self-reflection, containing what you consider your strong points
+_At the end of your report, you will include a self-reflection, containing what you consider your strong points
 and what aspects need to be strengthened as a young professional, and how you would position yourself in
 the industry. It’s valuable to not only look back but also ahead to the industry you will soon enter. Please
-note that you will have to move the self-reflection to the annexes before posting it on Post it
+note that you will have to move the self-reflection to the annexes before posting it on Post it_
 
 //Stop numbering headings from here on out
 #set heading(numbering: none)
