@@ -107,30 +107,82 @@ In my experience, it is impossible to create an abstraction layer that is entire
 But, this is a good thing! It's good that there are so many different Vulkan abstraction layers.
 It makes it so there is something for everyone :)
 
-== Potential Solution 1
+== Potential Solution: Rendergraph-based abstractions
 
 Description
+
+Existing implementations:
+- https://github.com/martty/vuk
+- https://github.com/asc-community/VulkanAbstractionLayer
 
 === Evaluation
 
 
-== Potential Solution 2
+== Potential Solution: Scenegraph-based abstractions
 
 Description
+
+Existing implementations:
+- https://github.com/vsg-dev/VulkanSceneGraph
 
 === Evaluation
 
 
-== Potential Solution 3
+== Potential Solution: Pipelines and Passes (Flat abstractions)
 
-Description
+These are APIs that use the concepts of Pipelines and Passes.
+As these are also the main concepts of Vulkan itself, I am going to call these "flat abstractions".
+The term "flat abstraction" is my own creation, for lack of a better one.
+
+I mean that these abstractions very closely mirror the original GPU API, except they are simplified.
+But they do contain and use the same core principles.
+
+Existing implementations:
+- https://wiki.libsdl.org/SDL3/CategoryGPU
+- https://github.com/gfx-rs/wgpu
+- https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
+- https://github.com/DiligentGraphics/DiligentCore
+- https://github.com/facebook/igl
+- https://github.com/corporateshark/lightweightvk
+
+=== Evaluation
+
+I do really like SDL's GPU API.
+
+
+== Potential Solution: Global State Machine
+
+OpenGL, a really old GPU API, and older versions of DirectX actually were global state machines already.
+
+Modern GPU APIs have moved away from this kind of architecture, because they were extremely cumbersome to work with.
+They also match the things that are actually happening on a hardware level more closely than these older APIs, nowadays.
+
+Still, some people like the style of global state machine APIs.
+
+Implementations:
+Immediate-Mode style API:
+- OpenGL Legacy (1.0 up to, but not including, 3.0)
+- Direct3D 7 and before
+- rlgl: https://github.com/raysan5/raylib/blob/master/src/rlgl.h
+
+Buffer-style APIs:
+- OpenGL Modern (3.0 and later)
+- Direct3D 8 to 11 (12 is a Pipelines&Passes-style API)
+- bgfx: https://github.com/bkaradzic/bgfx
 
 === Evaluation
 
 
-== Potential Solution 4
+== Potential Solution: Partial Abstractions
 
-Description
+These are libraries that only abstract _parts_ of the Vulkan API, while still allowing direct access to the raw Vulkan API in other places.
+Most abstractions abstract the entire thing, and don't allow you to access the internals. Like the raw Vulkan API.
+
+You can use multiple of these together, for their different purposes.
+
+- https://github.com/charles-lunarg/vk-bootstrap (Initialization)
+- https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator (Memory Allocation)
+- https://github.com/zeux/volk (Entrypoint Loading)
 
 === Evaluation
 
