@@ -209,6 +209,11 @@ _Use your report to justify the choices you made regarding the combination of pr
 iterations you conducted._
 
 
+I should look into Bindless. It apparently has the potential to be MUCH faster!
+When comparing bindless OpenGL to bindful OpenGL, the speedup can be 7x, according to https://www.nvidia.com/en-us/drivers/bindless-graphics/
+I assume such high performance gains won't be possible with Vulkan, because bindful Vulkan is already faster than bindful OpenGL.
+But we will see when I actually get there...
+
 = Testing
 
 _To fully benefit from the prototypes you developed and to get the feedback needed to further narrow down
