@@ -38,10 +38,23 @@ _Your report starts, of course, with the Introduction, which should include:_
 	- _and their interests regarding your solution_
 
 Vulkan is a very low-level GPU API, which means it allows for a lot of control, at the cost of development effort.
-There are other GPU APIs, like DirectX and Metal, which are compatible with different OSes and platforms.
-For example, DirectX is only for Windows and Xbox, and Metal is only for Apple devices.
-Vulkan, however, is much more cross-platform than those, being supported on Windows, Linux *and* Android.
-There is also a very good translation layer for running Vulkan on Apple devices, called MoltenVK.
+There are other GPU APIs, like OpenGL, DirectX and Metal, which are compatible with different OSes and platforms.
+
+OpenGL is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
+For that reason, OpenGL will not be mentioned much in this report, as it cannot really hold a candle to these other, modern APIs.
+
+DirectX is only for Windows and Xbox. In fact, the Xbox _only_ supports DirectX. Luckily Windows itself does support more.\
+Although it is possible to run DirectX on Linux, through compatibility layers.
+For example, Valve makes use of them in their Proton software, which allows Windows games to run on Linux.
+
+Metal is only for Apple devices, which also don't (natively) support anything else.
+Though there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.\
+#text(size: 0.9em)[(Technically, macOS does also support OpenGL, only an old version. And the latest normal OpenGL version is already old!)]
+
+PlayStation and Nintendo Switch both have proprietary APIs, but the Switch does at least _support_ Vulkan, too.
+
+So, Vulkan is the most cross-platform of any of these APIs, being supported on Windows, Linux, Android, and Nintendo Switch,
+with compatibility layers existing for Apple devices.
 
 Out of these GPU APIs, Vulkan is the most verbose, which is often used as ammunition to ridicule it, but being verbose has many advantages.
 It is much clearer about what it actually does, for example.
