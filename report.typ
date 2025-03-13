@@ -56,6 +56,14 @@ PlayStation and Nintendo Switch both have proprietary APIs, but the Switch does 
 So, Vulkan is the most cross-platform of any of these APIs, being supported on Windows, Linux, Android, and Nintendo Switch,
 with compatibility layers existing for Apple devices.
 
+See @api_compat_table for a neat overview of which API is compatible with which OS/platform.
+
+#import "lib/03-api_compat_table.typ": api_compat_table
+#figure(
+	api_compat_table,
+	caption: [Platform ↔ API Compatibility]
+) <api_compat_table>
+
 Out of these GPU APIs, Vulkan is the most verbose, which is often used as ammunition to ridicule it, but being verbose has many advantages.
 It is much clearer about what it actually does, for example.
 And you have more control over what happens.

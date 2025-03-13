@@ -12,6 +12,9 @@
 	set par(
 		justify: true,
 	)
+	show ref: r => {
+		text(style: "italic", r)
+	}
 
 	body
 }
