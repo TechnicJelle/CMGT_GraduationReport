@@ -1,0 +1,3 @@
+[submodule "3rd/typst-diagbox"]
+	path = 3rd/typst-diagbox
+	url = https://github.com/PgBiel/typst-diagbox.git
