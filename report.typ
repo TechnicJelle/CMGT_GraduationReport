@@ -30,7 +30,7 @@ How to Write an Abstract_
 = Introduction
 
 _Your report starts, of course, with the Introduction, which should include:_
-- _A general description of the assignment_ (QUESTION: the graduation assignment, or the company assignment?)
+- _A general description of the company assignment_
 - _The (preliminary) problem_
 - _The (end-)user_
 - _The indicators of success of the client_
