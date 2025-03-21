@@ -37,41 +37,6 @@ _Your report starts, of course, with the Introduction, which should include:_
 - _The parties and/or individuals involved in the development of your project_
 	- _and their interests regarding your solution_
 
-Vulkan is a very low-level GPU API, which means it allows for a lot of control, at the cost of development effort.
-There are other GPU APIs, like OpenGL, DirectX and Metal, which are compatible with different OSes and platforms.
-
-OpenGL is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
-For that reason, OpenGL will not be mentioned much in this report, as it cannot really hold a candle to these other, modern APIs.
-
-DirectX is only for Windows and Xbox. In fact, the Xbox _only_ supports DirectX. Luckily Windows itself does support more.\
-Although it is possible to run DirectX on Linux, through compatibility layers.
-For example, Valve makes use of them in their Proton software, which allows Windows games to run on Linux.
-
-Metal is only for Apple devices, which also don't (natively) support anything else.
-Though there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.\
-#text(size: 0.9em)[(Technically, macOS does also support OpenGL, only an old version. And the latest normal OpenGL version is already old!)]
-
-PlayStation and Nintendo Switch both have proprietary APIs, but the Switch does at least _support_ Vulkan, too.
-
-So, Vulkan is the most cross-platform of any of these APIs, being supported on Windows, Linux, Android, and Nintendo Switch,
-with compatibility layers existing for Apple devices.
-
-See @api_compat_table for a neat overview of which API is compatible with which OS/platform.
-
-#import "lib/03-api_compat_table.typ": api_compat_table
-#figure(
-	api_compat_table,
-	caption: [Platform ↔ API Compatibility]
-) <api_compat_table>
-
-Out of these GPU APIs, Vulkan is the most verbose, which is often used as ammunition to ridicule it, but being verbose has many advantages.
-It is much clearer about what it actually does, for example.
-And you have more control over what happens.
-
-However, when making actual applications, you don't want to have to be writing all of that code every single time.
-So that's when you make an abstraction overtop Vulkan, which you can reuse across multiple projects.
-In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
-
 == Client Company
 
 _A company outline, covering aspects such as:_
@@ -100,6 +65,56 @@ _The preliminary research and formulation of the main question cover the Empathi
 the Design Thinking method or the Discover and Define phases of the Double Diamond model. Detailed
 information about the preliminary research and main question can be found in the Applied Research
 section of the IMT&S module on Brightspace._
+
+//TODO: Collect more sources for this stuff.
+
+There are many GPU APIs, like OpenGL, Vulkan, DirectX, Metal, and some console-specific ones.
+All of these are compatible with different OSes and platforms.
+
+*OpenGL* is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
+For that reason, OpenGL will not be mentioned much in this report, as it cannot really hold a candle to these other, more modern APIs.
+
+//TODO: This paragraph has got to be improved
+*Vulkan* is a very low-level GPU API, by the Khronos Group, a consortium of organizations that focuses on graphics. @khronos-about\
+Vulkan is known as the most verbose GPU API, which is often used as ammunition to ridicule it, but being verbose has many advantages.
+It is much clearer about what it actually does, for example, and you have more control over what happens.
+which means it allows for a lot of control and thus optimization, at the cost of development effort.
+Vulkan is actually not exactly a GPU API, because it is more of a general-purpose Acceleration Device API.
+GPUs are just one type of Acceleration Device.
+However, for the purposes of this report, I will consider only the GPU aspects of Vulkan.
+
+*DirectX* is for Windows and Xbox. In fact, the Xbox _only_ supports DirectX. Luckily Windows itself does support more.\
+It is technically possible to run DirectX on Linux, through compatibility layers.
+#footnote[For example, Valve makes use of them in their Proton software, which allows Windows games to run on Linux.]
+However, it should be noted that these compatibility layers are not officially supported or endorsed by Microsoft, the developers of DirectX.
+
+*Metal* is for Apple devices, which also don't (natively) support anything else.
+#footnote[Technically, macOS does also support OpenGL, but only an old version. And the latest normal OpenGL version is already old!]\
+Though there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.
+MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative. @moltenvk-2017
+
+PlayStation has two proprietary and "secret" APIs, called *GNM and GNMX*.\
+GNM is the low-level API, and GNMX is a higher-level wrapper around it. @leadbetter-2013\
+Not much is publicly known about these APIs, because you need to sign an NDA to get access to the PlayStation Developer Kit.
+
+Nintendo Switch also has a proprietary and "secret" APIs, called *NVN*.
+This is the preferred API to use, but it at least does _support_ Vulkan, too.
+Not much is publicly known about this API, because you need to sign an NDA to get access to the Nintendo Switch Developer Kit.
+
+#import "lib/03-api_compat_table.typ": api_compat_table
+#figure(
+	api_compat_table,
+	caption: [An overview of Platform ↔ API Compatibility]
+) <api_compat_table>
+
+As we can see in @api_compat_table, Vulkan is the most cross-platform of any of these APIs,
+being supported on Windows, Linux, Android, and Nintendo Switch, with compatibility layers existing for Apple devices.
+
+This is why I will be choosing to start with Vulkan, as it is the API that has the most platform compatibility.
+
+However, when making actual applications, you don't want to have to be writing Vulkan code from scratch every single time.
+So that's when you make an abstraction overtop Vulkan, which you can reuse across multiple projects.
+In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
 
 == Problem Definition
 
@@ -296,5 +311,11 @@ Probably a YouTube link.
 Not Saxion's own Kaltura, because I probably want to keep this around.
 
 = Bibliography
+
+#bibliography(
+	"references.bib",
+	style: "american-psychological-association",
+	title: none,
+)
 
 = List of Figures
