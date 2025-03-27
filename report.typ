@@ -29,6 +29,10 @@ How to Write an Abstract_
 #import "lib/02-toc.typ": toc
 #show: toc
 
+= Glossary
+// Explanation of some (technical) terms, for people who don't know them yet.
+// These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
+
 = Introduction
 
 _Your report starts, of course, with the Introduction, which should include:_
