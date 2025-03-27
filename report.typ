@@ -32,28 +32,66 @@ How to Write an Abstract_
 = Glossary
 // Explanation of some (technical) terms, for people who don't know them yet.
 // These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
+- *paradigm*: style / way of doing things
+
+#pagebreak()
 
 = Introduction
 
 _Your report starts, of course, with the Introduction, which should include:_
-- [ ] _A general description of the company assignment_
+- [x] _A general description of the company assignment_
 - [ ] _The (preliminary) problem_
 - [ ] _The (end-)user_
 - [ ] _The indicators of success of the client_
 - [ ] _The parties and/or individuals involved in the development of your project_
 	- [ ] _and their interests regarding your solution_
 
-== Client Company
-
 _A company outline, covering aspects such as:_
-- [ ] _how the company is organized_
-- [ ] _the number of employees_
-- [ ] _the departments_
-- [ ] _the markets the company serves_
-- [ ] _your role within the company_
-- _etc._
+- [x] _how the company is organized_
+- [x] _the number of employees_
+- [x] _the departments_
+- [x] _the markets the company serves_
+- [x] _your role within the company_
+- [ ] _etc._
 
-= Preliminary Research
+== Company
+
+This graduation project is being done for the company Rythe Interactive.
+Rythe is a very small startup company of just two employees, and an intern (me).
+
+The (primary) product they have is the Rythe Game Engine, the aim of which is to be a modular yet performant game engine.
+The modular nature makes it extra easy for companies to modify it to suit their own specific purposes,
+without having to build an entirely new engine form scratch.
+
+There are already a few earlier iterations of the engine in existence, but they are all
+too tightly integrated with outdated technologies, or have suboptimal architectures.
+
+Hence, a new version of the engine is being worked on, but it is still lacking a good rendering system.
+So that is what I will be working on, for this project: creating the (start for a) rendering system for the new version of the Rythe Game Engine.
+
+== Problem Definition
+
+== Research Questions
+
+=== Main Research Question
+
+
+=== Sub-questions
+-
+-
+-
+
+== Requirements
+
+=== Deliverable
+
+=== Indicators of Success
+
+=== Constraints
+
+#pagebreak()
+
+= Research
 
 _To understand what will make your product valuable and useful, and to set the conditions of satisfaction,
 you need to gather a lot of information before you can start developing a solution. Regardless of the
@@ -72,9 +110,13 @@ the Design Thinking method or the Discover and Define phases of the Double Diamo
 information about the preliminary research and main question can be found in the Applied Research
 section of the IMT&S module on Brightspace._
 
+== GPU APIs
+
 //TODO: Collect more sources for this stuff.
 
-There are many GPU APIs, like OpenGL, Vulkan, DirectX, Metal, and some console-specific ones.
+To make a good and performant rendering system, we need to interface with the Graphical Processing Unit.
+
+There are many GPU APIs, like OpenGL, Vulkan, DirectX, Metal, and most consoles have their own specific ones.
 All of these are compatible with different OSes and platforms.
 
 *OpenGL* is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
@@ -122,11 +164,9 @@ However, when making actual applications, you don't want to have to be writing V
 So that's when you make an abstraction overtop Vulkan, which you can reuse across multiple projects.
 In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
 
-== Problem Definition
+#pagebreak()
 
-== Main Research Question
-
-= Possible Solutions
+== Possible Solutions
 
 _Once the main question is formulated and acknowledged by your client, you can proceed to the next step
 in the development process: generating ideas for possible solutions. We expect to see a range of possible
@@ -142,14 +182,17 @@ and results, in your report._
 
 _More information can be found in the Applied Research section of the IMT&S module on Brightspace._
 
-These potential solutions are mostly just theoretical research.
-After I pick one or a few, I will continue on to the next section, where I will actually prototype them.
-
-In my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
-But, this is a good thing! It's good that there are so many different Vulkan abstraction layers.
+Of course, there already exist many GPU API abstraction layers. But, this is a good thing!
+Because, in my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
 It makes it so there is something for everyone :)
 
-== Potential Solution: Rendergraph-based abstractions
+In this section, I will explore some of these GPU API abstraction layers that already exist by way of theoretical research.
+Many of these abstraction layers use different paradigms, so I have categorised them somewhat.
+After that, I will compare them an pick one or a few, to actually prototype with.
+
+After the prototyping, I will choose the paradigm to go ahead with for my own abstraction layer.
+
+=== Potential Solution: Rendergraph-based abstractions
 
 Description
 
@@ -157,20 +200,20 @@ Existing implementations:
 - https://github.com/martty/vuk
 - https://github.com/asc-community/VulkanAbstractionLayer
 
-=== Evaluation
+#heading(outlined: false, level: 4)[Evaluation]
+Cool, but too high-level.
 
-
-== Potential Solution: Scenegraph-based abstractions
+=== Potential Solution: Scenegraph-based abstractions
 
 Description
 
 Existing implementations:
 - https://github.com/vsg-dev/VulkanSceneGraph
 
-=== Evaluation
+#heading(outlined: false, level: 4)[Evaluation]
+Cool, but _much_ too high-level.
 
-
-== Potential Solution: Pipelines and Passes (Flat abstractions)
+=== Potential Solution: Pipelines and Passes (Flat abstractions)
 
 These are APIs that use the concepts of Pipelines and Passes.
 As these are also the main concepts of Vulkan itself, I am going to call these "flat abstractions".
@@ -187,35 +230,36 @@ Existing implementations:
 - https://github.com/facebook/igl
 - https://github.com/corporateshark/lightweightvk
 
-=== Evaluation
+==== Evaluation
 
 I do really like SDL's GPU API.
+This is probably the paradigm I'll go with.
 
-
-== Potential Solution: Global State Machine
+=== Potential Solution: Global State Machine
 
 OpenGL, a really old GPU API, and older versions of DirectX actually were global state machines already.
 
 Modern GPU APIs have moved away from this kind of architecture, because they were extremely cumbersome to work with.
 They also match the things that are actually happening on a hardware level more closely than these older APIs, nowadays.
 
-Still, some people like the style of global state machine APIs.
+Still, some people like the paradigm of global state machine APIs.
 
 Implementations:
-Immediate-Mode style API:
+Immediate-Mode paradigm API:
 - OpenGL Legacy (1.0 up to, but not including, 3.0)
 - Direct3D 7 and before
 - rlgl: https://github.com/raysan5/raylib/blob/master/src/rlgl.h
 
-Buffer-style APIs:
+Buffer-paradigm APIs:
 - OpenGL Modern (3.0 and later)
-- Direct3D 8 to 11 (12 is a Pipelines&Passes-style API)
+- Direct3D 8 to 11 (12 is a Pipelines&Passes-paradigm API)
 - bgfx: https://github.com/bkaradzic/bgfx
 
-=== Evaluation
+#heading(outlined: false, level: 4)[Evaluation]
+Too high-level, and also global state kind of sucks to deal with.
+And is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 
-
-== Potential Solution: Partial Abstractions
+=== Potential Solution: Partial Abstractions
 
 These are libraries that only abstract _parts_ of the Vulkan API, while still allowing direct access to the raw Vulkan API in other places.
 Most abstractions abstract the entire thing, and don't allow you to access the internals. Like the raw Vulkan API.
@@ -226,13 +270,17 @@ You can use multiple of these together, for their different purposes.
 - https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator (Memory Allocation)
 - https://github.com/zeux/volk (Entrypoint Loading)
 
-=== Evaluation
+#heading(outlined: false, level: 4)[Evaluation]
+I might use one or multiple of these in my own abstraction.
+We shall see. I would like to experiment with them "in-person".
 
+=== Final Selected Solution(s)
 
-== Final Selected Solution(s)
+The abstraction will be a Pipelines and Passes (Flat abstractions) paradigm API, in which I may use some already-existing partial abstractions.
 
-Why?
+The reasoning is that this paradigm is just by far the most flexible and powerful.
 
+#pagebreak()
 
 = Prototype(s)
 
@@ -256,6 +304,31 @@ When comparing bindless OpenGL to bindful OpenGL, the speedup can be 7x, accordi
 I assume such high performance gains won't be possible with Vulkan, because bindful Vulkan is already faster than bindful OpenGL.
 But we will see when I actually get there...
 
+I will make multiple programs that all do the this:
+- show some spinning textured cubes
+	- Textures may be bindless-only, whenever the API allows that functionality
+- maybe a suzanne
+- super simple lighting
+	- fancier(?if there is time; a day?)
+- framebuffers
+	- multiple inputs
+	- for post-processing
+		- bloom
+	- offline rendering
+		- snow/dynamic paint
+- compute shaders(?if there is time?)
+
+But in these different ways:
+- With raw Vulkan
+- With Vulkan with some partial abstractions
+- With SDL3's GPU API
+- With BGFX
+
+Once these are done, I can use the Vulkan prototypes to see what features the abstraction will need, and base it on that.
+If I find the already-existing partial abstractions worthy enough, I will use those in my abstraction.
+
+#pagebreak()
+
 = Testing
 
 _To fully benefit from the prototypes you developed and to get the feedback needed to further narrow down
@@ -268,6 +341,15 @@ _To write a test plan, you can use the template provided during Applied Research
 results of the various tests are important components of your report. To find the best way to present the
 test results, you can refer to the relevant section of Applied Research on Brightspace_
 
+== Performance Testing (Benchmarking)
+
+Write test program in raw Vulkan, and in the Abstraction.
+Potentially even in other APIs, like SDL3's GPU API, or Sokol or BGFX.
+The earlier written prototypes will be useful for this as well.
+
+== API Userfiendliness testing
+
+Try and see if I can find people willing to try making something with my abstraction.
 
 = Conclusion
 
