@@ -7,6 +7,8 @@
 // Limits: +/- 10 000 words | +/- 25 pages  (+/- 10%)
 //  Excluding preface, abstract, references, appendices.
 
+#import "@preview/cheq:0.2.2": checklist
+#show: checklist
 
 #import "lib/00-setup.typ": style
 #show: style
@@ -30,21 +32,21 @@ How to Write an Abstract_
 = Introduction
 
 _Your report starts, of course, with the Introduction, which should include:_
-- _A general description of the company assignment_
-- _The (preliminary) problem_
-- _The (end-)user_
-- _The indicators of success of the client_
-- _The parties and/or individuals involved in the development of your project_
-	- _and their interests regarding your solution_
+- [ ] _A general description of the company assignment_
+- [ ] _The (preliminary) problem_
+- [ ] _The (end-)user_
+- [ ] _The indicators of success of the client_
+- [ ] _The parties and/or individuals involved in the development of your project_
+	- [ ] _and their interests regarding your solution_
 
 == Client Company
 
 _A company outline, covering aspects such as:_
-- _how the company is organized_
-- _the number of employees_
-- _the departments_
-- _the markets the company serves_
-- _your role within the company_
+- [ ] _how the company is organized_
+- [ ] _the number of employees_
+- [ ] _the departments_
+- [ ] _the markets the company serves_
+- [ ] _your role within the company_
 - _etc._
 
 = Preliminary Research
