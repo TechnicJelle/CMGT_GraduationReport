@@ -42,7 +42,7 @@
 			\
 			#link("https://rythe-interactive.com/")[
 				rythe-interactive.com
-				#image("../Images/Branding/rythe_logo_for_dark_bg-shadow.png", fit: "contain", height: image_height)
+				#image("../Images/Branding/rythe_icon_for_light_bg.png", fit: "contain", height: image_height)
 			]
 		],
 		align(center)[
