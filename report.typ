@@ -32,6 +32,11 @@ How to Write an Abstract_
 = Glossary
 // Explanation of some (technical) terms, for people who don't know them yet.
 // These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
+- *Acceleration Device*: a device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
+- *GPU*: Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
+- *API*: Application Programming Interface. The "rules"/"contract" that a certain programming system offers.
+- *OpenGL*: absolutely ancient GPU API.
+- *Vulkan*: newer API than OpenGL, made to be similarly cross-platform as OpenGL, but much more low-level, to allow more control to the users. Technically not a GPU API, but an Acceleration Device API.
 - *paradigm*: style / way of doing things
 
 #pagebreak()
@@ -40,7 +45,7 @@ How to Write an Abstract_
 
 _Your report starts, of course, with the Introduction, which should include:_
 - [x] _A general description of the company assignment_
-- [ ] _The (preliminary) problem_
+- [x] _The (preliminary) problem_
 - [ ] _The (end-)user_
 - [ ] _The indicators of success of the client_
 - [ ] _The parties and/or individuals involved in the development of your project_
@@ -54,40 +59,76 @@ _A company outline, covering aspects such as:_
 - [x] _your role within the company_
 - [ ] _etc._
 
+In this report, I will describe the product I have first researched for,
+and then developed during my Graduation Internship at Rythe Interactive.
+
+During this process, I adhered to the Double Diamond @double-diamond design process model.
+
 == Company
 
 This graduation project is being done for the company Rythe Interactive.
 Rythe is a very small startup company of just two employees, and an intern (me).
 
-The (primary) product they have is the Rythe Game Engine, the aim of which is to be a modular yet performant game engine.
+The product they have is the Rythe Game Engine, the aim of which is to be a modular yet performant game engine.
 The modular nature makes it extra easy for companies to modify it to suit their own specific purposes,
 without having to build an entirely new engine form scratch.
 
-There are already a few earlier iterations of the engine in existence, but they are all
-too tightly integrated with outdated technologies, or have suboptimal architectures.
-
-Hence, a new version of the engine is being worked on, but it is still lacking a good rendering system.
-So that is what I will be working on, for this project: creating the (start for a) rendering system for the new version of the Rythe Game Engine.
-
 == Problem Definition
+
+There are currently already multiple iterations of the Rythe Engine in existence.
+
+The Rythe Legacy engine is so old that it still uses OpenGL, and is too tightly integrated with it to be salvagable.
+OpenGL is bad for performance, due to the CPU usage required.
+It can also not be properly multi-threaded, which is especially bad, because one of the main goals of the engine is to be very parallel.
+
+The next rewrite used more modern technologies, and had a dedicated renderer component called Rythe-LLRI, or "Rythe Low Level Rendering Interface".
+It was a cross-platform GPU API abstraction, that was intended to be as low-level, as possible, to ensure maximum performance.
+The LLRI is very old and was written before the Vulkan API had even properly released. It is also not finished.
+
+Now, a new version of the engine is being worked on, but it is still lacking a good rendering system.
+The LLRI could do with a rewrite.
 
 == Research Questions
 
+Thus, for this project I will be working on creating
+the (start for a) rendering system for the new version of the Rythe Game Engine.
+This product could serve as the base for the LLRI rewrite.
+
 === Main Research Question
 
+And so, my main research question is:
+#align(center)[_
+	Can I develop a good start for a flexible,\
+	yet performant cross-platform GPU API abstraction?
+_]
 
 === Sub-questions
--
--
--
 
-== Requirements
+As part of this research, there are a few sub-questions that also need to be answered:
+- Which GPU API should I start with abstracting?
+- How should I test?
+- How can I make it faster?
+
+== Requirements and Constraints
+
+The goal of the LLRI is to:
+- Be portable to other rendering API's down the line (not necessarily immediately).
+- Abstract away some implementation details that are more verbose and obtuse than they need to be,
+  from the perspective of someone implementing new graphics features.
+- Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot.
+- Allow enough low level access to not restrict engineers from being able to design their own renderer architecture.
+- Minimise overhead of the abstraction where possible, or at least move as much of it to
+  compile-time or startup-time as possible.
 
 === Deliverable
 
+At the end of the project, I plan to have a GitHub repository with a library in it.
+That library will be the start of the new LLRI.
+
 === Indicators of Success
 
-=== Constraints
+I'll have succeeded if I got the beginnings of a GPU API abstraction layer done.
+I will verify and ensure that it is done enough by making a test program with it.
 
 #pagebreak()
 
@@ -230,7 +271,7 @@ Existing implementations:
 - https://github.com/facebook/igl
 - https://github.com/corporateshark/lightweightvk
 
-==== Evaluation
+#heading(outlined: false, level: 4)[Evaluation]
 
 I do really like SDL's GPU API.
 This is probably the paradigm I'll go with.
