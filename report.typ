@@ -409,7 +409,12 @@ Not Saxion's own Kaltura, because I probably want to keep this around.
 = List of Figures
 
 #show outline.entry.where(level: 1): set outline.entry(fill: align(right, repeat(text(weight: 100, "."), gap: 0.3em, justify: false)))
-//TODO: un-bold the caption of the figures in the list
+#set text(weight: 0) //reset font weights
+#show outline.entry: it => {
+	show regex(`^.+\s+\d+`.text): set text(weight: 200) //prefix
+	show regex(`\d+$`.text): set text(weight: 300) //page number
+	it
+}
 
 #outline(title: none, target: figure)
 
