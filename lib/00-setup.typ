@@ -16,5 +16,14 @@
 		text(style: "italic", r)
 	}
 
+	//Boldens the first part of figure captions
+	show figure: it => {
+		show figure.caption: it => {
+			show regex(`^.+\s+\d+:`.text): set text(weight: 500)
+			it
+		}
+		it
+	}
+
 	body
 }

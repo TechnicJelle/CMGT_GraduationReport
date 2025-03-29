@@ -409,6 +409,7 @@ Not Saxion's own Kaltura, because I probably want to keep this around.
 = List of Figures
 
 #show outline.entry.where(level: 1): set outline.entry(fill: align(right, repeat(text(weight: 100, "."), gap: 0.3em, justify: false)))
+//TODO: un-bold the caption of the figures in the list
 
 #outline(title: none, target: figure)
 
