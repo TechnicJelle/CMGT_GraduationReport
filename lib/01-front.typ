@@ -19,7 +19,6 @@
 		default_name
 	}
 
-	show link: name => underline(text(rgb("#0000AA"), [#name]))
 	let image_height = 150pt
 	grid(
 		columns: (1fr, 1fr, 1fr),

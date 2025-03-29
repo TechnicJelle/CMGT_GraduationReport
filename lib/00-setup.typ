@@ -12,9 +12,8 @@
 	set par(
 		justify: true,
 	)
-	show ref: r => {
-		text(style: "italic", r)
-	}
+	show link: name => underline(text(rgb("#0000AA"), name))
+	show ref: r => text(style: "italic", r)
 
 	//Boldens the first part of figure captions
 	show figure: it => {
