@@ -259,58 +259,6 @@ list some already-existing implementations of it, and evalute its usefulness for
 
 After the prototyping, I will choose the paradigm to go ahead with for my own abstraction layer.
 
-=== Rendergraph-based Abstractions
-
-Description
-
-#heading(outlined: false, level: 4)[_Existing implementations_] //TODO: Make H4 less weight & italic
-- https://github.com/martty/vuk
-- https://github.com/asc-community/VulkanAbstractionLayer
-
-#heading(outlined: false, level: 4)[_Evaluation_]
-
-Cool, but too high-level.
-
-=== Scenegraph-based Abstractions
-
-Description
-
-Existing implementations:
-- https://github.com/vsg-dev/VulkanSceneGraph
-
-#heading(outlined: false, level: 4)[Evaluation]
-Cool, but _much_ too high-level.
-
-=== Pipelines and Passes (Flat Abstractions)
-
-Pipelines and Passes are the two main concepts of "modern" GPU APIs.
-Specifically, they are //TODO
-
-Back in 2016, AMD released an experimental new GPU API called Mantle.
-This was the first Pipelines and Passes API.
-AMD then donated it to the Khronos Group, who turned it into Vulkan, and continued developing it.
-Khronos is also the main driving force for making it as cross-platform as it is.
-In the meantime, Microsoft and Apple were also inspired by Mantle, and created DirectX 12 and Metal, respectively, based on it.
-
-Pipelines and Passes are also the main concepts of Vulkan itself, so I am going to call the abstractions that use them "flat abstractions".
-The term "flat abstraction" is my own creation, for lack of a better one.
-With this I mean that these abstractions very closely mirror the original GPU API, except that they are simplified.
-However, they do contain and use the same core principles.
-
-Existing implementations:
-- SDL3's GPU API: https://wiki.libsdl.org/SDL3/CategoryGPU
-	- Some words about this
-- WebGPU (wgpu-native): https://github.com/gfx-rs/wgpu
-- Sokol: https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
-- https://github.com/DiligentGraphics/DiligentCore
-- IGL: https://github.com/facebook/igl
-- https://github.com/corporateshark/lightweightvk
-
-#heading(outlined: false, level: 4)[Evaluation]
-
-I do really like SDL3's GPU API.
-This is probably the paradigm I'll go with.
-
 === Global State Machine
 
 Global state machines are //TODO
@@ -350,6 +298,36 @@ Too high-level, and also global state kind of sucks to deal with.
 And is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 BGFX will also be practically evaluated.
 
+=== Pipelines and Passes (Flat Abstractions)
+
+Pipelines and Passes are the two main concepts of "modern" GPU APIs.
+Specifically, they are //TODO
+
+Back in 2016, AMD released an experimental new GPU API called Mantle.
+This was the first Pipelines and Passes API.
+AMD then donated it to the Khronos Group, who turned it into Vulkan, and continued developing it.
+Khronos is also the main driving force for making it as cross-platform as it is.
+In the meantime, Microsoft and Apple were also inspired by Mantle, and created DirectX 12 and Metal, respectively, based on it.
+
+Pipelines and Passes are also the main concepts of Vulkan itself, so I am going to call the abstractions that use them "flat abstractions".
+The term "flat abstraction" is my own creation, for lack of a better one.
+With this I mean that these abstractions very closely mirror the original GPU API, except that they are simplified.
+However, they do contain and use the same core principles.
+
+Existing implementations:
+- SDL3's GPU API: https://wiki.libsdl.org/SDL3/CategoryGPU
+	- Some words about this
+- WebGPU (wgpu-native): https://github.com/gfx-rs/wgpu
+- Sokol: https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
+- https://github.com/DiligentGraphics/DiligentCore
+- IGL: https://github.com/facebook/igl
+- https://github.com/corporateshark/lightweightvk
+
+#heading(outlined: false, level: 4)[Evaluation]
+
+I do really like SDL3's GPU API.
+This is probably the paradigm I'll go with.
+
 === Partial Abstractions
 
 These are libraries that only abstract _parts_ of the Vulkan API, while still allowing direct access to the raw Vulkan API in other places.
@@ -364,6 +342,28 @@ You can use multiple of these together, for their different purposes.
 #heading(outlined: false, level: 4)[Evaluation]
 I might use one or multiple of these in my own abstraction.
 We shall see. I would like to experiment with them "in-person".
+
+=== Rendergraph-based Abstractions
+
+Description
+
+#heading(outlined: false, level: 4)[_Existing implementations_] //TODO: Make H4 less weight & italic
+- https://github.com/martty/vuk
+- https://github.com/asc-community/VulkanAbstractionLayer
+
+#heading(outlined: false, level: 4)[_Evaluation_]
+
+Cool, but too high-level.
+
+=== Scenegraph-based Abstractions
+
+Description
+
+Existing implementations:
+- https://github.com/vsg-dev/VulkanSceneGraph
+
+#heading(outlined: false, level: 4)[Evaluation]
+Cool, but _much_ too high-level.
 
 === Final Selected Solution(s)
 
