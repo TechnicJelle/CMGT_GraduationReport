@@ -30,8 +30,10 @@ How to Write an Abstract_
 #show: toc
 
 = Glossary
-// Explanation of some (technical) terms, for people who don't know them yet.
-// These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
+
+Explanation of some (technical) terms, for people who don't know them yet.
+These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
+#v(1em)
 - *Acceleration Device:* a hardware device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
 - *GPU:* Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
 - *API:* Application Programming Interface. The "rules"/"contract" that a certain programming system offers; usually a set of functions that are able to be called by the programmer.
