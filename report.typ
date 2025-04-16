@@ -115,10 +115,12 @@ This product could serve as the base for the complete LLRI rewrite.
 === Main Research Question
 
 My main research question is:
+#v(1em)
 #align(center)[_
 	How can I develop a good start for a flexible,\
 	yet performant cross-platform GPU API abstraction?
 _]
+#v(1em)
 
 === Sub-questions
 
