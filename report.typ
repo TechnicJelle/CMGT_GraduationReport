@@ -7,6 +7,8 @@
 // Limits: +/- 10 000 words | +/- 25 pages  (+/- 10%)
 //  Excluding preface, abstract, references, appendices.
 
+#let show_tips_from_manual = false
+
 #import "@preview/cheq:0.2.2": checklist
 #show: checklist
 
@@ -18,11 +20,15 @@
 
 = Abstract
 
+#if show_tips_from_manual [
 _The abstract is situated at the beginning of your report. However, you can only write it at the very end as it
 is meant to explain to any reader who will not read the entire report what information is in the report.
 Here, the reader will find your main question, the key topics you investigated, a basic overview of the
 iterations you made, and your conclusions and recommendations. You can use the guidelines from Scribbr:
 How to Write an Abstract_
+]
+
+\/\/TODO
 
 #pagebreak()
 
@@ -60,6 +66,7 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 
 = Introduction
 
+#if show_tips_from_manual [
 _Your report starts, of course, with the Introduction, which should include:_
 - [x] _A general description of the company assignment_
 - [x] _The (preliminary) problem_
@@ -75,6 +82,7 @@ _A company outline, covering aspects such as:_
 - [x] _the markets the company serves_
 - [x] _your role within the company_
 - [ ] _etc._
+]
 
 In this report, I will describe the product I have first researched for,
 and then developed during my Graduation Internship at Rythe Interactive.
@@ -154,6 +162,7 @@ I will verify and ensure that it is done enough by making a test program with it
 
 = Theoretical Research
 
+#if show_tips_from_manual [
 _To understand what will make your product valuable and useful, and to set the conditions of satisfaction,
 you need to gather a lot of information before you can start developing a solution. Regardless of the
 design model you use, you will need to gain knowledge about the company, the actual problem behind the
@@ -170,6 +179,7 @@ _The preliminary research and formulation of the main question cover the Empathi
 the Design Thinking method or the Discover and Define phases of the Double Diamond model. Detailed
 information about the preliminary research and main question can be found in the Applied Research
 section of the IMT&S module on Brightspace._
+]
 
 == GPU APIs
 
@@ -229,6 +239,7 @@ In this report, I will detail my efforts at making such a Vulkan Abstraction Lay
 
 == Possible Solutions
 
+#if show_tips_from_manual [
 _Once the main question is formulated and acknowledged by your client, you can proceed to the next step
 in the development process: generating ideas for possible solutions. We expect to see a range of possible
 solutions, an evaluation of these ideas, and the selection of the final solution. You can use the techniques
@@ -242,6 +253,7 @@ selection of the ideas with the client and the user. Be sure to incorporate the 
 and results, in your report._
 
 _More information can be found in the Applied Research section of the IMT&S module on Brightspace._
+]
 
 There already exist many GPU API abstraction layers. But, this is a good thing!
 Because, in my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
@@ -379,6 +391,7 @@ The reasoning is that this paradigm is just by far the most flexible and powerfu
 
 = Practical Research (Prototyping)
 
+#if show_tips_from_manual [
 _Once you have selected the most promising idea or ideas, you can start working on the prototype(s). As
 explained in the Design Thinking module in year 1, quartile 1, prototyping involves creating basic models
 or designs for a machine or other product. The prototyping phase will help you get closer to a valuable and
@@ -392,6 +405,7 @@ feedback that can be applied to make your design process iterative._
 
 _Use your report to justify the choices you made regarding the combination of prototypes and the various
 iterations you conducted._
+]
 
 
 I should look into Bindless. It apparently has the potential to be MUCH faster than Bindful!
@@ -426,6 +440,7 @@ If I find the already-existing partial abstractions worthy enough, I will use th
 
 = Testing
 
+#if show_tips_from_manual [
 _To fully benefit from the prototypes you developed and to get the feedback needed to further narrow down
 the number of ideas or improve your concept/product (i.e., to conduct the next iteration), the use of
 suitable test methods will be highly beneficial. The basis for this is a proper test plan to conduct one or
@@ -435,6 +450,7 @@ are suitable for professional practice within the context of your graduation pro
 _To write a test plan, you can use the template provided during Applied Research. The test plan and the
 results of the various tests are important components of your report. To find the best way to present the
 test results, you can refer to the relevant section of Applied Research on Brightspace_
+]
 
 == Performance Testing (Benchmarking)
 
@@ -446,23 +462,33 @@ The earlier written prototypes will be useful for this as well.
 
 Try and see if I can find people willing to try making something with my abstraction.
 
+#pagebreak()
 = Conclusion
 
+#if show_tips_from_manual [
 _You are heading towards the finalization of your graduation project and the conclusion of your report. This
 means you will round off your report by answering the main question you formulated at the start by
 drawing conclusions._
+]
+
+\/\/TODO
 
 
 = Recommendation
 
+#if show_tips_from_manual [
 _Based on the conclusions, you will complete the project with recommendations,
 providing your view on valuable follow-up actions for your client._
 
 _During Applied Research, it is explained how to present conclusions
 and recommendations. You will find this information in the relevant section on Brightspace._
+]
+
+\/\/TODO
 
 = Discussion
 
+#if show_tips_from_manual [
 _In the discussion chapter, you are expected to critically reflect on your design process and solution._
 
 _You can ask questions such as:_
@@ -473,26 +499,38 @@ _You can ask questions such as:_
 - _the value of the insights you presented to your client_
 - _and most importantly, to what extent you solved the problem of the client or the user_
 _It’s important to show a critical but fair view on these topics._
+]
+
+\/\/TODO
 
 = Self-Reflection
 
+#if show_tips_from_manual [
 _At the end of your report, you will include a self-reflection, containing what you consider your strong points
 and what aspects need to be strengthened as a young professional, and how you would position yourself in
 the industry. It’s valuable to not only look back but also ahead to the industry you will soon enter. Please
 note that you will have to move the self-reflection to the annexes before posting it on Post it_
+]
+
+\/\/TODO
 
 //Stop numbering headings from here on out
 #set heading(numbering: none)
+#pagebreak()
 
 = Appendices
 
 == Competences Reflection
+
+\/\/TODO
+
 
 == Showcase of the End Product
 
 Probably a YouTube link.
 Not Saxion's own Kaltura, because I probably want to keep this around.
 
+#pagebreak()
 = Bibliography
 
 #bibliography(
@@ -501,6 +539,7 @@ Not Saxion's own Kaltura, because I probably want to keep this around.
 	title: none,
 )
 
+#pagebreak()
 = List of Figures
 
 #show outline.entry.where(level: 1): set outline.entry(fill: align(right, repeat(text(weight: 100, "."), gap: 0.3em, justify: false)))
