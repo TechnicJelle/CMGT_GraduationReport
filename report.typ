@@ -339,6 +339,7 @@ Existing implementations:
 - https://github.com/DiligentGraphics/DiligentCore
 - IGL: https://github.com/facebook/igl
 - https://github.com/corporateshark/lightweightvk
+- Veldrid: https://github.com/veldrid/veldrid (specifically take inspiration from this one, as it manages to keep this VERY nice and short!)
 
 #heading(outlined: false, level: 4)[Evaluation]
 
