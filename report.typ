@@ -133,7 +133,8 @@ _]
 === Sub-questions
 
 As part of this research, there are a few sub-questions that also need to be answered:
-- Which GPU API should I start with abstracting?
+- Because I can't abstract away all major GPU APIs in just a few months, which GPU API should I start with abstracting?
+- What are the key differences between Vulkan and the abstraction layers that already exist?
 - How should I test?
 - How can I make it faster?
 
