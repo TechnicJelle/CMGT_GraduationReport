@@ -340,6 +340,7 @@ Existing implementations:
 - IGL: https://github.com/facebook/igl
 - https://github.com/corporateshark/lightweightvk
 - Veldrid: https://github.com/veldrid/veldrid (specifically take inspiration from this one, as it manages to keep this VERY nice and short!)
+- Ravbug's RHI: https://github.com/RavEngine/RGL-Samples/blob/master/01-HelloTriangle/hellotriangle.cpp
 
 #heading(outlined: false, level: 4)[Evaluation]
 
