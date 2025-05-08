@@ -341,6 +341,7 @@ Existing implementations:
 - https://github.com/corporateshark/lightweightvk
 - Veldrid: https://github.com/veldrid/veldrid (specifically take inspiration from this one, as it manages to keep this VERY nice and short!)
 - Ravbug's RHI: https://github.com/RavEngine/RGL-Samples/blob/master/01-HelloTriangle/hellotriangle.cpp
+- https://github.com/Devsh-Graphics-Programming/Nabla
 
 #heading(outlined: false, level: 4)[Evaluation]
 
