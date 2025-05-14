@@ -518,6 +518,11 @@ note that you will have to move the self-reflection to the annexes before postin
 
 \/\/TODO
 
+Due to many circumstances, both personal and external,
+I did not manage to get as much done as I would have liked to.
+If I had been at the top of my game,
+I would have been able to get a lot further...
+
 //Stop numbering headings from here on out
 #set heading(numbering: none)
 #pagebreak()
