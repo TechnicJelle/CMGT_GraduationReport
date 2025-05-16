@@ -315,7 +315,7 @@ Too high-level, and also global state kind of sucks to deal with.
 And is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 BGFX will also be practically evaluated.
 
-=== Pipelines and Passes (Flat Abstractions)
+=== Pipelines and Passes (Flat Abstractions) (Mantle-descendants)
 
 Pipelines and Passes are the two main concepts of "modern" GPU APIs.
 Specifically, they are //TODO
