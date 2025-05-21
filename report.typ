@@ -369,6 +369,7 @@ Description
 
 #heading(outlined: false, level: 4)[_Existing implementations_] //TODO: Make H4 less weight & italic
 - https://github.com/martty/vuk
+- https://github.com/GPUOpen-LibrariesAndSDKs/RenderPipelineShaders
 - https://github.com/asc-community/VulkanAbstractionLayer
 
 #heading(outlined: false, level: 4)[_Evaluation_]
