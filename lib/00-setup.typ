@@ -24,5 +24,14 @@
 		it
 	}
 
+	//Do not show Heading Level 4 in the table of contents
+	show heading.where(level: 4): set heading(outlined: false)
+
+	//Make Heading Level 4 less thick and italic
+	show heading.where(level: 4): it => {
+		set text(weight: 500, style: "italic")
+		it
+	}
+
 	body
 }

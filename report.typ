@@ -299,7 +299,8 @@ Modern GPU APIs also match the things that are actually happening on a hardware 
 
 Despite the aforementioned cons, some people still like the paradigm of global state machine APIs.
 
-Implementations:
+==== Existing implementations
+
 Immediate-Mode paradigm API:
 - OpenGL Legacy (1.0 up to, but not including, 3.0)
 - Direct3D 7 and before
@@ -310,7 +311,8 @@ Buffer-paradigm APIs:
 - Direct3D 8 to 11 (12 is a Pipelines and Passes-paradigm API)
 - bgfx: https://github.com/bkaradzic/bgfx
 
-#heading(outlined: false, level: 4)[Evaluation]
+==== Evaluation
+
 Too high-level, and also global state kind of sucks to deal with.
 And is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 BGFX will also be practically evaluated.
@@ -331,7 +333,8 @@ The term "flat abstraction" is my own creation, for lack of a better one.
 With this I mean that these abstractions very closely mirror the original GPU API, except that they are simplified.
 However, they do contain and use the same core principles.
 
-Existing implementations:
+==== Existing implementations
+
 - SDL3's GPU API: https://wiki.libsdl.org/SDL3/CategoryGPU
 	- Some words about this
 - WebGPU (wgpu-native): https://github.com/gfx-rs/wgpu
@@ -343,7 +346,8 @@ Existing implementations:
 - Ravbug's RHI: https://github.com/RavEngine/RGL-Samples/blob/master/01-HelloTriangle/hellotriangle.cpp
 - https://github.com/Devsh-Graphics-Programming/Nabla
 
-#heading(outlined: false, level: 4)[Evaluation]
+==== Evaluation
+
 
 I do really like SDL3's GPU API.
 This is probably the paradigm I'll go with.
@@ -355,11 +359,14 @@ Most abstractions abstract the entire thing, and don't allow you to access the i
 
 You can use multiple of these together, for their different purposes.
 
+==== Existing implementations
+
 - Entrypoint Loading: https://github.com/zeux/volk
 - Initialization: https://github.com/charles-lunarg/vk-bootstrap
 - Memory Allocation: https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
 
-#heading(outlined: false, level: 4)[Evaluation]
+==== Evaluation
+
 I might use one or multiple of these in my own abstraction.
 We shall see. I would like to experiment with them "in-person".
 
@@ -367,12 +374,13 @@ We shall see. I would like to experiment with them "in-person".
 
 Description
 
-#heading(outlined: false, level: 4)[_Existing implementations_] //TODO: Make H4 less weight & italic
+==== Existing implementations
+
 - https://github.com/martty/vuk
 - https://github.com/GPUOpen-LibrariesAndSDKs/RenderPipelineShaders
 - https://github.com/asc-community/VulkanAbstractionLayer
 
-#heading(outlined: false, level: 4)[_Evaluation_]
+==== Evaluation
 
 Cool, but too high-level.
 
@@ -380,10 +388,12 @@ Cool, but too high-level.
 
 Description
 
-Existing implementations:
+==== Existing implementations
+
 - https://github.com/vsg-dev/VulkanSceneGraph
 
-#heading(outlined: false, level: 4)[Evaluation]
+==== Evaluation
+
 Cool, but _much_ too high-level.
 
 === Final Selected Solution(s)
