@@ -40,6 +40,7 @@ How to Write an Abstract_
 Explanation of some (technical) terms, for people who don't know them yet.
 These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
 #v(1em)
+- *Architecture*:
 - *Acceleration Device:* a hardware device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
 - *GPU:* Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
 - *API:* Application Programming Interface. The "rules"/"contract" that a certain programming system offers; usually a set of functions that are able to be called by the programmer.
@@ -49,6 +50,7 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *Performance (Performant)*:
 - *Flexible:*
 - *Multi-threading:*
+- *Boilerplate:*
 - *Parallel:*
 - *Abstraction:*
 - *Wrapper:*
@@ -102,10 +104,11 @@ without having to build an entirely new engine from scratch.
 
 There are currently already multiple iterations of the Rythe Engine in existence.
 
-The Rythe Legacy engine is so old that it still uses OpenGL.
-OpenGL is bad for performance, due to the CPU usage required.
-It can also not be properly multi-threaded, which is especially bad, because one of the main goals of the engine is to be very parallel.
-The engine is too tightly integrated with OpenGL to be salvagable.
+The first version, Rythe Legacy, is so old that it still uses OpenGL.
+OpenGL is bad for performance, due to the CPU usage required. @vkguide-multithreading
+It can also not be properly multi-threaded, which is especially bad @khr-forum-multithreaded-rendering,
+because one of the main goals of the engine is to make optimal use of *all* of the CPU and GPU, by making it as multi-threaded as possible.
+The architecture of this version of the engine was too tightly integrated with OpenGL to be salvagable.
 
 The first rewrite used more modern technologies, and had a dedicated renderer component called Rythe-LLRI, or "Rythe Low Level Rendering Interface".
 It was a cross-platform GPU API abstraction, that was intended to be as low-level as possible to ensure maximum performance.
@@ -114,50 +117,35 @@ The LLRI is very old and was written before the Vulkan API had even properly rel
 Now, a second rewrite of the engine is being worked on, but it is still lacking a good rendering system.
 Therefore, the LLRI component could also do with a rewrite, alongside the rest of the engine.
 
-== Research Questions
-
-For this project I will be working on creating
-the (start for a) rendering system for the new version of the Rythe Game Engine.
-This product could serve as the base for the complete LLRI rewrite.
-
-=== Main Research Question
-
-My main research question is:
-#v(1em)
-#align(center)[_
-	How can I develop a good start for a flexible,\
-	yet performant cross-platform GPU API abstraction?
-_]
-#v(1em)
-
-=== Sub-questions
-
-As part of this research, there are a few sub-questions that also need to be answered:
-- Because I can't abstract away all major GPU APIs in just a few months, which GPU API should I start with abstracting?
-- What are the key differences between Vulkan and the abstraction layers that already exist?
-- How should I test?
-- How can I make it faster?
-
 == Requirements and Constraints
 
 The goal of the LLRI is to:
 - Be portable to other GPU API's down the line (not necessarily immediately).
+//TODO (Glyn): Be specific, requirements should all be measurable(in the end either the requirement is met or not), "some details are abstracted away" is not measurable.
 - Abstract away some implementation details that are more verbose and obtuse than they need to be,
   from the perspective of someone implementing new graphics features.
-- Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot. //TODO: APA to Bjarne Soustrup's "C vs C++"
+- Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot.
+  #footnote([Reference to the famouse quote _#quote("C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.")_ — #cite(<stroustrup-footguns>, form: "prose")]))
 - Allow enough low level access to not restrict engineers from being able to design their own renderer architecture.
 - Minimise overhead of the abstraction where possible, or at least move as much of it to
   compile-time or startup-time as possible.
 
 === Deliverable
 
-At the end of the project, I plan to have a GitHub repository with a library in it.
-That library will be the start of the new LLRI.
+At the end of the project, I will have a GitHub Repository with a few prototypes/experiments
+with various GPU APIs and abstraction layers.
+If there is time, I would also like to have a GitHub repository with a start of the actual LLRI2 library in it.
 
 === Indicators of Success
 
 I'll have succeeded if I got the beginnings of a GPU API abstraction layer done.
-I will verify and ensure that it is done enough by making a test program with it.
+Experimental prototypes with various GPU APIs and abstraction layers will be considered a success, too.
+Those prototypes will show basic functionality that is needed for a rendering system,
+such as rendering a spinning 3D model with a texture on it.
+
+If I have gotten to the point where I have an initial prototype of the LLRI2 library itself,
+I will verify and ensure that it is done enough by implementing the same as the prototypes,
+but with the LLRI2 library instead.
 
 #pagebreak()
 
@@ -213,7 +201,7 @@ However, it should be noted that these compatibility layers are not officially s
 However, there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.
 MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative. @moltenvk-2017
 
-PlayStation has two proprietary and "secret" APIs, called *GNM* and *GNMX*.\
+PlayStation has two proprietary and "secret" APIs, called *GNM* and *GNMX*. @schertenleib-2013\
 GNM is the low-level API, and GNMX is a higher-level wrapper around it. @leadbetter-2013\
 Not much is publicly known about these APIs, because you need to sign an NDA to get access to the PlayStation Developer Kit.
 
@@ -232,13 +220,15 @@ being supported on Windows, Linux, Android, and Nintendo Switch, with compatibil
 
 This is why I will be starting with Vulkan, as it is the API that has the most platform compatibility.
 
-However, when making actual applications, you don't want to have to write all your Vulkan code from scratch every single time.
-So that's when you make an abstraction on top of Vulkan, which you can reuse across multiple projects.
-In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
+However, when making actual applications, it is inconvenient and highly inefficient
+to keep rewriting all Vulkan boilerplate from scratch for each new project.
+This is why we make an abstraction layer on top of Vulkan, so it can be reuse across multiple projects.
+
+In this report, I will detail my efforts at making (the beginnings of) such a Vulkan Abstraction Layer.
 
 #pagebreak()
 
-== Possible Solutions
+== Possible Existing Solutions
 
 #if show_tips_from_manual [
 _Once the main question is formulated and acknowledged by your client, you can proceed to the next step
@@ -259,26 +249,36 @@ _More information can be found in the Applied Research section of the IMT&S modu
 There already exist many GPU API abstraction layers. But, this is a good thing!
 Because, in my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
 
-When making big thing small, things of the big thing have to be dropped.
-Depending on the opinion and preferences of the maker of the abstraction layer,
-some people will choose to drop this bit and not that bit.
-Others will choose to drop that bit and not this bit.
-These are choices that have to be made.
-And this is how multiple abstraction layers arise.
-This makes it so there is something for everyone. :)
+When making a big thing small, aspects of the big thing have to be dropped.
 
-In this section, I will explore some of these GPU API abstraction layers that already exist by way of theoretical research.
+As such, depending on the opinions and preferences of the maker of the abstraction layer,
+each abstraction layer will cut different aspects of the original API.
+There can be no abstraction layer that keeps all aspects of the original API,
+because then you would be right back at the original API.
+
+There are many people who have gone before us in making abstraction layers,
+so in this section, I will explore some of these GPU API abstraction layers that already exist by way of theoretical research.
 Many of these abstraction layers use different wildily different programming styles (paradigms), so I have categorised them somewhat.
 After that, I will compare them and pick one or a few to actually research practically, which I will do by prototyping with them.
 
-I will be discussing A, B, C, D, E paradigms. For each of them I will give a (small) description, //TODO
-list some already-existing implementations of it, and evalute its usefulness for this project.
+I will be discussing the following paradigms:
+Global State Machine, Pipelines and Passes (Mantle-descendants), Partial Abstractions, Rendergraph-based Abstractions, and Scenegraph-based Abstractions.
+For each of them I will give a (small) description, list some already-existing implementations of it, and evalute its usefulness for this project.
 
-After the prototyping, I will choose the paradigm to go ahead with for my own abstraction layer.
+After the prototyping, I will choose the paradigm to go ahead with for our own abstraction layer.
 
 === Global State Machine
 
-Global state machines are //TODO
+State machines are a programming paradigm where there is some object that has a state,
+upon which functions can be called that change the state of the object.
+These objects are usually initialised with a pre-set state. @state-pattern-nystrom
+They are very useful, but can get out of hand when the state starts encompassing too many things.
+Or when the state is globally accessible, and can be changed from anywhere in the code. @global-state-so @global-state-cneude
+
+Global State Machines are nevertheless a popular paradigm for GPU APIs, especially in the past.
+They often require relatively little code to get something up and running,
+due to the initial state already being set up with default values.
+They are very convenient for _small programs_, but can very quickly become unwieldy for larger programs.
 
 There are two types of Global State Machine API: immediate-mode and buffer-paradigm.
 
@@ -291,9 +291,8 @@ The instructions of what to do with that data are usually still pretty small and
 
 This is what Pipelines and Passes APIs solved by also making the instructions one large dataset, instead of small and separate instructions.
 
-OpenGL, a really old GPU API, and older versions of DirectX actually were global state machines already.
+OpenGL, a really old GPU API, and older versions of DirectX actually were global state machines already. @opengl-concepts
 Modern GPU APIs have moved away from this kind of architecture, because they were extremely cumbersome to work with, and often very slow.
-//TODO: Add more deets about CPU & multi-threading
 
 Modern GPU APIs also match the things that are actually happening on a hardware level more closely than these older APIs.
 
@@ -313,9 +312,9 @@ Buffer-paradigm APIs:
 
 ==== Evaluation
 
-Too high-level, and also global state kind of sucks to deal with.
-And is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
-BGFX will also be practically evaluated.
+These abstractions are too high-level for Rythe, and global state is difficult to work with and reason about.
+Global state machines also don't have enough potential for optimization,
+because it is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 
 === Pipelines and Passes (Flat Abstractions) (Mantle-descendants)
 
@@ -345,17 +344,34 @@ However, they do contain and use the same core principles.
 - Veldrid: https://github.com/veldrid/veldrid (specifically take inspiration from this one, as it manages to keep this VERY nice and short!)
 - Ravbug's RHI: https://github.com/RavEngine/RGL-Samples/blob/master/01-HelloTriangle/hellotriangle.cpp
 - https://github.com/Devsh-Graphics-Programming/Nabla
+- https://github.com/NVIDIA-RTX/NVRHI
 
 ==== Evaluation
 
+I have tried a few of these APIs in the past, namely Veldrid, WebGPU, and SDL3's GPU API.
 
-I do really like SDL3's GPU API.
-This is probably the paradigm I'll go with.
+Veldrid is quite high level already, but quite nice to work with, due to the relative lack of boilerplate.
+Sadly, it has become unmaintained, but it can still serve as inspiration for our own abstraction.
+
+WebGPU is almost a nice API, but due to some design decisions and internal politics, it is not as good as I would have liked.
+Especially because it's officially only a JavaScript specification,
+which means that the native implementations have to just do their best to resemble it.
+This has not gone very well, and the various native implementations are not very consistent with each other.
+It also prescribes a custom shader language, of which the syntax is very like the Rust programming language,
+which does not have many fans in Rythe.
+
+However, I really ended up liking SDL3's GPU API. The documentation is excellent, and it is incredibly pleasant to use.
+It still allows for a lot of low-level access, while also being very user-friendly and cross-platform.
+It achieves this by not just abstracting Vulkan, but also DirectX 12 and Metal (and console APIs, as well).
+
+This is probably the paradigm I'll go with for our own abstraction layer, as it is the most flexible and powerful.
 
 === Partial Abstractions
 
-These are libraries that only abstract _parts_ of the Vulkan API, while still allowing direct access to the raw Vulkan API in other places.
-Most abstractions abstract the entire thing, and don't allow you to access the internals, like the raw Vulkan API.
+The abstractions mentioned before abstract the _entire thing_, and don't allow access to the internals, like the raw Vulkan API it is abstracting.
+
+But these "partial abstractions" are libraries that abstract only _parts_ of the Vulkan API,
+while still allowing direct access to the raw Vulkan API in other places.
 
 You can use multiple of these together, for their different purposes.
 
@@ -367,8 +383,12 @@ You can use multiple of these together, for their different purposes.
 
 ==== Evaluation
 
-I might use one or multiple of these in my own abstraction.
-We shall see. I would like to experiment with them "in-person".
+I have made a Vulkan program in the past that used no partial abstractions,
+and while it was cool to see how it all works and a good learning experience,
+it is probably not necessary to do all that again.
+
+So we might use one or multiple of the above in our own abstraction,
+after I have conducted some experiments with them.
 
 === Rendergraph-based Abstractions
 
@@ -404,7 +424,30 @@ The reasoning is that this paradigm is just by far the most flexible and powerfu
 
 #pagebreak()
 
-= Practical Research (Prototyping)
+= Research Questions
+
+For this project I will be working on creating the (start for a)
+rendering system for the new version of the Rythe Game Engine.
+This product could serve as the base for the complete LLRI rewrite.
+
+== Main Research Question
+
+My main research question is:
+#v(1em)
+#align(center)[_
+	How can I develop a good start for a flexible,\
+	yet performant cross-platform GPU API abstraction?
+_]
+#v(1em)
+
+== Sub-questions
+
+As part of this research, there are a few sub-questions that also need to be answered:
+- Which features should the abstraction layer have?
+- How do you properly benchmark an in-house (graphics) engine?
+- What can are further potential avenues for more optimisation?
+
+= Implementation
 
 #if show_tips_from_manual [
 _Once you have selected the most promising idea or ideas, you can start working on the prototype(s). As
@@ -422,34 +465,31 @@ _Use your report to justify the choices you made regarding the combination of pr
 iterations you conducted._
 ]
 
+At first, I had planned to make a few prototypes with different APIs and abstraction layers,
+that all had a lot of features that were important to have in an abstraction layer.
 
-I should look into Bindless. It apparently has the potential to be MUCH faster than Bindful!
-When comparing bindless OpenGL to bindful OpenGL, the speedup can be 7x, according to https://www.nvidia.com/en-us/drivers/bindless-graphics/
-I assume such high performance gains won't be possible with Vulkan, because bindful Vulkan is already faster than bindful OpenGL.
-But we will see when I actually get there...
+I had planned to use the Vulkan prototypes as a base for our abstraction layer.
+If I find the already-existing partial abstractions useful enough, I will use those in our abstraction.
 
-I will make multiple programs that all do the following:
-- show some spinning textured cubes
-	- Textures may be bindless-only, whenever the API allows that functionality
-- maybe a Suzanne
-- super simple lighting
-	- fancier(?if there is time; a day?)
-- framebuffers
-	- multiple inputs
-	- for post-processing
-		- bloom
-	- offline rendering
-		- snow/dynamic paint
-- compute shaders(?if there is time?)
+However, making all those prototypes with all those features was taking very long, as I really should have expected.
+So I decided to focus on just two prototypes: one with SDL3's GPU API, and one with Vulkan
+(with partial abstractions, hereafter also referred to as "helper libraries").
 
-But in these different ways:
-- With raw Vulkan
-- With Vulkan with some partial abstractions
-- With SDL3's GPU API
-- With BGFX
+== SDL3_GPU API Prototype
 
-Once these are done, I can use the Vulkan prototypes to see what features our new abstraction will need, and base our new abstraction on that.
-If I find the already-existing partial abstractions worthy enough, I will use those in my abstraction.
+I started with this prototype, because it is the one I was most curious about at that time.
+I had already used Vulkan in the past, so I wanted to first try something new that promised to be more user-friendly.
+
+And it delivered on that promise! The API is very nice to use, and the function documentation is excellent.
+The examples are also okay, though they do take some untangling,
+if you want to follow them closely, because they pack a lot of functionality into one example.
+
+There is sadly also no full guide, yet, like LearnOpenGL @learnopengl, Vulkan Tutorial @vulkan-tutorial, or VkGuide @vkguide.
+
+Nevertheless, I managed to get a triangle on screen pretty quickly, after which I started adding more features.
+
+
+== Vulkan (With Helper Libraries) Prototype
 
 #pagebreak()
 
@@ -467,17 +507,53 @@ results of the various tests are important components of your report. To find th
 test results, you can refer to the relevant section of Applied Research on Brightspace_
 ]
 
+With the two prototypes I have made, I can do performance testing,
+to compare the performance of the different APIs and abstraction layers.
+
+== Methodology
+
+I will make both programs do exactly the same thing, so that I can compare them fairly.
+After that, I will unlock the framerates of both programs, and create a pre-allocated array of a few thousand elements,
+which I will fill with that frame's frametime, measured in nanoseconds.
+At the end, once those arrays are filled, the array gets written out to a file, and the program will close.
+
+Naturally, I will run both programs in Release mode, to allow the compiler to optimize it.
+If there is time, I will also run them in Debug mode, to see how much the performance differs between the two modes,
+and in a "Mixed mode", where all the dependencies are compiled in Release mode, but the program itself is compiled in Debug mode.
+
+With those two files full of frametimes, I can then compare the two programs' performance, by graphing the data.
+
+I will create a plot of all the frametimes, and calculate the following statistics:
+- The average frametimes (Nanoseconds)
+	- The standard deviation
+	- 1% highs
+	- 0.1% highs
+	- 0.01% highs
+	- 1% lows
+	- 0.1% lows
+	- 0.01% lows
+- The frame-to-frame deviation
+
+I will also graph the occurrences of each frametime, to see how many frames were rendered with which times.
+This is useful to see the grouping of the frametimes, and to see if there are any outliers.
+
+Logarithmic scales for the graphs may be used, if it helps to see the data better.
+
+These plots will be made with the Python library Matplotlib, which I also used for a previous project,
+so I can mostly re-use the scripts I wrote for that project, with the help of a friend who is a proper data scientist.
+
+
 == Performance Testing (Benchmarking)
 
-Write test program in raw Vulkan, and in the Abstraction.
-Potentially even in other APIs, like SDL3's GPU API, or Sokol or BGFX.
-The earlier written prototypes will be useful for this as well.
+
 
 == API Userfriendliness testing
 
-Try and see if I can find people willing to try making something with my abstraction.
+Try and see if I can find people willing to try making something with our abstraction.
 
 #pagebreak()
+
+
 = Conclusion
 
 #if show_tips_from_manual [
@@ -487,6 +563,7 @@ drawing conclusions._
 ]
 
 \/\/TODO
+//TODO: Mention difference in effort of using bare vk vs sdlgpu
 
 
 = Recommendation
@@ -499,7 +576,43 @@ _During Applied Research, it is explained how to present conclusions
 and recommendations. You will find this information in the relevant section on Brightspace._
 ]
 
-\/\/TODO
+I recommend that Rythe continue with the development of the LLRI2 library,
+and hire me to do so, as I have already done a lot of research and prototyping for it.
+
+It should also be considered to use SDL3's GPU API as the base for the LLRI2 library,
+and fork it to add the more modern GPU features that Rythe wants to support,
+such as Bindless Textures and hardware raytracing.
+If that happens, it should be considered whether to only use SDL3's Vulkan implementation,
+or whether to keep supporting the other APIs that SDL3's GPU API supports, like DirectX 12 and Metal.
+And it should also be considered whether to "upgrade" it to C++, because SDL3's GPU API is in C.
+It might be able to benefit from some C++ features, like RAII, templates, and smart pointers,
+
+== Further Research
+
+=== Bindless Textures
+
+The concept of Bindless Textures should be looked into.
+
+Bindless Textures are a way to use textures without having to bind them to a texture unit first.
+This is less safe, but more performant.
+Research should be done into whether it is possible to create an abstraction for Bindless Textures that is relatively safe.
+
+It apparently has the potential to be _much_ faster than Bindful Textures, which is the current standard.
+Even though Bindless Textures have already existed for a very long time (2009 at least), still not all hardware supports it.
+Research should be done into which hardware supports it, and whether it is worth it to use Bindless Textures in the LLRI2 library.
+And possibly _only_ Bindless Textures, if it is supported by all hardware that Rythe wants to support.
+
+Bindless Textures were supported in OpenGL, and Vulkan also supports various Bindless techniques,
+but they are, of course, more involved than OpenGL. @opengl-bindful-to-vulkan-bindless @bindless-vulkan
+
+When comparing bindless OpenGL to bindful OpenGL, the speedup can be 7x, according to NVIDIA. @bindless-opengl @bindless-opengl-slides
+I suspect such high performance gains won't be achievable with Vulkan,
+but only because properly written bindful Vulkan is already faster than bindful OpenGL.
+
+=== Other Abstraction Layers
+
+It might also be worth looking into the other promising frameworks and abstractions I've found, like Diligent Engine, Nabla, and NVRHI.
+They might provide interesting insights into how to structure the LLRI2 library.
 
 = Discussion
 
@@ -518,7 +631,7 @@ _It’s important to show a critical but fair view on these topics._
 
 \/\/TODO
 
-= Self-Reflection
+= Reflection
 
 #if show_tips_from_manual [
 _At the end of your report, you will include a self-reflection, containing what you consider your strong points
@@ -527,12 +640,18 @@ the industry. It’s valuable to not only look back but also ahead to the indust
 note that you will have to move the self-reflection to the annexes before posting it on Post it_
 ]
 
-\/\/TODO
-
 Due to many circumstances, both personal and external,
 I did not manage to get as much done as I would have liked to.
-If I had been at the top of my game,
-I would have been able to get a lot further...
+If I had been at the top of my game, I would have been able to get a lot further...
+
+I should have also expected that the prototyping would take longer than I had initially thought.
+I had hoped to have been able to start on the LLRI2 library itself, but I did not manage to get that far.
+
+Even so, I have learned a great deal during this project, and I am very proud of the work I have done.
+Both the prototypes and the research.
+
+So on the whole, even though I did not manage to get as far as I had hoped,
+I am still very happy with the results of this project.
 
 //Stop numbering headings from here on out
 #set heading(numbering: none)
