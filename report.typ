@@ -45,16 +45,22 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *Acceleration Device:* Hardware device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
 - *GPU:* Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
 - *API:* Application Programming Interface. The "rules"/"contract" that a certain programming system offers; usually a set of functions that are able to be called by the programmer.
+- *Graphics API:* API that is specifically designed for rendering graphics.
+- *Compute API:* API that is specifically designed for general purpose computing. Often an Acceleration Device, like a GPU.
+- *GPU API:* An API that is specifically designed for interfacing with a GPU. Often a combination of a Graphics API and a Compute API. Many older GPU APIs did not have Compute support.
 - *Low-level:* Offers a lot of control, at the cost of complexity. Is "closer" to the hardware, and thus can be very performant if used correctly.
 - *High-level:* Offers little control, but is often simpler #footnote[but *not* necessarily _easier_] to use. Is "further away" from the hardware, and thus can be less performant, due to less optimization potential.
+- *Driver:* Software that allows the operating system to communicate with hardware devices, like a GPU.
 - *Performance (Performant):* How fast a program is able to do its work, and how much resources it uses to do so.
 - *Flexible:* How easy it is to change a program to do something else, or to add new features to it.
 - *Parallel:* The process of doing multiple things at the same time, in parallel.
 - *Multi-threading:* Specific way to run things in parallel, by using multiple threads on the CPU.
 - *Boilerplate:* Code that is needed to set up something, but does not actually do anything on its own.
 - *Abstraction:* Process of making something more general, by removing some details that are not relevant for the current context.
+- *Thin Abstraction:* An abstraction that is very close to the original API, and does not hide much of the original API's functionality.
 - *Wrapper:* Library that wraps around another library or API, to make it easier to use, or to add some extra functionality.
 - *Initialization:* Process of setting up something. In the context of this report, usually means setting up the GPU API, so that it is ready to be used.
+- *Synchronization:* Process where multiple threads or devices wait for each other to finish their work, before continuing.
 - *Barrier:* Synchronization point in the GPU pipeline, where the GPU waits for all previous operations to finish before continuing.
 - *Verbose:* Programming style that is very explicit and detailed, that requires a lot of code to do something.
 - *Obtuse:* Programming style that is very difficult to understand, or that requires a lot of effort to understand.
@@ -573,7 +579,9 @@ I will also graph the occurrences of each frametime, to see how many frames were
 This is useful to see the grouping of the frametimes, and to see if there are any outliers.
 
 These plots will be made with the Python library Matplotlib, which I also used for a previous project,
-so I can largely re-use the scripts I wrote for that project, with the help of a friend who is a data scientist #footnote[PhD student in the field of Astronomy].
+so I can largely re-use the scripts I wrote for that project,
+with the help of a friend who is a data scientist #footnote[PhD student in the field of Astronomy],
+who again helped me adapt the code from back then to now.
 
 
 #pagebreak()
@@ -815,6 +823,10 @@ Even so, I have learned a great deal during this project, and I am very proud of
 Both the prototypes and the research.
 
 So on the whole, I am still very happy with the results of this project.
+
+With the knowledge I have gained during the development of these prototypes,
+I feel like I am now pretty well-equipped to join the workforce as a junior graphics programmer.
+
 
 //Stop numbering headings from here on out
 #set heading(numbering: none)
