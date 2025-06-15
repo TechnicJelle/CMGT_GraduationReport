@@ -844,9 +844,9 @@ demand articulation._
 ==== 6. Designing
 
 #if show_tips_from_manual [
-_The starting professional shows him/herself capable of presenting both their person
+_The starting professional shows themself capable of presenting both their person
 and their work professionally and well-groomed to third parties. The starting
-professional shows him/herself capable of being able to communicate with a client
+professional shows themself capable of being able to communicate with a client
 about choices and progress in the design process._
 ]
 
@@ -854,9 +854,9 @@ about choices and progress in the design process._
 ==== 10. Communication
 
 #if show_tips_from_manual [
-_The starting professional shows him/herself capable of presenting both their person
+_The starting professional shows themself capable of presenting both their person
 and their work professionally and well-groomed to third parties. The starting
-professional shows him/herself capable of being able to communicate with a client
+professional shows themself capable of being able to communicate with a client
 about choices and progress in the design process._
 ]
 
@@ -864,9 +864,9 @@ about choices and progress in the design process._
 ==== 11. Learning ability and reflectivity
 
 #if show_tips_from_manual [
-_The starting professional shows him/herself to be a ‘reflective practitioner’ by
+_The starting professional shows themself to be a ‘reflective practitioner’ by
 constantly analysing and adjusting their own action, fostered by feedback of others.
-The starting professional shows him/herself permanently directed and capable of
+The starting professional shows themself permanently directed and capable of
 being able to keep up with relevant developments in the field of expertise. The
 starting professional can further develop and deepen the craftsmanship, the personal
 substantiation of the professional situation and their creativity._
