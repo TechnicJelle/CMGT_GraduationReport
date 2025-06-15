@@ -66,7 +66,8 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *NDA:* Non-Disclosure Agreement. A legal contract that prevents the parties involved from disclosing certain information to third parties. Often used to protect proprietary software and hardware.
 - *(Game) Console:* Specialized computer that is designed to run games, and usually has a custom, proprietary GPU API that you have to sign an NDA to get access to.
 - *Operating System:* Software that manages the hardware and software resources of a computer, and provides services for computer programs. Examples are Windows, macOS, Linux, Android, and iOS.
-- *Paradigm:* Style/way of doing things
+- *Paradigm:* Style/way of doing things.
+- *Ray tracing:* Method of rendering that simulates light bounces in a very realistic way. It is very computationally expensive, but can produce very realistic images. Many modern GPUs have dedicated hardware support for it, which makes it much faster.
 
 
 #pagebreak()
@@ -358,7 +359,7 @@ However, they do contain and use the same core principles, namely the Pipelines 
 - #link("https://wiki.libsdl.org/SDL3/CategoryGPU")[SDL3's GPU API]. A new GPU API that is meant to be a low-level abstraction of Vulkan, DirectX 12, and Metal,
   but not _too_ low-level, either, where you spend a lot of time writing meaningless boilerplate. It looked at what is actually commonly used in these APIs,
   and implemented only that. Supports both Graphics and Compute. It aims to run on as many devices as possible, even consoles.
-  This comes at the cost of not supporting many modern GPU features, like ray tracing, mesh shaders, and bindless resources.
+  This comes at the cost of not supporting many modern GPU features, like hardware raytracing, mesh shaders, and bindless resources.
 - #link("https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API")[WebGPU]: WebGPU is officially a JavaScript API meant for web browsers,
   but there are multiple native implementations of it, like #link("https://github.com/gfx-rs/wgpu")[wgpu-native] and #link("https://dawn.googlesource.com/dawn")[Dawn].
 - #link("https://github.com/floooh/sokol")[Sokol]: A modular, but minimal application framework, of which the "gfx" component is also a "pipelines and passes" abstraction.
@@ -368,7 +369,7 @@ However, they do contain and use the same core principles, namely the Pipelines 
 - #link("https://github.com/facebook/igl")[IGL]: A cross-platform GPU abstraction layer by Facebook, mostly developed for their Quest VR headsets.
   It is pretty new.
 - #link("https://github.com/corporateshark/lightweightvk")[LightweightVK]: A "deeply refactored fork" of IGL, which specifically abstracts modern Vulkan,
-  and only exposes modern features, like bindless resources, mesh shaders and ray tracing.
+  and only exposes modern features, like bindless resources, mesh shaders and hardware raytracing.
 - #link("https://github.com/veldrid/veldrid")[Veldrid]. A GPU API abstraction layer specifically for C#sym.hash. Most other ones are either C or C++.
   For a pipelines and passes abstraction, it is relatively high-level.
   (I intend to specifically take inspiration from this one for our own abstraction, as it manages to keep things very nice and short.)
@@ -378,7 +379,7 @@ However, they do contain and use the same core principles, namely the Pipelines 
   Because Vulkan gets new features relatively often, developers often have to re-learn parts of Vulkan.
   This library aims to always use the latest features in the background, while keeping a consistent API for the user.
 - #link("https://github.com/NVIDIA-RTX/NVRHI")[NVRHI]: NVIDIA's own cross-platform GPU API abstraction layer.
-  It does not support many platforms, though; only Windows and Linux, but it does expose quite a few modern GPU features, like ray tracing.
+  It does not support many platforms, though; only Windows and Linux, but it does expose quite a few modern GPU features, like hardware raytracing.
 
 ==== Evaluation
 
