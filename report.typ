@@ -519,7 +519,7 @@ So I decided to focus on just two prototypes: one with SDL3's GPU API, and one w
 (with partial abstractions, hereafter also referred to as "helper libraries").
 
 
-== SDL3's GPU API Prototype
+== SDL3's GPU API Prototype (Iteration 1)
 
 I started with this prototype, because it is the one I was most curious about at that time.
 I had already used Vulkan in the past, so I wanted to first try something new that promised to be more user-friendly.
@@ -531,9 +531,31 @@ if you want to follow them closely, because they pack a lot of functionality int
 There is sadly also no full guide, yet, like LearnOpenGL @learnopengl, Vulkan Tutorial @vulkan-tutorial, or VkGuide @vkguide.
 
 Nevertheless, I managed to get a triangle on screen pretty quickly, after which I started adding more features.
+//TODO: Write more
 
+== Vulkan with Helper Libraries Prototype (Iteration 2)
 
-== Vulkan (With Helper Libraries) Prototype
+After I was in a nice place with the SDL3 prototype, I started working on the Vulkan prototype.
+I had already used Vulkan in the past, so I was at least a bit familiar with it already.
+
+Last time, I followed the Vulkan Tutorial @vulkan-tutorial, which is a very good resource for learning Vulkan.
+But it teaches you how to do everything from scratch, and only teaches Vulkan 1.0.
+
+There is anothr popular resource for learning Vulkan, called VkGuide @vkguide, which uses some helper libraries,
+namely Vulkan Memory Allocator and VkBootstrap, but not Volk, so I had to add that myself.
+//TODO: Write more
+
+// Things VkGuide taught me:
+// - No more vertex attributes, vertex pull only.
+// - No renderpasses, dynamic rendering only.
+// - Imgui as part of the main tutorial.
+// - Loading entire glTF scenes from blender and rendering them at high performance in a fully dynamic way.
+// - The first draw operations are done through compute shaders, demonstrating them.
+// - Window resizing.
+// - Vertex buffers are done through Buffer Device Address, no binding needed
+// - Descriptor set abstractions in the main tutorial
+// Source: https://www.reddit.com/r/vulkan/comments/18sxbto/vkguide_new_version_released_with_a_complete/
+
 
 #pagebreak()
 = Testing
