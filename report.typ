@@ -639,14 +639,6 @@ The GPU Driver version was 570.144.\
 
 
 #pagebreak()
-== API Userfriendliness testing
-
-I would have liked to do some userfriendliness testing of the first version of the LLRI2 library.
-Try and see if I can find people willing to try making something with our abstraction, and if they find it easy to use.
-I'd have made them make a triangle.
-
-
-#pagebreak()
 = Conclusion
 
 #if show_tips_from_manual [
