@@ -459,7 +459,7 @@ So the LLRI2 library will be written in C++, so it might be able to benefit from
 like RAII, templates, and smart pointers,
 
 
-#pagebreak()
+#v(5em)
 = Research Questions
 
 For this project I will be working on creating the (start for a)
@@ -678,6 +678,8 @@ with the help of some partial abstractions, but it could also be made on top of 
 That does come at the cost of a little bit of frame-time consistency, and lack of some modern GPU features,
 but it is a lot easier to use.
 
+
+#v(3em)
 = Recommendation
 
 #if show_tips_from_manual [
@@ -736,7 +738,8 @@ They might provide interesting insights into how to structure the LLRI2 library.
 Or perhaps they could even be used as a base for the LLRI2 library as a layer on top, or as a fork.
 If they are permissively licensed enough, of course.
 
-#pagebreak()
+
+#v(5em)
 = Discussion
 
 #if show_tips_from_manual [
