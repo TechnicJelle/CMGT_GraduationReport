@@ -788,8 +788,12 @@ So on the whole, I am still very happy with the results of this project.
 
 == Showcase of the End Product
 
-Probably a YouTube link.
-Not Saxion's own Kaltura, because I probably want to keep this around.
+The prototypes I made can be found on GitHub, under the Rythe Interactive organisation:
+https://github.com/Rythe-Interactive/LLRI2-Experiments
+
+You can see the prototypes in action on YouTube:
+//TODO: Insert a YouTube link to a video that shows the prototypes in action.
+
 
 #pagebreak()
 = Bibliography
