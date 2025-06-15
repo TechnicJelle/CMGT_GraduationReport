@@ -566,13 +566,15 @@ so I can largely re-use the scripts I wrote for that project, with the help of a
 //TODO: Logarithmic scales for the graphs may be used, if it helps to see the data better.
 
 
+#pagebreak()
 == API Userfriendliness testing
 
-Try and see if I can find people willing to try making something with our abstraction.
+I would have liked to do some userfriendliness testing of the first version of the LLRI2 library.
+Try and see if I can find people willing to try making something with our abstraction, and if they find it easy to use.
+I'd have made them make a triangle.
+
 
 #pagebreak()
-
-
 = Conclusion
 
 #if show_tips_from_manual [
