@@ -30,8 +30,8 @@ How to Write an Abstract_
 
 \/\/TODO
 
-#pagebreak()
 
+#pagebreak()
 #import "lib/02-toc.typ": toc
 #show: toc
 
@@ -68,8 +68,8 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *Operating System:* Software that manages the hardware and software resources of a computer, and provides services for computer programs. Examples are Windows, macOS, Linux, Android, and iOS.
 - *Paradigm:* Style/way of doing things
 
-#pagebreak()
 
+#pagebreak()
 = Introduction
 
 #if show_tips_from_manual [
@@ -151,8 +151,8 @@ If I have gotten to the point where I have an initial prototype of the LLRI2 lib
 I will verify and ensure that it is done enough by implementing the same as the prototypes,
 but with the LLRI2 library instead.
 
-#pagebreak()
 
+#pagebreak()
 = Theoretical Research
 
 #if show_tips_from_manual [
@@ -232,8 +232,8 @@ This is why we make an abstraction layer on top of Vulkan, so it can be reused a
 
 In this report, I will detail my efforts at making (the beginnings of) such a Vulkan Abstraction Layer.
 
-#pagebreak()
 
+#pagebreak()
 == Possible Existing Solutions
 
 #if show_tips_from_manual [
@@ -272,6 +272,7 @@ Global State Machine, Pipelines and Passes (Mantle-descendants), Partial Abstrac
 For each I will give a (small) description, list some already-existing implementations of it, and evalute its usefulness for this project.
 
 After the prototyping, I will choose the paradigm to go ahead with for our own abstraction layer.
+
 
 #pagebreak()
 === Global State Machine
@@ -325,8 +326,8 @@ These abstractions are too high-level for Rythe, and global state is difficult t
 Global state machines also don't have enough potential for optimization,
 because it is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
 
-#pagebreak()
-=== Pipelines and Passes (Flat Abstractions) (Mantle-descendants)
+#v(3em)
+=== Pipelines and Passes (Mantle-descendants)
 
 Pipelines and Passes are the two main concepts of "modern" GPU APIs.
 Specifically, they are //TODO
@@ -374,7 +375,8 @@ However, I really ended up liking SDL3's GPU API. The documentation is excellent
 It still allows for a lot of low-level access, while also being very user-friendly and cross-platform.
 It achieves this by not just abstracting Vulkan, but also DirectX 12 and Metal (and console APIs, as well).
 
-This the paradigm I'll go with for our own abstraction layer, as it is the most flexible and powerful.
+This the paradigm I'll go with for our own abstraction layer, as it is the most flexible, powerful, and efficient.
+
 
 #pagebreak()
 === Partial Abstractions
@@ -449,7 +451,6 @@ like RAII, templates, and smart pointers,
 
 
 #pagebreak()
-
 = Research Questions
 
 For this project I will be working on creating the (start for a)
@@ -472,6 +473,8 @@ As part of this research, there are a few sub-questions that also need to be ans
 - How do you properly benchmark an in-house (graphics) engine?
 - What can are further potential avenues for more optimisation?
 
+
+#pagebreak()
 = Implementation
 
 #if show_tips_from_manual [
@@ -518,7 +521,6 @@ Nevertheless, I managed to get a triangle on screen pretty quickly, after which 
 == Vulkan (With Helper Libraries) Prototype
 
 #pagebreak()
-
 = Testing
 
 #if show_tips_from_manual [
@@ -701,6 +703,7 @@ but only because properly written bindful Vulkan is already faster than bindful 
 It might also be worth looking into the other promising frameworks and abstractions I've found, like Diligent Engine, Nabla, and NVRHI.
 They might provide interesting insights into how to structure the LLRI2 library.
 
+
 #pagebreak()
 = Discussion
 
@@ -769,7 +772,6 @@ So on the whole, I am still very happy with the results of this project.
 //Stop numbering headings from here on out
 #set heading(numbering: none)
 #pagebreak()
-
 = Appendices
 
 == Competences Reflection
@@ -790,6 +792,7 @@ Not Saxion's own Kaltura, because I probably want to keep this around.
 	style: "american-psychological-association",
 	title: none,
 )
+
 
 #pagebreak()
 = List of Figures
