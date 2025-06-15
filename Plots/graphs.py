@@ -14,6 +14,7 @@ plt.rcParams.update({
 dataDir = pathlib.Path("Data")
 outputDir = pathlib.Path("Output")
 outputDir.mkdir(parents=True, exist_ok=True)
+alpha = 0.9
 
 tableTemplate = """
 #let table{att} = [
@@ -75,8 +76,8 @@ for attemptDir in dataDir.iterdir():
 			plt.xlim(xlim_start, xlim_end)
 
 		bins = int(max(len(sdl3_gpu__data), len(vulkan_helpers__data)) / 10)
-		plt.hist(sdl3_gpu__data, bins=bins, label="SDL3 GPU")
-		plt.hist(vulkan_helpers__data, bins=bins, label="Vulkan Helpers")
+		plt.hist(sdl3_gpu__data, bins=bins, label="SDL3 GPU", alpha=alpha)
+		plt.hist(vulkan_helpers__data, bins=bins, label="Vulkan Helpers", alpha=alpha)
 
 		legend = plt.legend(labelcolor="linecolor")
 		legend.get_frame().set_alpha(None)
@@ -92,8 +93,8 @@ for attemptDir in dataDir.iterdir():
 		# Line plot
 		plt.figure(figsize=(7, 5))
 		linewidth = 0.1
-		plt.plot(sdl3_gpu__data, linewidth=linewidth, label="SDL3 GPU")
-		plt.plot(vulkan_helpers__data, linewidth=linewidth, label="Vulkan Helpers")
+		plt.plot(sdl3_gpu__data, linewidth=linewidth, label="SDL3 GPU", alpha=alpha)
+		plt.plot(vulkan_helpers__data, linewidth=linewidth, label="Vulkan Helpers", alpha=alpha)
 		legend = plt.legend(labelcolor="linecolor")
 		legend.get_frame().set_alpha(None)
 		plt.xlabel("frame")
