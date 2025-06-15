@@ -586,10 +586,15 @@ There are three attempts, to ensure fair measurements in regards to run-to-run v
 Attempt 001 is not included in this section, as its results were suspiciously out of balance.
 You can read more about that in @wait-idle-debacle.
 
-These were compiled with GCC 15.1.1, in Release Mode.\
-They were run on Manjaro Linux Zetar 25.0.3 (XFCE Edition) with kernel version: 6.6.90-1-MANJARO.\
-The hardware used was an AMD Ryzen 7 5800H CPU, 16GB of system RAM, and an NVIDIA GeForce RTX 3070 Laptop GPU.\
-The GPU Driver version was 570.144.\
+These were compiled with GCC 15.1.1, in Release Mode.
+
+They were run on:
+- *OS:* Manjaro Linux Zetar 25.0.3 (XFCE Edition)
+	- *Kernel Version:* 6.6.90-1-MANJARO
+- *CPU:* AMD Ryzen 7 5800H CPU
+- *RAM:* 16GB
+- *GPU:* NVIDIA GeForce RTX 3070 Laptop
+	- *GPU Driver Version:* 570.144
 
 
 #pagebreak()
@@ -699,6 +704,8 @@ And it should also be considered whether to "upgrade" it to C++, because SDL3's 
 I cannot make this decision for Rythe, but whatever they choose, I propose they hire me to continue the work on LLRI2,
 as I have already done a lot of research and prototyping for it.
 
+
+#pagebreak()
 == Further Research
 
 === Bindless Textures
