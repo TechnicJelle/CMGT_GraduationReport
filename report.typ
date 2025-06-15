@@ -303,7 +303,7 @@ because then you would be right back at the original API.
 
 There are many people who have gone before us in making abstraction layers,
 so in this section, I will explore and research some of these GPU API abstraction layers that already exist.
-Many of these abstraction layers use wildily different programming styles (paradigms), so I have categorised them.
+Many of these abstraction layers use wildly different programming styles (paradigms), so I have categorised them.
 After that, I will compare them and pick one (or a few) to do practical research with.
 That entails making prototypes with them, to get hands-on experience with them, and to see how they work in practice.
 
@@ -573,7 +573,7 @@ So I decided to focus on just two prototypes: one with SDL3's GPU API, and one w
 (with partial abstractions, hereafter also referred to as "helper libraries").
 
 
-== SDL3's GPU API Prototype (Iteration 1)
+== SDL3's GPU API Prototype
 
 I started with this prototype, because it is the one I was most curious about at that time.
 I had already used Vulkan in the past, so I wanted to first try something new that promised to be more user-friendly.
@@ -585,9 +585,44 @@ if you want to follow them closely, because they pack a lot of functionality int
 There is sadly also no full guide, yet, like LearnOpenGL @learnopengl, Vulkan Tutorial @vulkan-tutorial, or VkGuide @vkguide.
 
 Nevertheless, I managed to get a triangle on screen pretty quickly, after which I started adding more features.
-//TODO: Write more
 
-== Vulkan with Helper Libraries Prototype (Iteration 2)
+The first iteration of this was a simple RGB triangle, where its vertices were hardcoded in the vertex shader.
+This is of course not very useful, so I added a vertex buffer, and then an index buffer as well,
+with which I changed the triangle to a quad.
+
+For this, I needed to create a "transfer buffer", which is a special type of buffer that is used to transfer data to the GPU.
+The memory of this buffer is accessible from both the CPU and GPU, so the data can be written to it from the CPU,
+and then the GPU can read it into its own private memory region, which is faster than the shared region.
+
+In the second iteration, I added a texture to the quad, by loading the image file from disk, and then adding those bytes to the transfer buffer.
+The texture coordinates also had to be added to the vertex buffer, so that the GPU knows where the texture goes onto the quad.
+I also had to manually create a sampler, which is a special object that tells the GPU _how_ to sample the texture,
+like what filtering to use, whether to repeat the texture or clamp it to the edges, and the mipmapping.
+
+In the third iteration, I wanted to make the quad spin in 3D space. For this, I needed some matrices and other assorted 3D maths.
+The matrices would be passed to the shaders as uniform buffers.
+
+The Rythe Standard Library (RSL) has a maths library, so I included that in my build system.
+This took a lot of time and effort, from both me and Glyn, who is the main developer of the RSL,
+because the Rythe Engine uses a cusrom build system based on Premake5, which does not work very nicely on Linux, which is what I use to develop.
+Instead, I use CMake, but that did mean we had to make the RSL build through CMake.
+We also had to fix some compiler warnings and errors, because the RSL had not really been tested on Linux before.
+Small bugs in the RSL were a common occurrence throughout this project, but every time I reported one, Glyn fixed it very quickly.
+This way, not only the LLRI got better, but also the RSL itself.
+
+Once I had the quad spinning in 3D space, it was time for the fourth iteration, which was to make it render a 3D model loaded from disk, instead of a hardcoded model.
+For this, I used Assimp, which is a very commonly used library for loading 3D models, but I had not used it before.
+It ended up being relatively easy to use, and I was able to load the data into the transfer buffer, and then render it with the same vertex and index buffers as before.
+
+At this point, it was almost done, but there was one glaring issue: some faces were shining through other faces that were supposed to be in front of them.
+This was due to the lack of a depth buffer, which is used to determine which faces are in front of which.
+So in the fifth iteration, I added that, by creating a new GPU Texture on program startup, and passing it into the render pass.
+This seemed to fix the issue, until I resized the window. Normally, SDL3's GPU API automatically resizes the swapchain image for you,
+but it does not do that for the depth buffer, because that is a GPU resource made by the user, and not by SDL3 itself.
+And because the swapchain image and depth buffer image were not the same size anymore, the program crashed.
+The solution to this was to recreate the depth buffer every time the depth buffer's size is different from the swapchain image size.
+
+== Vulkan with Helper Libraries Prototype
 
 After I was in a nice place with the SDL3 prototype, I started working on the Vulkan prototype.
 I had already used Vulkan in the past, so I was at least a bit familiar with it already.
