@@ -701,7 +701,6 @@ except that it does have more highs and lows, which is a sign of less consistent
 
 The other side of that coin is that SDL3's GPU was much easier to use than Vulkan,
 and it took significantly less time and effort to get the same results.
-#footnote[Nearing the end of the project, I started getting nightmares about Vulkan's Validation Layers...]
 
 So, in conclusion, it is certainly possible to make an LLRI2 library with Vulkan directly,
 with the help of some partial abstractions, but it could also be made on top of SDL3's GPU API.
