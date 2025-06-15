@@ -32,12 +32,64 @@ How to Write an Abstract_
 = Glossary
 // Explanation of some (technical) terms, for people who don't know them yet.
 // These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
-- *Acceleration Device*: a device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
-- *GPU*: Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
-- *API*: Application Programming Interface. The "rules"/"contract" that a certain programming system offers.
-- *OpenGL*: absolutely ancient GPU API.
-- *Vulkan*: newer API than OpenGL, made to be similarly cross-platform as OpenGL, but much more low-level, to allow more control to the users. Technically not a GPU API, but an Acceleration Device API.
-- *paradigm*: style / way of doing things
+#let glossary-dict = (
+	(
+		key: "acceleration-device",
+		short: "Acceleration Device",
+		description: [A device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.],
+	),
+	(
+		key: "gpu",
+		short: "GPU",
+		long: "Graphics Processing Unit",
+		description: [An @acceleration-device that specializes in graphics calculations, but can also be used for more general purpose computing.],
+	),
+	(
+		key: "api",
+		short: "API",
+		long: "Application Programming Interface",
+		description: [The "rules"/"contract" that a certain programming system offers"]
+	),
+	(
+		key: "gpu-api",
+		short: "GPU API",
+		description: [An @api for controlling @gpu:pl],
+	),
+	(
+		key: "opengl",
+		short: "OpenGL",
+		long: "Open Graphics Library",
+		description: [absolutely ancient @gpu-api],
+	),
+	(
+		key: "vulkan",
+		short: "Vulkan",
+		description: [Newer @api than @opengl, made to be similarly cross-platform as @opengl, but much more low-level, to allow more control to the users. Technically not just a @gpu-api, but an @acceleration-device @api.],
+	),
+	(
+		key: "paradigm",
+		short: "paradigm",
+		description: [style / way of doing things],
+	),
+)
+
+//All the functions to convert ↑this dict into text in the document
+#import "@preview/glossarium:0.5.4": make-glossary, register-glossary, print-glossary, gls, glspl
+#show: make-glossary
+//#show link: name => underline(text(rgb("#AA0000"), [#name]))
+#show ref: it => {
+	let el = it.element
+	if el != none and el.func() == figure and el.kind == "glossarium_entry" {
+		// Style the glossarium entry references
+		show link: it => underline(text(rgb("#AA0000"), it))
+		text(blue.darken(40%), it)
+	} else {
+		// Other references as usual.
+		it
+	}
+}
+#register-glossary(glossary-dict)
+#print-glossary(glossary-dict, disable-back-references: true)
 
 #pagebreak()
 
@@ -77,13 +129,13 @@ without having to build an entirely new engine form scratch.
 
 There are currently already multiple iterations of the Rythe Engine in existence.
 
-The Rythe Legacy engine is so old that it still uses OpenGL, and is too tightly integrated with it to be salvagable.
-OpenGL is bad for performance, due to the CPU usage required.
+The Rythe Legacy engine is so old that it still uses @opengl, and is too tightly integrated with it to be salvagable.
+@opengl is bad for performance, due to the CPU usage required.
 It can also not be properly multi-threaded, which is especially bad, because one of the main goals of the engine is to be very parallel.
 
 The next rewrite used more modern technologies, and had a dedicated renderer component called Rythe-LLRI, or "Rythe Low Level Rendering Interface".
-It was a cross-platform GPU API abstraction, that was intended to be as low-level, as possible, to ensure maximum performance.
-The LLRI is very old and was written before the Vulkan API had even properly released. It is also not finished.
+It was a cross-platform @gpu-api abstraction, that was intended to be as low-level, as possible, to ensure maximum performance.
+The LLRI is very old and was written before the @vulkan @api had even properly released. It is also not finished.
 
 Now, a new version of the engine is being worked on, but it is still lacking a good rendering system.
 The LLRI could do with a rewrite.
@@ -99,20 +151,20 @@ This product could serve as the base for the LLRI rewrite.
 And so, my main research question is:
 #align(center)[_
 	Can I develop a good start for a flexible,\
-	yet performant cross-platform GPU API abstraction?
+	yet performant cross-platform @gpu-api abstraction?
 _]
 
 === Sub-questions
 
 As part of this research, there are a few sub-questions that also need to be answered:
-- Which GPU API should I start with abstracting?
+- Which @gpu-api should I start with abstracting?
 - How should I test?
 - How can I make it faster?
 
 == Requirements and Constraints
 
 The goal of the LLRI is to:
-- Be portable to other rendering API's down the line (not necessarily immediately).
+- Be portable to other rendering @api's down the line (not necessarily immediately).
 - Abstract away some implementation details that are more verbose and obtuse than they need to be,
   from the perspective of someone implementing new graphics features.
 - Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot.
@@ -127,7 +179,7 @@ That library will be the start of the new LLRI.
 
 === Indicators of Success
 
-I'll have succeeded if I got the beginnings of a GPU API abstraction layer done.
+I'll have succeeded if I got the beginnings of a @gpu-api abstraction layer done.
 I will verify and ensure that it is done enough by making a test program with it.
 
 #pagebreak()
@@ -151,26 +203,26 @@ the Design Thinking method or the Discover and Define phases of the Double Diamo
 information about the preliminary research and main question can be found in the Applied Research
 section of the IMT&S module on Brightspace._
 
-== GPU APIs
+== @gpu-api:pl
 
 //TODO: Collect more sources for this stuff.
 
 To make a good and performant rendering system, we need to interface with the Graphical Processing Unit.
 
-There are many GPU APIs, like OpenGL, Vulkan, DirectX, Metal, and most consoles have their own specific ones.
+There are many @gpu-api:pl, like @opengl, @vulkan, DirectX, Metal, and most consoles have their own specific ones.
 All of these are compatible with different OSes and platforms.
 
-*OpenGL* is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
-For that reason, OpenGL will not be mentioned much in this report, as it cannot really hold a candle to these other, more modern APIs.
+*@opengl* is generally the most compatible, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
+For that reason, @opengl will not be mentioned much in this report, as it cannot really hold a candle to these other, more modern @api:pl.
 
 //TODO: This paragraph has got to be improved
-*Vulkan* is a very low-level GPU API, by the Khronos Group, a consortium of organizations that focuses on graphics. @khronos-about\
-Vulkan is known as the most verbose GPU API, which is often used as ammunition to ridicule it, but being verbose has many advantages.
+*@vulkan* is a very low-level @gpu-api, by the Khronos Group, a consortium of organizations that focuses on graphics. @khronos-about\
+@vulkan is known as the most verbose @gpu-api, which is often used as ammunition to ridicule it, but being verbose has many advantages.
 It is much clearer about what it actually does, for example, and you have more control over what happens.
 which means it allows for a lot of control and thus optimization, at the cost of development effort.
-Vulkan is actually not exactly a GPU API, because it is more of a general-purpose Acceleration Device API.
-GPUs are just one type of Acceleration Device.
-However, for the purposes of this report, I will consider only the GPU aspects of Vulkan.
+@vulkan is actually not exactly a @gpu-api, because it is more of a general-purpose @acceleration-device @api.
+@gpu s are just one type of @acceleration-device.
+However, for the purposes of this report, I will consider only the @gpu aspects of @vulkan.
 
 *DirectX* is for Windows and Xbox. In fact, the Xbox _only_ supports DirectX. Luckily Windows itself does support more.\
 It is technically possible to run DirectX on Linux, through compatibility layers.
@@ -178,32 +230,32 @@ It is technically possible to run DirectX on Linux, through compatibility layers
 However, it should be noted that these compatibility layers are not officially supported or endorsed by Microsoft, the developers of DirectX.
 
 *Metal* is for Apple devices, which also don't (natively) support anything else.
-#footnote[Technically, macOS does also support OpenGL, but only an old version. And the latest normal OpenGL version is already old!]\
-Though there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.
-MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative. @moltenvk-2017
+#footnote[Technically, macOS does also support @opengl, but only an old version. And the latest normal @opengl version is already old!]\
+Though there is a very popular translation layer for running @vulkan on Apple devices, called MoltenVK.
+MoltenVK is not officially supported by Apple, but it is part of the Khronos @vulkan Portability Initiative. @moltenvk-2017
 
-PlayStation has two proprietary and "secret" APIs, called *GNM and GNMX*.\
-GNM is the low-level API, and GNMX is a higher-level wrapper around it. @leadbetter-2013\
-Not much is publicly known about these APIs, because you need to sign an NDA to get access to the PlayStation Developer Kit.
+PlayStation has two proprietary and "secret" @api:pl, called *GNM and GNMX*.\
+GNM is the low-level @api, and GNMX is a higher-level wrapper around it. @leadbetter-2013\
+Not much is publicly known about these @api:pl, because you need to sign an NDA to get access to the PlayStation Developer Kit.
 
-Nintendo Switch also has a proprietary and "secret" APIs, called *NVN*.
-This is the preferred API to use, but it at least does _support_ Vulkan, too.
-Not much is publicly known about this API, because you need to sign an NDA to get access to the Nintendo Switch Developer Kit.
+Nintendo Switch also has a proprietary and "secret" @api:pl, called *NVN*.
+This is the preferred @api to use, but it at least does _support_ @vulkan, too.
+Not much is publicly known about this @api, because you need to sign an NDA to get access to the Nintendo Switch Developer Kit.
 
 #import "lib/03-api_compat_table.typ": api_compat_table
 #figure(
 	api_compat_table,
-	caption: [An overview of Platform ↔ API Compatibility]
+	caption: [An overview of Platform ↔ @api Compatibility]
 ) <api_compat_table>
 
-As we can see in @api_compat_table, Vulkan is the most cross-platform of any of these APIs,
+As we can see in @api_compat_table, @vulkan is the most cross-platform of any of these @api:pl,
 being supported on Windows, Linux, Android, and Nintendo Switch, with compatibility layers existing for Apple devices.
 
-This is why I will be choosing to start with Vulkan, as it is the API that has the most platform compatibility.
+This is why I will be choosing to start with @vulkan, as it is the @api that has the most platform compatibility.
 
-However, when making actual applications, you don't want to have to be writing Vulkan code from scratch every single time.
-So that's when you make an abstraction overtop Vulkan, which you can reuse across multiple projects.
-In this report, I will detail my efforts at making such a Vulkan Abstraction Layer.
+However, when making actual applications, you don't want to have to be writing @vulkan code from scratch every single time.
+So that's when you make an abstraction overtop @vulkan, which you can reuse across multiple projects.
+In this report, I will detail my efforts at making such a @vulkan Abstraction Layer.
 
 #pagebreak()
 
@@ -223,11 +275,11 @@ and results, in your report._
 
 _More information can be found in the Applied Research section of the IMT&S module on Brightspace._
 
-Of course, there already exist many GPU API abstraction layers. But, this is a good thing!
+Of course, there already exist many @gpu-api abstraction layers. But, this is a good thing!
 Because, in my experience, it is impossible to create an abstraction layer that is entirely unopinionated.
 It makes it so there is something for everyone :)
 
-In this section, I will explore some of these GPU API abstraction layers that already exist by way of theoretical research.
+In this section, I will explore some of these @gpu-api abstraction layers that already exist by way of theoretical research.
 Many of these abstraction layers use different paradigms, so I have categorised them somewhat.
 After that, I will compare them an pick one or a few, to actually prototype with.
 
@@ -256,44 +308,44 @@ Cool, but _much_ too high-level.
 
 === Potential Solution: Pipelines and Passes (Flat abstractions)
 
-These are APIs that use the concepts of Pipelines and Passes.
-As these are also the main concepts of Vulkan itself, I am going to call these "flat abstractions".
+These are @api:pl that use the concepts of Pipelines and Passes.
+As these are also the main concepts of @vulkan itself, I am going to call these "flat abstractions".
 The term "flat abstraction" is my own creation, for lack of a better one.
 
-I mean that these abstractions very closely mirror the original GPU API, except they are simplified.
+I mean that these abstractions very closely mirror the original @gpu-api, except they are simplified.
 But they do contain and use the same core principles.
 
 Existing implementations:
 - https://wiki.libsdl.org/SDL3/CategoryGPU
 - https://github.com/gfx-rs/wgpu
-- https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
+- https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract @vulkan, but _does_ abstract almost all other @gpu-api)
 - https://github.com/DiligentGraphics/DiligentCore
 - https://github.com/facebook/igl
 - https://github.com/corporateshark/lightweightvk
 
 #heading(outlined: false, level: 4)[Evaluation]
 
-I do really like SDL's GPU API.
+I do really like SDL's @gpu-api.
 This is probably the paradigm I'll go with.
 
 === Potential Solution: Global State Machine
 
-OpenGL, a really old GPU API, and older versions of DirectX actually were global state machines already.
+@opengl, a really old @gpu-api, and older versions of DirectX actually were global state machines already.
 
-Modern GPU APIs have moved away from this kind of architecture, because they were extremely cumbersome to work with.
-They also match the things that are actually happening on a hardware level more closely than these older APIs, nowadays.
+Modern @gpu-api have moved away from this kind of architecture, because they were extremely cumbersome to work with.
+They also match the things that are actually happening on a hardware level more closely than these older @api:pl, nowadays.
 
-Still, some people like the paradigm of global state machine APIs.
+Still, some people like the paradigm of global state machine @api:pl.
 
 Implementations:
-Immediate-Mode paradigm API:
-- OpenGL Legacy (1.0 up to, but not including, 3.0)
+Immediate-Mode paradigm @api:
+- @opengl Legacy (1.0 up to, but not including, 3.0)
 - Direct3D 7 and before
 - rlgl: https://github.com/raysan5/raylib/blob/master/src/rlgl.h
 
-Buffer-paradigm APIs:
-- OpenGL Modern (3.0 and later)
-- Direct3D 8 to 11 (12 is a Pipelines&Passes-paradigm API)
+Buffer-paradigm @api:pl:
+- @opengl Modern (3.0 and later)
+- Direct3D 8 to 11 (12 is a Pipelines&Passes-paradigm @api)
 - bgfx: https://github.com/bkaradzic/bgfx
 
 #heading(outlined: false, level: 4)[Evaluation]
@@ -302,8 +354,8 @@ And is also nigh-impossible to properly multi-thread, which is a very important 
 
 === Potential Solution: Partial Abstractions
 
-These are libraries that only abstract _parts_ of the Vulkan API, while still allowing direct access to the raw Vulkan API in other places.
-Most abstractions abstract the entire thing, and don't allow you to access the internals. Like the raw Vulkan API.
+These are libraries that only abstract _parts_ of the @vulkan @api, while still allowing direct access to the raw @vulkan @api in other places.
+Most abstractions abstract the entire thing, and don't allow you to access the internals. Like the raw @vulkan @api.
 
 You can use multiple of these together, for their different purposes.
 
@@ -317,7 +369,7 @@ We shall see. I would like to experiment with them "in-person".
 
 === Final Selected Solution(s)
 
-The abstraction will be a Pipelines and Passes (Flat abstractions) paradigm API, in which I may use some already-existing partial abstractions.
+The abstraction will be a Pipelines and Passes (Flat abstractions) @paradigm @api, in which I may use some already-existing partial abstractions.
 
 The reasoning is that this paradigm is just by far the most flexible and powerful.
 
@@ -341,13 +393,13 @@ iterations you conducted._
 
 
 I should look into Bindless. It apparently has the potential to be MUCH faster!
-When comparing bindless OpenGL to bindful OpenGL, the speedup can be 7x, according to https://www.nvidia.com/en-us/drivers/bindless-graphics/
-I assume such high performance gains won't be possible with Vulkan, because bindful Vulkan is already faster than bindful OpenGL.
+When comparing bindless @opengl to bindful @opengl, the speedup can be 7x, according to https://www.nvidia.com/en-us/drivers/bindless-graphics/
+I assume such high performance gains won't be possible with @vulkan, because bindful @vulkan is already faster than bindful @opengl.
 But we will see when I actually get there...
 
 I will make multiple programs that all do the this:
 - show some spinning textured cubes
-	- Textures may be bindless-only, whenever the API allows that functionality
+	- Textures may be bindless-only, whenever the @api allows that functionality
 - maybe a suzanne
 - super simple lighting
 	- fancier(?if there is time; a day?)
@@ -360,12 +412,12 @@ I will make multiple programs that all do the this:
 - compute shaders(?if there is time?)
 
 But in these different ways:
-- With raw Vulkan
-- With Vulkan with some partial abstractions
-- With SDL3's GPU API
+- With raw @vulkan
+- With @vulkan with some partial abstractions
+- With SDL3's @gpu-api
 - With BGFX
 
-Once these are done, I can use the Vulkan prototypes to see what features the abstraction will need, and base it on that.
+Once these are done, I can use the @vulkan prototypes to see what features the abstraction will need, and base it on that.
 If I find the already-existing partial abstractions worthy enough, I will use those in my abstraction.
 
 #pagebreak()
@@ -384,8 +436,8 @@ test results, you can refer to the relevant section of Applied Research on Brigh
 
 == Performance Testing (Benchmarking)
 
-Write test program in raw Vulkan, and in the Abstraction.
-Potentially even in other APIs, like SDL3's GPU API, or Sokol or BGFX.
+Write test program in raw @vulkan, and in the Abstraction.
+Potentially even in other @api:pl, like SDL3's @gpu-api, or Sokol or BGFX.
 The earlier written prototypes will be useful for this as well.
 
 == API Userfiendliness testing
