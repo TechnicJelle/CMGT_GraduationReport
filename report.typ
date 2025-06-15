@@ -801,6 +801,14 @@ _The starting professional has a thorough knowledge of the current digital
 technologies within that part of the field of work the training course aims at.
 The starting professional can conduct technical research and analysis_
 ]
+During this project, I solidified my knowledge of modern GPU APIs, by doing a lot of research into them,
+both theoretically, by reading online, and practically, by making prototypes with them.
+
+I also got more hands-on experience with multiple promising GPU APIs, like SDL3's GPU API and Vulkan.
+In regards to Vulkan, I also learned how to use some common partial abstractions, and some more modern features of Vulkan,
+like modern synchronization, dynamic rendering, and compute shaders.
+
+I also learned about the different paradigms that GPU API abstraction layers might have.
 
 ==== 2. Designing and prototyping
 
@@ -811,6 +819,15 @@ The starting professional shows an innovating, creative attitude at defining,
 designing and elaborating a commission in the margin of what is technically and creatively feasible._
 ]
 
+During the development, I kept in close contact with Glyn, my company supervisor,
+about my findings and progress. He provided me with valuable feedback and ideas,
+many of which I implemented.
+
+I also talked online with other graphics programmers, who provided me with valuable insights into the design of GPU APIs,
+and which features are important to have in an abstraction layer.
+
+The code of the prototypes is reasonably modular, so that it can easily be repurposed for the LLRI2 library.
+
 ==== 3. Testing and rolling out
 
 #if show_tips_from_manual [
@@ -820,6 +837,19 @@ on their value in behaviour and perception.
 The starting professional delivers the prototype/product/service
 within the framework of the design, taking the user, the client and the technical context in due consideration._
 ]
+
+When I was developing of the prototypes, I did a _lot_ of testing.
+During that testing, I was helped a lot by the Vulkan Validation Layers.
+They kept pointing out my mistakes, and sometimes even suggested how to fix them.
+I learnt a lot from that, too.
+
+I also did performance testing in multiple ways. Once with wait calls, and once without.
+
+Sadly, there was no user testing, because the prototypes that took up all of the development time were not user-facing.
+If I had had more time, I could have started work on the LLRI2 library itself, which would have been user-facing,
+and I could have done user testing on that.
+
+But even without that user testing, I still managed multiple iterations of the prototypes.
 
 === II. Designing competences
 ==== 4. Investigating and analysing
@@ -832,6 +862,19 @@ this repertoire the proper method, given the research circumstances. Is capable 
 developing prototypes as a communication tool within the context of implementation._
 ]
 
+I did a lot of research online, by reading official documentation, articles, blog posts,
+and talks given at conferences, like Vulkanised.
+Glyn lent me a few Vulkan books, too, which I read a bit of, but I didn't have time to read them all, as they are VERY thick.
+
+Last year, I even attended The Graphics Programming Conference 2024 in person, where I also learnt a lot.
+
+I always specifically always prioritized up-to-date sources, because graphics programming is a very fast-moving field.
+
+I also did a lot of practical research, by making prototypes with various APIs and libraries.
+
+Even online communities were a great source of information,
+and I often talked about graphics programming there with others, to get more insights.
+
 ==== 5. Conceptualizing
 
 #if show_tips_from_manual [
@@ -840,6 +883,8 @@ sectoral) demand articulation and project definition. The starting professional 
 develop an innovative concept that creates value based on their own idea or
 demand articulation._
 ]
+
+Together, Glyn and I came up with some abstract plans, which I was then able to turn into concrete prototypes.
 
 ==== 6. Designing
 
@@ -850,6 +895,13 @@ professional shows themself capable of being able to communicate with a client
 about choices and progress in the design process._
 ]
 
+I structured the code for the multiple prototypes in a single Git repository, hosted on GitHub.
+The build system uses CMake, so it is cross-platform and cross-IDE.
+The CMake code is shared across the prototypes, so that it is easy to add new prototypes later on.
+
+The final result is _not_ market-ready, specifically because they are prototypes,
+but they are a good start for the LLRI2 library, which was the goal of this project.
+
 === III. Organisational competences
 ==== 10. Communication
 
@@ -859,6 +911,12 @@ and their work professionally and well-groomed to third parties. The starting
 professional shows themself capable of being able to communicate with a client
 about choices and progress in the design process._
 ]
+
+I always kept Glyn up to date with my progress, and I often asked him for feedback on my prototypes.
+Other than that, there were no other stakeholders involved in this project, to communicate with.
+
+I haven't made the presentation yet, but I am sure I will make that look very nice and professional, too.
+Graphic design is one of my hobbies, after all.
 
 === IV. Professional competences
 ==== 11. Learning ability and reflectivity
@@ -872,6 +930,11 @@ starting professional can further develop and deepen the craftsmanship, the pers
 substantiation of the professional situation and their creativity._
 ]
 
+During the development of these prototypes, I continuously reflected on my own work,
+and always strived to make it better with every new line of code I wrote.
+
+I also asked Glyn and others for feedback on my work, and I always took that feedback to heart.
+
 ==== 12. Responsibility
 
 #if show_tips_from_manual [
@@ -879,6 +942,16 @@ _The starting professional has a capacity for empathy with other sectors and sho
 awareness of ethical issues in their role as a designer and can explicitly make such
 considerations in accounting for choices in the design process._
 ]
+
+I always tried to keep the ultimate end user of the Rythe Engine in mind when creating the prototypes,
+to hopefully one day make their lives easier, too, with the engine, built with the LLRI2 library.
+
+I also always did my best to create the best possible code I could,
+even though sometimes that came back to bite me later on.
+From those moments, I learnt that sometimes you should not try to make things to pretty the first time around,
+and to leave the refactoring for later, once you have a better idea of what needs to be done.
+
+There are no proprietary technologies used in the prototypes, so there are no ethical issues there.
 
 #pagebreak()
 = Bibliography
