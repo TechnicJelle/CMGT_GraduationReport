@@ -91,7 +91,7 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *Obtuse:* Programming style that is very difficult to understand, or that requires a lot of effort to understand.
 - *Compile-time:* Moment when the code is compiled, before it is run. This only needs to happen once, ever.
 - *Startup-time:* Moment when the program is started, after it has been compiled. This happens every time the program is run.
-- *Run-time:* Moment(s) when the program is actually running, after it has been started. This can happen multiple times, during the program's execution.
+- *Run-time:* Moment(s) when the program is actually running, after it has been started. This can happen multiple times, during the program's execution. Technically, this includes startup-time, but for the purposes of this report, I consider the two as separate.
 - *Black box:* System or library or API you can use, but not see how it works internally.
 - *Proprietary:* Software or hardware that is owned by a specific company, and is not open source or open hardware. Often requires a license to use. Usually a black box with no transparency for internal workings.
 - *Cross-platform:* Being able to run on multiple different platforms.
