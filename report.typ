@@ -178,8 +178,6 @@ section of the IMT&S module on Brightspace._
 
 == GPU APIs
 
-//TODO: Collect more sources for this stuff.
-
 To make a good and performant rendering system, we need to interface with the Graphical Processing Unit (GPU).
 
 There are many GPU APIs, like OpenGL, Vulkan, DirectX, Metal, and most consoles have their own specific ones.
@@ -188,8 +186,9 @@ All of these are compatible with different operating systems and platforms.
 *OpenGL* is generally the most compatible with all kinds of hardware, but also the oldest and clunkiest, and is considered deprecated by many, myself included.
 For that reason, OpenGL will not be mentioned much in this report, as it cannot really hold a candle to these other, more modern APIs.
 
-//TODO: This paragraph has got to be improved
-*Vulkan* is a very low-level GPU API, by the Khronos Group, a consortium of organizations that focuses on graphics. @khronos-about\
+*Vulkan* is a very low-level Acceleration Device API. #footnote[For the purposes of this report, I will consider it a GPU API.]
+It was originally designed by researchers at AMD, under the codename "Mantle" @khronos-release-vulkan-1.0.
+It was later donated to the Khronos Group, a consortium of many organizations that focuses on graphics @khronos-about.\
 Vulkan is known as the most verbose GPU API, which is often used as ammunition to ridicule it, but being verbose has many advantages.
 It is much clearer about what it actually does, for example, and you have more control over what happens and when.
 This means it allows for a lot of control and thus optimization, at the cost of development effort.
@@ -207,10 +206,10 @@ However, it should be noted that these compatibility layers are not officially s
 #footnote[Technically, macOS does also support OpenGL, but only an old version (4.1 from 2011 @macos-opengl).
 And the latest _normal_ OpenGL version is already old! (4.6 from 2017 @opengl46-release)]\
 However, there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.
-MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative. @moltenvk-2017
+MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative @moltenvk-2017.
 
-PlayStation has two proprietary and "secret" APIs, called *GNM* and *GNMX*. @schertenleib-2013\
-GNM is the low-level API, and GNMX is a higher-level wrapper around it. @leadbetter-2013\
+PlayStation has two proprietary and "secret" APIs, called *GNM* and *GNMX* @schertenleib-2013.\
+GNM is the low-level API, and GNMX is a higher-level wrapper around it @leadbetter-2013.\
 Not much is publicly known about these APIs, because you need to sign an NDA to get access to the PlayStation Developer Kit.
 
 Nintendo Switch also has a proprietary and "secret" API, called *NVN*.
@@ -727,6 +726,19 @@ _You can ask questions such as:_
 _It’s important to show a critical but fair view on these topics._
 ]
 
+Looking back, I am very content with the way I reseasrched, and the things I found and learned.
+I have learned a lot about modern GPU APIs, and how to use them.
+
+I feel like the test results are quite reliable, as I tried my best to keep the testing conditions between both as similar as possible.
+Both the input and the situation were the same, and I ran each program multiple times to ensure that the results were consistent.
+Although there is one thing that was a bit strange about the first run, which I will discuss in the next section.
+
+Hopefully, the results of this research and testing will be useful for Rythe in the future,
+when they continue the development of the LLRI2 library.
+I feel like I have provided them with a good start for the LLRI2 library,
+and I hope they will continue the work I have started. With or without me.
+
+#pagebreak()
 == Waiting for GPU Device Idle<wait-idle-debacle>
 
 For the testing, Glyn and I decided to make the GPU APIs wait until the GPU Device is idle before measuring each frametime.
