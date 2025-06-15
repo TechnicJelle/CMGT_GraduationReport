@@ -793,7 +793,92 @@ You can see the prototypes in action on YouTube:
 #pagebreak()
 == Competences Reflection
 
-\/\/TODO
+=== I. Technological competences
+==== 1. Technical research and analysis
+
+#if show_tips_from_manual [
+_The starting professional has a thorough knowledge of the current digital
+technologies within that part of the field of work the training course aims at.
+The starting professional can conduct technical research and analysis_
+]
+
+==== 2. Designing and prototyping
+
+#if show_tips_from_manual [
+_The starting professional can create value by iteratively designing and prototyping,
+based on a (new) technology, creative idea or demand articulation.
+The starting professional shows an innovating, creative attitude at defining,
+designing and elaborating a commission in the margin of what is technically and creatively feasible._
+]
+
+==== 3. Testing and rolling out
+
+#if show_tips_from_manual [
+_The starting professional is capable of repeatedly testing the technical results,
+that come into being during the various stages of the designing process,
+on their value in behaviour and perception.
+The starting professional delivers the prototype/product/service
+within the framework of the design, taking the user, the client and the technical context in due consideration._
+]
+
+=== II. Designing competences
+==== 4. Investigating and analysing
+
+#if show_tips_from_manual [
+_The starting professional can substantiate a design commission by means of research
+and analysis. The starting professional, in their investigation activities, shows to
+have a repertoire of relevant research skills at their disposal and can select from
+this repertoire the proper method, given the research circumstances. Is capable of
+developing prototypes as a communication tool within the context of implementation._
+]
+
+==== 5. Conceptualizing
+
+#if show_tips_from_manual [
+_The starting professional proves capable of being able to get to realistic (cross-
+sectoral) demand articulation and project definition. The starting professional can
+develop an innovative concept that creates value based on their own idea or
+demand articulation._
+]
+
+==== 6. Designing
+
+#if show_tips_from_manual [
+_The starting professional shows him/herself capable of presenting both their person
+and their work professionally and well-groomed to third parties. The starting
+professional shows him/herself capable of being able to communicate with a client
+about choices and progress in the design process._
+]
+
+=== III. Organisational competences
+==== 10. Communication
+
+#if show_tips_from_manual [
+_The starting professional shows him/herself capable of presenting both their person
+and their work professionally and well-groomed to third parties. The starting
+professional shows him/herself capable of being able to communicate with a client
+about choices and progress in the design process._
+]
+
+=== IV. Professional competences
+==== 11. Learning ability and reflectivity
+
+#if show_tips_from_manual [
+_The starting professional shows him/herself to be a ‘reflective practitioner’ by
+constantly analysing and adjusting their own action, fostered by feedback of others.
+The starting professional shows him/herself permanently directed and capable of
+being able to keep up with relevant developments in the field of expertise. The
+starting professional can further develop and deepen the craftsmanship, the personal
+substantiation of the professional situation and their creativity._
+]
+
+==== 12. Responsibility
+
+#if show_tips_from_manual [
+_The starting professional has a capacity for empathy with other sectors and shows
+awareness of ethical issues in their role as a designer and can explicitly make such
+considerations in accounting for choices in the design process._
+]
 
 #pagebreak()
 = Bibliography
