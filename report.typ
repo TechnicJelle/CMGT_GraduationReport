@@ -28,8 +28,31 @@ iterations you made, and your conclusions and recommendations. You can use the g
 How to Write an Abstract_
 ]
 
-\/\/TODO
+In this report, I describe the assignment I did for my Graduation Internship at Rythe Interactive,
+namely to create the prototype for the rewrite of GPU API abstraction layer for the Rythe Game Engine,
+the Rythe Low Level Rendering Interface (LLRI).
 
+This project was focused on finding the best way to create a new modern and flexible, yet not too verbose GPU API abstraction layer,
+that is cross-platform and can be used for both Graphics and Compute.
+
+I first did theoretical research into existing GPU APIs and abstraction layers, and through that,
+I found that the Vulkan API is the most cross-platform API available today, and has the most potential for optimization.
+So I decided to use that as the first base for the LLRI2. Later it will cover more GPU APIs.
+With that research, I also found many other existing GPU API abstraction layers, many of which use the same paradigm as Vulkan.
+
+After the theoretical research, and decision to use Vulkan, I did practical research by making multiple prototypes with SDL3's new GPU API,
+and with Vulkan directly (but with some helper libraries).
+I then made both prototypes do the exact same thing: rendering a spinning 3D model with a texture on it.
+Then I benchmarked both prototypes, and compared the results.
+
+From those benchmarks, I found that the SDL3 GPU API is almost as performant as the raw Vulkan API,
+while being much more user-friendly and easier to use.
+But sometimes it is not quite as clear as what is actually happening under the hood,
+which can make it harder to debug and optimize.
+It also does not support all of the latest Vulkan features, like hardware raytracing and bindless resources,
+which the LLRI2 does want to support in the future.
+As such, I propose to use Vulkan (with some helper libraries) for the LLRI2,
+but to use take inspiration from SDL3's GPU API for the API design and usability.
 
 #pagebreak()
 #import "lib/02-toc.typ": toc
@@ -55,6 +78,7 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *Flexible:* How easy it is to change a program to do something else, or to add new features to it.
 - *Parallel:* The process of doing multiple things at the same time, in parallel.
 - *Retro:* Something that is old and outdated. Usually not used anymore, outside of specific communities.
+- *Thread:* Sequence of instructions that can be executed independently of other threads. Threads can run in parallel on a multi-core CPU.
 - *Multi-threading:* Specific way to run things in parallel, by using multiple threads on the CPU.
 - *Boilerplate:* Code that is needed to set up something, but does not actually do anything on its own.
 - *Abstraction:* Process of making something more general, by removing some details that are not relevant for the current context.
@@ -625,7 +649,7 @@ I will create a line plot and a histogram of all the frametimes, and calculate t
 - The standard deviation
 - Highs (1%, 0.1%, 0.01%)
 - Lows (1%, 0.1%, 0.01%)
-- The frame-to-frame deviation of the frametimes //TODO
+- The frame-to-frame deviation of the frametimes
 
 I will also graph the occurrences of each frametime, to see how many frames were rendered with which times.
 This is useful to see the grouping of the frametimes, and to see if there are any outliers.
