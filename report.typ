@@ -545,13 +545,15 @@ If there is time, I will also run them in Debug mode, to see how much the perfor
 and in a "Mixed mode", where all the dependencies are compiled in Release mode, but the program itself is compiled in Debug mode.
 
 With those two files full of frametimes, I can then compare the two programs' performance, by graphing the data.
+All the values will be displayed in microseconds (µs),
+because nanoseconds are too small to be useful for this kind of data, and milliseconds (ms) are too large.
 
-I will create a plot of all the frametimes, and calculate the following statistics:
-- The average frametimes (Nanoseconds)
-	- The standard deviation
-	- Highs (1%, 0.1%, 0.01%)
-	- Lows (1%, 0.1%, 0.01%)
-- The frame-to-frame deviation of the frametimes
+I will create a line plot and a histogram of all the frametimes, and calculate the following statistics:
+- The average frametimes
+- The standard deviation
+- Highs (1%, 0.1%, 0.01%)
+- Lows (1%, 0.1%, 0.01%)
+- The frame-to-frame deviation of the frametimes //TODO
 
 I will also graph the occurrences of each frametime, to see how many frames were rendered with which times.
 This is useful to see the grouping of the frametimes, and to see if there are any outliers.
@@ -563,7 +565,77 @@ so I can largely re-use the scripts I wrote for that project, with the help of a
 #pagebreak()
 == Performance Testing (Benchmarking)
 
-//TODO: Logarithmic scales for the graphs may be used, if it helps to see the data better.
+Here are the results of the performance testing of the two prototypes I made.
+
+There are three attempts, to ensure fair measurements in regards to run-to-run variations.
+
+Attempt 001 is not included in this section, as its results were suspiciously out of balance.
+You can read more about that in @wait-idle-debacle.
+
+These were compiled with GCC 15.1.1, in Release Mode.\
+They were run on Manjaro Linux Zetar 25.0.3 (XFCE Edition) with kernel version: 6.6.90-1-MANJARO.\
+The hardware used was an AMD Ryzen 7 5800H CPU, 16GB of system RAM, and an NVIDIA GeForce RTX 3070 Laptop GPU.\
+The GPU Driver version was 570.144.\
+
+
+#pagebreak()
+=== Attempt 002
+
+#import "Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/table.typ": table002
+#figure(
+	table002,
+	caption: [Statistics from when the wait calls were included]
+) <att002_table>
+
+#figure(
+	image("Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/plot.svg"),
+	caption: [Line plot of the frametimes from when the wait calls were included]
+) <att002_plot>
+
+#figure(
+	image("Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/hist.svg"),
+	caption: [Histogram of the frametimes from when the wait calls were included]
+) <att002_hist>
+
+
+#pagebreak()
+=== Attempt 003
+
+#import "Plots/Output/Attempt 003 - Same as 002, but again/table.typ": table003
+#figure(
+	table003,
+	caption: [Statistics from when the wait calls were included]
+) <att003_table>
+
+#figure(
+	image("Plots/Output/Attempt 003 - Same as 002, but again/plot.svg"),
+	caption: [Line plot of the frametimes from when the wait calls were included]
+) <att003_plot>
+
+#figure(
+	image("Plots/Output/Attempt 003 - Same as 002, but again/hist.svg"),
+	caption: [Histogram of the frametimes from when the wait calls were included]
+) <att003_hist>
+
+
+#pagebreak()
+=== Attempt 004
+
+#import "Plots/Output/Attempt 004 - Same again/table.typ": table004
+#figure(
+	table004,
+	caption: [Statistics from when the wait calls were included]
+) <att004_table>
+
+#figure(
+	image("Plots/Output/Attempt 004 - Same again/plot.svg"),
+	caption: [Line plot of the frametimes from when the wait calls were included]
+) <att004_plot>
+
+#figure(
+	image("Plots/Output/Attempt 004 - Same again/hist.svg"),
+	caption: [Histogram of the frametimes from when the wait calls were included]
+) <att004_hist>
 
 
 #pagebreak()
@@ -650,8 +722,34 @@ _You can ask questions such as:_
 _It’s important to show a critical but fair view on these topics._
 ]
 
-\/\/TODO
+== Waiting for GPU Device Idle<wait-idle-debacle>
 
+For the testing, Glyn and I decided to make the GPU APIs wait until the GPU Device is idle before measuring each frametime.
+The idea there was that it would accurately measure both the CPU and GPU time it takes to render a single frame.
+However, SDL's `SDL_WaitForGPUIdle(device)` function clearly does something else than Vulkan's `vkDeviceWaitIdle(device)`,
+because the SDL GPU program was _significantly_ faster than the Vulkan program, as you can see in @att001_table, @att001_plot, and @att001_hist.
+
+#import "Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/table.typ": table001
+#figure(
+	table001,
+	caption: [Statistics from when the wait calls were included]
+) <att001_table>
+
+#figure(
+	image("Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/plot.svg"),
+	caption: [Line plot of the frametimes from when the wait calls were included]
+) <att001_plot>
+
+#figure(
+	image("Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/hist.svg"),
+	caption: [Histogram of the frametimes from when the wait calls were included]
+) <att001_hist>
+
+Without those two wait calls, they were about the same speed.
+Hence, I removed those wait calls again from both programs for the actual performance testing.
+
+
+#pagebreak()
 = Reflection
 
 #if show_tips_from_manual [
