@@ -125,11 +125,11 @@ Therefore, the LLRI component could also do with a rewrite, alongside the rest o
 
 The goal of the LLRI is to:
 - Be portable to other GPU API's down the line (not necessarily immediately).
-//TODO (Glyn): Be specific, requirements should all be measurable(in the end either the requirement is met or not), "some details are abstracted away" is not measurable.
-- Abstract away some implementation details that are more verbose and obtuse than they need to be,
-  from the perspective of someone implementing new graphics features.
-- Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot.
-  #footnote[Reference to the famouse quote _#quote("C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.")_ — #cite(<stroustrup-footguns>, form: "prose")]
+- Abstract away some implementation details, like initialization and placing barriers, that are more verbose and obtuse than they need to be,
+  from the perspective of an engine user, who is implementing new graphics features into their game.
+- Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot
+  #footnote[Reference to the famouse quote _#quote("C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.")_ — #cite(<stroustrup-footguns>, form: "prose")],
+  like ensuring that data is in the correct format and commands are sent in the correct order,
 - Allow enough low level access to not restrict engineers from being able to design their own renderer architecture.
 - Minimise overhead of the abstraction where possible, or at least move as much of it to
   compile-time or startup-time as possible.
