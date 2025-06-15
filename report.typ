@@ -310,17 +310,23 @@ Modern GPU APIs also match the things that are actually happening on a hardware 
 
 Despite the aforementioned cons, some people still like the paradigm of global state machine APIs.
 
+Most of these do not support Compute, but only Graphics, because Compute is a more recent addition to GPU APIs.
+Compute was added to OpenGL in version 4.3, which is famously not supported by MacOS, to the chagrin of many developers.
+
 ==== Existing implementations
 
 Immediate-Mode paradigm API:
 - OpenGL Legacy (1.0 up to, but not including, 3.0)
 - Direct3D 7 and before
-- rlgl: https://github.com/raysan5/raylib/blob/master/src/rlgl.h
+- raylib's #link("https://github.com/raysan5/raylib/blob/master/src/rlgl.h")[rlgl.h].
+  Provides a pseudo-OpenGL 1.1 immediate-mode style API, overtop modern OpenGL, with some optimizations, like batching.
+  Supports both Graphics and Compute.
 
 Buffer-paradigm APIs:
 - OpenGL Modern (3.0 and later)
 - Direct3D 8 to 11 (12 is a Pipelines and Passes-paradigm API)
-- bgfx: https://github.com/bkaradzic/bgfx
+- #link("https://github.com/bkaradzic/bgfx")[bgfx]. A rendering library with many backends and supported platforms,
+  but with some more features than just direct GPU access, like text rendering. Supports both Graphics and Compute.
 
 ==== Evaluation
 
@@ -332,7 +338,11 @@ because it is also nigh-impossible to properly multi-thread, which is a very imp
 === Pipelines and Passes (Mantle-descendants)
 
 Pipelines and Passes are the two main concepts of "modern" GPU APIs.
-Specifically, they are //TODO
+Specifically, they are are APIs that encourage batching big instructions together.
+
+"Pipelines" are set up beforehand (rarely at runtime), and contain a lot of static information that doesn't change every frame, like shaders.
+Then during runtime instructions and data are encounded into "command buffers" that are combined into "passes" in one go.
+Synchronization with the CPU is minimized and explicit, instead of implicit, like many other APIs do (especially older ones, and ones that aren't meant for optimization).
 
 Back in 2016, AMD released an experimental new GPU API called Mantle.
 This was the first Pipelines and Passes API.
@@ -340,24 +350,36 @@ AMD then donated it to the Khronos Group, who turned it into Vulkan, and continu
 Khronos is also the main driving force for making it as cross-platform as it is.
 In the meantime, Microsoft and Apple were also inspired by Mantle, and created DirectX 12 and Metal, respectively, based on it.
 
-Pipelines and Passes are also the main concepts of Vulkan itself, so I am going to call the abstractions that use them "flat abstractions".
-The term "flat abstraction" is my own creation, for lack of a better one.
+Pipelines and Passes are also the main concepts of Vulkan (and other modern GPU APIs) itself, so you could call these abstractions "flat abstractions".
 With this I mean that these abstractions very closely mirror the original GPU API, except that they are simplified.
-However, they do contain and use the same core principles.
+However, they do contain and use the same core principles, namely the Pipelines and Passes paradigm.
 
 ==== Existing implementations
 
-- SDL3's GPU API: https://wiki.libsdl.org/SDL3/CategoryGPU
-	- Some words about this
-- WebGPU (wgpu-native): https://github.com/gfx-rs/wgpu
-- Sokol: https://github.com/floooh/sokol (ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
-- https://github.com/DiligentGraphics/DiligentCore
-- IGL: https://github.com/facebook/igl
-- https://github.com/corporateshark/lightweightvk
-- Veldrid: https://github.com/veldrid/veldrid (specifically take inspiration from this one, as it manages to keep this VERY nice and short!)
-- Ravbug's RHI: https://github.com/RavEngine/RGL-Samples/blob/master/01-HelloTriangle/hellotriangle.cpp
-- https://github.com/Devsh-Graphics-Programming/Nabla
-- https://github.com/NVIDIA-RTX/NVRHI
+- #link("https://wiki.libsdl.org/SDL3/CategoryGPU")[SDL3's GPU API]. A new GPU API that is meant to be a low-level abstraction of Vulkan, DirectX 12, and Metal,
+  but not _too_ low-level, either, where you spend a lot of time writing meaningless boilerplate. It looked at what is actually commonly used in these APIs,
+  and implemented only that. Supports both Graphics and Compute. It aims to run on as many devices as possible, even consoles.
+  This comes at the cost of not supporting many modern GPU features, like ray tracing, mesh shaders, and bindless resources.
+- #link("https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API")[WebGPU]: WebGPU is officially a JavaScript API meant for web browsers,
+  but there are multiple native implementations of it, like #link("https://github.com/gfx-rs/wgpu")[wgpu-native] and #link("https://dawn.googlesource.com/dawn")[Dawn].
+- #link("https://github.com/floooh/sokol")[Sokol]: A modular, but minimal application framework, of which the "gfx" component is also a "pipelines and passes" abstraction.
+  Supports both Graphics and Compute.
+  (Ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
+- Diligent Engine's #link("https://github.com/DiligentGraphics/DiligentCore")[Core]: A GPU Abstraction layer that supports many very platforms.
+- #link("https://github.com/facebook/igl")[IGL]: A cross-platform GPU abstraction layer by Facebook, mostly developed for their Quest VR headsets.
+  It is pretty new.
+- #link("https://github.com/corporateshark/lightweightvk")[LightweightVK]: A "deeply refactored fork" of IGL, which specifically abstracts modern Vulkan,
+  and only exposes modern features, like bindless resources, mesh shaders and ray tracing.
+- #link("https://github.com/veldrid/veldrid")[Veldrid]. A GPU API abstraction layer specifically for C#sym.hash. Most other ones are either C or C++.
+  For a pipelines and passes abstraction, it is relatively high-level.
+  (I intend to specifically take inspiration from this one for our own abstraction, as it manages to keep things very nice and short.)
+- RavEngine's #link("https://github.com/RavEngine/RGL")[Graphics Library]: A thin C++ GPU API abstraction layer, with many convenience features,
+  like shader compilation and reflection, and a very modern syntax.
+- #link("https://github.com/Devsh-Graphics-Programming/Nabla")[Nabla]: Abstracts only Vulkan: "a curated set of Vulkan extensions and features".
+  Because Vulkan gets new features relatively often, developers often have to re-learn parts of Vulkan.
+  This library aims to always use the latest features in the background, while keeping a consistent API for the user.
+- #link("https://github.com/NVIDIA-RTX/NVRHI")[NVRHI]: NVIDIA's own cross-platform GPU API abstraction layer.
+  It does not support many platforms, though; only Windows and Linux, but it does expose quite a few modern GPU features, like ray tracing.
 
 ==== Evaluation
 
@@ -383,7 +405,7 @@ This the paradigm I'll go with for our own abstraction layer, as it is the most 
 #pagebreak()
 === Partial Abstractions
 
-The abstractions mentioned before abstract the _entire thing_, and don't allow access to the internals, like the raw Vulkan API it is abstracting.
+The abstractions mentioned before abstract the _entire thing_, and (usually) don't allow access to the internals like the raw Vulkan API it is abstracting.
 
 But these "partial abstractions" are libraries that abstract only _parts_ of the Vulkan API,
 while still allowing direct access to the raw Vulkan API in other places.
@@ -392,11 +414,11 @@ You can use multiple of these together, for their different purposes.
 
 These are also sometimes referred to as "helper libraries".
 
-==== Existing implementations
-
-- Entrypoint Loading: https://github.com/zeux/volk
-- Initialization: https://github.com/charles-lunarg/vk-bootstrap
-- Memory Allocation: https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
+- #figure(link("https://github.com/zeux/volk")[Volk], kind: "link", supplement: "link")<volk>: Dynamically load Vulkan functions at startup-time, instead of linking with Vulkan at compile-time. It may be faster than loading them trough the driver.
+  Many Vulkan examples use this library, because it is very small and easy to use. Many other helper libraries also optionally integrate with it.
+- #figure(link("https://github.com/charles-lunarg/vk-bootstrap")[vk-bootstrap], kind: "link", supplement: "link")<vkb>: Helps with the initialization of Vulkan, by providing a set of functions that set up the most common things.
+- AMD's #figure(link("https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator")[Vulkan Memory Allocator], kind: "link", supplement: "link")<vma>: Abstracts away many parts of Vulkan's memory management,
+  and provides a simple interface for allocating and freeing memory for specific tasks.
 
 ==== Evaluation
 
@@ -407,38 +429,21 @@ it is unlikely to be necessary to do all that again.
 So we might use one or multiple of the above in our own abstraction,
 after I have conducted some experiments with them.
 
-#pagebreak()
-=== Rendergraph-based Abstractions
+=== Other types of Abstractions
 
-Description
+There are other types of abstractions that are not really relevant for this project, because they are too high-level,
+but they are still interesting technologies that I want to mention.
 
-==== Existing implementations
+- #link("https://github.com/martty/vuk")[vuk]: A render-graph-based abstraction layer for Vulkan.
+- AMD's #link("https://github.com/GPUOpen-LibrariesAndSDKs/RenderPipelineShaders")[Render Pipeline Shaders]: A render-graph-based abstraction layer for Vulkan and DirectX 12.
+- #link("https://github.com/asc-community/VulkanAbstractionLayer")[Vulkan Abstraction Layer]: A render-graph-based abstraction layer for Vulkan.
+- #link("https://github.com/vsg-dev/VulkanSceneGraph")[Vulkan Scene Graph]: A scenegraph-based abstraction layer for Vulkan.
 
-- https://github.com/martty/vuk
-- https://github.com/GPUOpen-LibrariesAndSDKs/RenderPipelineShaders
-- https://github.com/asc-community/VulkanAbstractionLayer
-
-==== Evaluation
-
-Cool, but too high-level.
-
-#pagebreak()
-=== Scenegraph-based Abstractions
-
-Description
-
-==== Existing implementations
-
-- https://github.com/vsg-dev/VulkanSceneGraph
-
-==== Evaluation
-
-Cool, but _much_ too high-level.
 
 #pagebreak()
 == Final Selected Solution(s)
 
-The abstraction will be a Pipelines and Passes (Flat abstractions) paradigm API, in which I may use some already-existing partial abstractions.
+The abstraction will be a Pipelines and Passes paradigm API, in which I may use some already-existing partial abstractions.
 
 The reasoning is that this paradigm is just by far the most flexible and powerful.
 
