@@ -478,7 +478,7 @@ _]
 
 As part of this research, there are a few sub-questions that also need to be answered:
 - How do you properly benchmark an in-house (graphics) engine?
-- What can are further potential avenues for more optimisation?
+- What are further potential avenues for more optimisation?
 
 
 #pagebreak()
