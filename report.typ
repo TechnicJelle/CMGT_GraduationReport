@@ -133,6 +133,8 @@ The goal of the LLRI is to:
 - Allow enough low level access to not restrict engineers from being able to design their own renderer architecture.
 - Minimise overhead of the abstraction where possible, or at least move as much of it to
   compile-time or startup-time as possible.
+- Allow Compute to be used, for even more control over the GPU, because Compute is often used in modern games,
+  for dynamically generating data on the GPU.
 
 === Deliverable
 
