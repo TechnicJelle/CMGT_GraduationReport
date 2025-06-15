@@ -781,11 +781,6 @@ So on the whole, I am still very happy with the results of this project.
 #pagebreak()
 = Appendices
 
-== Competences Reflection
-
-\/\/TODO
-
-
 == Showcase of the End Product
 
 The prototypes I made can be found on GitHub, under the Rythe Interactive organisation:
@@ -794,6 +789,11 @@ https://github.com/Rythe-Interactive/LLRI2-Experiments
 You can see the prototypes in action on YouTube:
 //TODO: Insert a YouTube link to a video that shows the prototypes in action.
 
+
+#pagebreak()
+== Competences Reflection
+
+\/\/TODO
 
 #pagebreak()
 = Bibliography
