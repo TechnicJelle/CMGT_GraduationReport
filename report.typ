@@ -661,9 +661,17 @@ means you will round off your report by answering the main question you formulat
 drawing conclusions._
 ]
 
-\/\/TODO
-//TODO: Mention difference in effort of using bare vk vs sdlgpu
+The performance testing has shown that SDL3's GPU API is essentially on par with Vulkan,
+except that it does have more highs and lows, which is a sign of less consistent performance.
 
+The other side of that coin is that SDL3's GPU was much easier to use than Vulkan,
+and it took significantly less time and effort to get the same results.
+#footnote[Nearing the end of the project, I started getting nightmares about Vulkan's Validation Layers...]
+
+So, in conclusion, it is certainly possible to make an LLRI2 library with Vulkan directly,
+with the help of some partial abstractions, but it could also be made on top of SDL3's GPU API.
+That does come at the cost of a little bit of frame-time consistency, and lack of some modern GPU features,
+but it is a lot easier to use.
 
 = Recommendation
 
@@ -675,15 +683,21 @@ _During Applied Research, it is explained how to present conclusions
 and recommendations. You will find this information in the relevant section on Brightspace._
 ]
 
-I recommend that Rythe continue with the development of the LLRI2 library.
-I propose they hire me to do so, as I have already done a lot of research and prototyping for it.
+I recommend that Rythe continue with the development of the LLRI2 library, using Vulkan as the first base GPU API to build on top of.
+Because one of the goals of Rythe Engine is to do as much as possible in-house, to be able to squeeze out the utmost performance as possible.
+Some partial abstractions can be used to make the development easier, like Volk, Vulkan Memory Allocator and VkBootstrap.
 
-It should also be considered to use SDL3's GPU API as the base for the LLRI2 library,
-and fork it to add the more modern GPU features that Rythe wants to support,
+But it might also be considered to use SDL3's GPU API as the base for the LLRI2 library in the form of a fork,
+instead of a layer on top. If the licensing allows this, of course.
+That way, we have more control again, but also a very nice head-start.
+We could then also implement more modern GPU features that Rythe wants to support,
 such as Bindless Textures and hardware raytracing.
 If that happens, it should be considered whether to only use SDL3's Vulkan implementation,
 or whether to keep supporting the other APIs that SDL3's GPU API supports, like DirectX 12 and Metal.
 And it should also be considered whether to "upgrade" it to C++, because SDL3's GPU API is in C.
+
+I cannot make this decision for Rythe, but whatever they choose, I propose they hire me to continue the work on LLRI2,
+as I have already done a lot of research and prototyping for it.
 
 == Further Research
 
@@ -712,6 +726,8 @@ but only because properly written bindful Vulkan is already faster than bindful 
 It might also be worth looking into the other promising frameworks and abstractions I've found, like Diligent Engine, Nabla, and NVRHI.
 They might provide interesting insights into how to structure the LLRI2 library.
 
+Or perhaps they could even be used as a base for the LLRI2 library as a layer on top, or as a fork.
+If they are permissively licensed enough, of course.
 
 #pagebreak()
 = Discussion
