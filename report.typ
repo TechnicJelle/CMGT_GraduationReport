@@ -67,6 +67,8 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *(Game) Console:* Specialized computer that is designed to run games, and usually has a custom, proprietary GPU API that you have to sign an NDA to get access to.
 - *Operating System:* Software that manages the hardware and software resources of a computer, and provides services for computer programs. Examples are Windows, macOS, Linux, Android, and iOS.
 - *Paradigm:* Style/way of doing things.
+- *Render-graph:* Way of organizing that puts things in a graph structure, where each node represents a rendering operation, and the edges represent dependencies between them.
+- *Scene-graph:* Way of organizing that puts things in a tree structure.
 - *Ray tracing:* Method of rendering that simulates light bounces in a very realistic way. It is very computationally expensive, but can produce very realistic images. Many modern GPUs have dedicated hardware support for it, which makes it much faster.
 
 
@@ -414,10 +416,10 @@ You can use multiple of these together, for their different purposes.
 
 These are also sometimes referred to as "helper libraries".
 
-- #figure(link("https://github.com/zeux/volk")[Volk], kind: "link", supplement: "link")<volk>: Dynamically load Vulkan functions at startup-time, instead of linking with Vulkan at compile-time. It may be faster than loading them trough the driver.
+- #link("https://github.com/zeux/volk")[Volk]: Dynamically load Vulkan functions at startup-time, instead of linking with Vulkan at compile-time. It may be faster than loading them trough the driver.
   Many Vulkan examples use this library, because it is very small and easy to use. Many other helper libraries also optionally integrate with it.
-- #figure(link("https://github.com/charles-lunarg/vk-bootstrap")[vk-bootstrap], kind: "link", supplement: "link")<vkb>: Helps with the initialization of Vulkan, by providing a set of functions that set up the most common things.
-- AMD's #figure(link("https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator")[Vulkan Memory Allocator], kind: "link", supplement: "link")<vma>: Abstracts away many parts of Vulkan's memory management,
+- #link("https://github.com/charles-lunarg/vk-bootstrap")[vk-bootstrap]: Helps with the initialization of Vulkan, by providing a set of functions that set up the most common things.
+- AMD's #link("https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator")[Vulkan Memory Allocator]: Abstracts away many parts of Vulkan's memory management,
   and provides a simple interface for allocating and freeing memory for specific tasks.
 
 ==== Evaluation
