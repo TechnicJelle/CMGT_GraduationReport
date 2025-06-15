@@ -861,7 +861,7 @@ The prototypes I made can be found on GitHub, under the Rythe Interactive organi
 https://github.com/Rythe-Interactive/LLRI2-Experiments
 
 You can see the prototypes in action on YouTube:
-//TODO: Insert a YouTube link to a video that shows the prototypes in action.
+https://youtu.be/a92zA46ItHg
 
 
 #pagebreak()
