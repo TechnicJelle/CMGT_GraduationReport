@@ -596,17 +596,17 @@ The GPU Driver version was 570.144.\
 #import "Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/table.typ": table002
 #figure(
 	table002,
-	caption: [Statistics from when the wait calls were included]
+	caption: [Statistics of run #sym.hash​002 of the performance tests]
 ) <att002_table>
 
 #figure(
 	image("Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/plot.svg"),
-	caption: [Line plot of the frametimes from when the wait calls were included]
+	caption: [Line plot of the frametimes of run #sym.hash​002 of the performance tests]
 ) <att002_plot>
 
 #figure(
 	image("Plots/Output/Attempt 002 - No more WaitDevice, Closed Everything/hist.svg"),
-	caption: [Histogram of the frametimes from when the wait calls were included]
+	caption: [Histogram of the frametimes of run #sym.hash​002 of the performance tests]
 ) <att002_hist>
 
 
@@ -616,17 +616,17 @@ The GPU Driver version was 570.144.\
 #import "Plots/Output/Attempt 003 - Same as 002, but again/table.typ": table003
 #figure(
 	table003,
-	caption: [Statistics from when the wait calls were included]
+	caption: [Statistics of run #sym.hash​003 of the performance tests]
 ) <att003_table>
 
 #figure(
 	image("Plots/Output/Attempt 003 - Same as 002, but again/plot.svg"),
-	caption: [Line plot of the frametimes from when the wait calls were included]
+	caption: [Line plot of the frametimes of run #sym.hash​003 of the performance tests]
 ) <att003_plot>
 
 #figure(
 	image("Plots/Output/Attempt 003 - Same as 002, but again/hist.svg"),
-	caption: [Histogram of the frametimes from when the wait calls were included]
+	caption: [Histogram of the frametimes of run #sym.hash​003 of the performance tests]
 ) <att003_hist>
 
 
@@ -636,17 +636,17 @@ The GPU Driver version was 570.144.\
 #import "Plots/Output/Attempt 004 - Same again/table.typ": table004
 #figure(
 	table004,
-	caption: [Statistics from when the wait calls were included]
+	caption: [Statistics of run #sym.hash​004 of the performance tests]
 ) <att004_table>
 
 #figure(
 	image("Plots/Output/Attempt 004 - Same again/plot.svg"),
-	caption: [Line plot of the frametimes from when the wait calls were included]
+	caption: [Line plot of the frametimes of run #sym.hash​004 of the performance tests]
 ) <att004_plot>
 
 #figure(
 	image("Plots/Output/Attempt 004 - Same again/hist.svg"),
-	caption: [Histogram of the frametimes from when the wait calls were included]
+	caption: [Histogram of the frametimes of run #sym.hash​004 of the performance tests]
 ) <att004_hist>
 
 
@@ -737,17 +737,17 @@ because the SDL GPU program was _significantly_ faster than the Vulkan program, 
 #import "Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/table.typ": table001
 #figure(
 	table001,
-	caption: [Statistics from when the wait calls were included]
+	caption: [Statistics of run #sym.hash​001 of the performance tests, from when the wait calls were included]
 ) <att001_table>
 
 #figure(
 	image("Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/plot.svg"),
-	caption: [Line plot of the frametimes from when the wait calls were included]
+	caption: [Line plot of the frametimes of run #sym.hash​001 of the performance tests, from when the wait calls were included]
 ) <att001_plot>
 
 #figure(
 	image("Plots/Output/Attempt 001 - WaitDevice, IDE Open, Right after first compile/hist.svg"),
-	caption: [Histogram of the frametimes from when the wait calls were included]
+	caption: [Histogram of the frametimes of run #sym.hash​001 of the performance tests, from when the wait calls were included]
 ) <att001_hist>
 
 Without those two wait calls, they were about the same speed.
