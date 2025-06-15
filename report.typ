@@ -40,29 +40,33 @@ How to Write an Abstract_
 Explanation of some (technical) terms, for people who don't know them yet.
 These aren't explained in-text, to not disrupt the flow of the text for people who do actually understand the terms.
 #v(1em)
-- *Architecture*:
-- *Acceleration Device:* a hardware device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
+- *Architecture:* Way a program is structured, and how the different parts of it interact with each other.
+- *CPU:* Central Processing Unit. The main processor of a computer, which is responsible for executing most of the instructions.
+- *Acceleration Device:* Hardware device that is specialized in a specific (type of) operation, to make that type of work faster than a general purpose device would be able to do.
 - *GPU:* Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
 - *API:* Application Programming Interface. The "rules"/"contract" that a certain programming system offers; usually a set of functions that are able to be called by the programmer.
-- *OpenGL:* absolutely ancient GPU API.
-- *Low-level:* Offers a lot of control, at the cost of complexity. Is close to the hardware. //TODO: Improve this later
-- *High-level:* Offers little control, but is often simpler #footnote[But _not_ necessarily easier]. Is far from the hardware. //TODO: Improve this later
-- *Performance (Performant)*:
-- *Flexible:*
-- *Multi-threading:*
-- *Boilerplate:*
-- *Parallel:*
-- *Abstraction:*
-- *Wrapper:*
-- *Verbose:*
-- *Obtuse:*
-- *Compile-time:*
-- *Startup-time:*
-- *Run-time:*
-- *(Game) Console*:
-- *Operating System:*
-- *Vulkan:* newer API than OpenGL, made to be similarly cross-platform as OpenGL, but much more low-level, to allow more control to the users. Technically not a GPU API, but an Acceleration Device API.
-- *paradigm:* style / way of doing things
+- *Low-level:* Offers a lot of control, at the cost of complexity. Is "closer" to the hardware, and thus can be very performant if used correctly.
+- *High-level:* Offers little control, but is often simpler #footnote[but *not* necessarily _easier_] to use. Is "further away" from the hardware, and thus can be less performant, due to less optimization potential.
+- *Performance (Performant):* How fast a program is able to do its work, and how much resources it uses to do so.
+- *Flexible:* How easy it is to change a program to do something else, or to add new features to it.
+- *Parallel:* The process of doing multiple things at the same time, in parallel.
+- *Multi-threading:* Specific way to run things in parallel, by using multiple threads on the CPU.
+- *Boilerplate:* Code that is needed to set up something, but does not actually do anything on its own.
+- *Abstraction:* Process of making something more general, by removing some details that are not relevant for the current context.
+- *Wrapper:* Library that wraps around another library or API, to make it easier to use, or to add some extra functionality.
+- *Initialization:* Process of setting up something. In the context of this report, usually means setting up the GPU API, so that it is ready to be used.
+- *Barrier:* Synchronization point in the GPU pipeline, where the GPU waits for all previous operations to finish before continuing.
+- *Verbose:* Programming style that is very explicit and detailed, that requires a lot of code to do something.
+- *Obtuse:* Programming style that is very difficult to understand, or that requires a lot of effort to understand.
+- *At compile-time:* Moment when the code is compiled, before it is run. This only needs to happen once, ever.
+- *At startup-time:* Moment when the program is started, after it has been compiled. This happens every time the program is run.
+- *At run-time:* Moment(s) when the program is actually running, after it has been started. This can happen multiple times, during the program's execution.
+- *Proprietary:* Software or hardware that is owned by a specific company, and is not open source or open hardware. Often requires a license to use.
+- *Cross-platform:* Being able to run on multiple different platforms.
+- *NDA:* Non-Disclosure Agreement. A legal contract that prevents the parties involved from disclosing certain information to third parties. Often used to protect proprietary software and hardware.
+- *(Game) Console:* Specialized computer that is designed to run games, and usually has a custom, proprietary GPU API that you have to sign an NDA to get access to.
+- *Operating System:* Software that manages the hardware and software resources of a computer, and provides services for computer programs. Examples are Windows, macOS, Linux, Android, and iOS.
+- *Paradigm:* Style/way of doing things
 
 #pagebreak()
 
