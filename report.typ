@@ -775,8 +775,7 @@ Hence, I removed those wait calls again from both programs for the actual perfor
 #if show_tips_from_manual [
 _At the end of your report, you will include a self-reflection, containing what you consider your strong points
 and what aspects need to be strengthened as a young professional, and how you would position yourself in
-the industry. It’s valuable to not only look back but also ahead to the industry you will soon enter. Please
-note that you will have to move the self-reflection to the annexes before posting it on Post it_
+the industry. It’s valuable to not only look back but also ahead to the industry you will soon enter._
 ]
 
 Due to many circumstances, both personal and external,
