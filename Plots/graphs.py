@@ -15,6 +15,7 @@ dataDir = pathlib.Path("Data")
 outputDir = pathlib.Path("Output")
 outputDir.mkdir(parents=True, exist_ok=True)
 alpha = 0.9
+figSize = (8, 5)
 
 tableTemplate = """
 #let table{att} = [
@@ -61,49 +62,51 @@ for attemptDir in dataDir.iterdir():
 		sdl3_gpu__data = np.loadtxt(attemptDir / "LLRI2_Experiments_SDL3_GPU_frameTimes.txt") / 1000  # Convert to microseconds
 		vulkan_helpers__data = np.loadtxt(attemptDir / "LLRI2_Experiments_Vulkan_Helpers_frameTimes.txt") / 1000  # Convert to microseconds
 
-		#### Histogram
-		plt.figure(figsize=(10, 6))
+		# Histogram
+		plt.figure(figsize=figSize)
 		bins = np.logspace(np.log10(75), np.log10(2000), 500)
-		p = plt.hist(vulkan, bins=bins, label='Vulkan Helpers', alpha=0.9)
-		q = plt.hist(sdl3[sdl3 < 4000], bins=bins, label='SDL3 GPU', alpha=0.9)
+		sdl3_gpu__plot = plt.hist(sdl3_gpu__data[sdl3_gpu__data < 4000], bins=bins, label='SDL3 GPU', alpha=alpha)
+		vulkan_helpers__plot = plt.hist(vulkan_helpers__data, bins=bins, label='Vulkan Helpers', alpha=alpha)
 
-		max_vulk = p[1][np.argmax(p[0])]
-		max_sdl3 = q[1][np.argmax(q[0])]
+		sdl3_gpu__max = sdl3_gpu__plot[1][np.argmax(sdl3_gpu__plot[0])]
+		vulkan_helpers__max = vulkan_helpers__plot[1][np.argmax(vulkan_helpers__plot[0])]
 
-		plt.axvline(max_vulk, ls='--', alpha=0.3, color='black')
-		plt.axvline(max_sdl3, ls='--', alpha=0.3, color='black')
-		
-		plt.annotate(f'Peak Vulkan\n{max_vulk:.1f} µs',
-		             xy=(max_vulk, max(p[0]) * 0.95),
-		             xytext=(10, 10),
-		             textcoords='offset points',
-		             arrowprops=dict(arrowstyle='->', lw=0.5),
-		             fontsize=9,
-		             ha='left')
-		
-		plt.annotate(f'Peak SDL3\n{max_sdl3:.1f} µs',
-		             xy=(max_sdl3, max(q[0]) * 0.95),
-		             xytext=(10, -30),
-		             textcoords='offset points',
-		             arrowprops=dict(arrowstyle='->', lw=0.5),
-		             fontsize=9,
-		             ha='left')
-		
+		plt.axvline(vulkan_helpers__max, ls='--', alpha=0.3, color='black')
+		plt.axvline(sdl3_gpu__max, ls='--', alpha=0.3, color='black')
+
+		plt.annotate(f'Peak SDL3\n{sdl3_gpu__max:.1f} µs',
+					 xy=(sdl3_gpu__max, max(sdl3_gpu__plot[0]) * 0.95),
+					 xytext=(25, -15),
+					 textcoords='offset points',
+					 arrowprops=dict(arrowstyle='->', lw=0.5),
+					 fontsize=9,
+					 ha='left')
+
+		plt.annotate(f'Peak Vulkan\n{vulkan_helpers__max:.1f} µs',
+					 xy=(vulkan_helpers__max, max(vulkan_helpers__plot[0]) * 0.95),
+					 xytext=(-10, -30),
+					 textcoords='offset points',
+					 arrowprops=dict(arrowstyle='->', lw=0.5),
+					 fontsize=9,
+					 ha='right')
+
 		legend = plt.legend(labelcolor="linecolor")
 		legend.get_frame().set_alpha(None)
 		plt.xlabel("µs/frame")
 		plt.ylabel("occurrences")
 
 		plt.xscale("log")
-		plt.title("Frametimes (lower is better)")
+		plt.yscale("log")
+		plt.title("Frametimes: Histogram (More to the left is better)")
 		plt.tight_layout()
 		plt.savefig(attemptOutputDir / "hist.svg")
 		plt.close()
 
-		##### Line plot
-		plt.figure(figsize=(10, 6))
-		plt.plot(sdl3_gpu__data, linewidth=0.2, label="SDL3 GPU", alpha=alpha)
-		plt.plot(vulkan_helpers__data, linewidth=0.2, label="Vulkan Helpers", alpha=alpha)
+		# Line plot
+		plt.figure(figsize=figSize)
+		linewidth = 0.1
+		plt.plot(sdl3_gpu__data, linewidth=linewidth, label="SDL3 GPU", alpha=alpha)
+		plt.plot(vulkan_helpers__data, linewidth=linewidth, label="Vulkan Helpers", alpha=alpha)
 		legend = plt.legend(labelcolor="linecolor")
 		legend.get_frame().set_alpha(None)
 		plt.xlabel("frame")
@@ -114,7 +117,7 @@ for attemptDir in dataDir.iterdir():
 			handle.set_linewidth(4)
 
 		plt.yscale("log")
-		plt.title("Frametimes (lower is better")
+		plt.title("Frametimes: Line Plot (Lower is better)")
 		plt.tight_layout()
 		plt.savefig(attemptOutputDir / "plot.svg")
 		plt.close()
