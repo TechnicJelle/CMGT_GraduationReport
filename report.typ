@@ -584,20 +584,29 @@ if you want to follow them closely, because they pack a lot of functionality int
 
 There is sadly also no full guide, yet, like LearnOpenGL @learnopengl, Vulkan Tutorial @vulkan-tutorial, or VkGuide @vkguide.
 
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter00.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​00​])
+
 Nevertheless, I managed to get a triangle on screen pretty quickly, after which I started adding more features.
 
 The first iteration of this was a simple RGB triangle, where its vertices were hardcoded in the vertex shader.
 This is of course not very useful, so I added a vertex buffer, and then an index buffer as well,
 with which I changed the triangle to a quad.
 
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter01a.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​01a​])
+
 For this, I needed to create a "transfer buffer", which is a special type of buffer that is used to transfer data to the GPU.
 The memory of this buffer is accessible from both the CPU and GPU, so the data can be written to it from the CPU,
 and then the GPU can read it into its own private memory region, which is faster than the shared region.
+
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter01b.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​01b​],)
+
 
 In the second iteration, I added a texture to the quad, by loading the image file from disk, and then adding those bytes to the transfer buffer.
 The texture coordinates also had to be added to the vertex buffer, so that the GPU knows where the texture goes onto the quad.
 I also had to manually create a sampler, which is a special object that tells the GPU _how_ to sample the texture,
 like what filtering to use, whether to repeat the texture or clamp it to the edges, and the mipmapping.
+
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter02.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​02​])
 
 In the third iteration, I wanted to make the quad spin in 3D space. For this, I needed some matrices and other assorted 3D maths.
 The matrices would be passed to the shaders as uniform buffers.
@@ -610,9 +619,13 @@ We also had to fix some compiler warnings and errors, because the RSL had not re
 Small bugs in the RSL were a common occurrence throughout this project, but every time I reported one, Glyn fixed it very quickly.
 This way, not only the LLRI got better, but also the RSL itself.
 
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter03.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​03​])
+
 Once I had the quad spinning in 3D space, it was time for the fourth iteration, which was to make it render a 3D model loaded from disk, instead of a hardcoded model.
 For this, I used Assimp, which is a very commonly used library for loading 3D models, but I had not used it before.
 It ended up being relatively easy to use, and I was able to load the data into the transfer buffer, and then render it with the same vertex and index buffers as before.
+
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter04.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​04​])
 
 At this point, it was almost done, but there was one glaring issue: some faces were shining through other faces that were supposed to be in front of them.
 This was due to the lack of a depth buffer, which is used to determine which faces are in front of which.
@@ -622,6 +635,10 @@ but it does not do that for the depth buffer, because that is a GPU resource mad
 And because the swapchain image and depth buffer image were not the same size anymore, the program crashed.
 The solution to this was to recreate the depth buffer every time the depth buffer's size is different from the swapchain image size.
 
+#figure(image("Images/Implementation Steps/SDL3_GPU/iter05.png"), caption: [Screenshot of the SDL3\_GPU Prototype, Iteration #sym.hash​05​])
+
+
+#pagebreak()
 == Vulkan with Helper Libraries Prototype
 
 After I was in a nice place with the SDL3 prototype, I started working on the Vulkan prototype.
@@ -651,6 +668,8 @@ Luckily, I could reuse a lot of the code I had written for the first iteration. 
 It took a few more times of deviating from the guide, and then going back to the start to fix it,
 before I had learnt my lesson to not deviate too much from the guide. I could refactor _later_, if I had the time.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter01.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​01​])
+
 There was also a strange bug that the Vulkan Validation Layers suddenly started complaining about,
 from one day to the next, without me having changed anything.
 Except I had: I had updated my system, which came with a new version of the Vulkan SDK, with new validations.
@@ -670,6 +689,8 @@ This was the first time I had ever used compute shaders, so it was a very intere
 I quite like them! But I do wonder how useful it was to start with compute, instead of normal graphics.
 This was the second iteration of this prototype.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter02.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​02​])
+
 For the third iteration, the guide made integrate the Dear ImGui library,
 which is a very popular GUI library for C++ that allows you to make debug tools and other GUIs very quickly.
 I also added something called "Push Constants" which were an entirely new concept to me.
@@ -677,11 +698,17 @@ They are a mechanism to pass tiny amounts of data to shaders, that is often fast
 due to the drivers having a special fast path for them.
 With these Push Constants, I could change the color of the gradient in the compute shader, through the Dear ImGui GUI.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter03.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​03​])
+
 For the fourth iteration, I added multiple compute shaders, which you could switch between with Dear ImGui.
 This taught me how to handle multiple compute pipelines, and how to switch between them.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter04.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​04​])
+
 After that, I finally was able to start with the graphics part of the guide, in the fifth iteration.
 I created the triangle, hardcoded in the vertex shader again, but it was on screen!
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter05.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​05​])
 
 In the sixth iteration, I added a vertex buffer, and then an index buffer, to make it a quad made up of two triangles.
 It didn't work as I had expected, though, because it uses a different way to access the vertex data in the vertex shader than I am used to.
@@ -689,10 +716,16 @@ Instead of the vertex data being an `in` parameter of the vertex shader,
 it sends a reference to the vertex buffer to the shader through a push constant,
 and then the shader accesses the vertex data for that specific vertex through that reference, like it's indexing an array.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter06.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​06​])
+
 Now that I had that working, it was relatively easy to adapt the model loading from the SDL3 prototype to this one for the seventh iteration.
 I also reworked some of the `#include`s, because I was getting some complicated errors regarding them and my usage of libraries.
 It had something to do with other libraries including `vulkan/vulkan.h`, which should not be done, because I was using `volk.h` instead of that.
-I also added a depth buffer at the same time, which was actually really similar to how it was done in the SDL3 prototype.
+I also added a depth buffer and the transformation matrices at the same time, which was actually really similar to how it was done in the SDL3 prototype.
+I even added an ImGui window that allows you to change the position and FOV of the camera, which isn't something that the SDL3 prototype had.
+The colours of the 3D model were generated randomly, per vertex.
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter07.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​07​])
 
 For the eighth iteration, it was time to add window resizing.
 This was of course not as simple as it was in the SDL3 prototype, because in Vulkan, you have to recreate the swapchain yourself.
@@ -707,8 +740,14 @@ So by just moving those four lines of code from the `InitSyncStructures()` funct
 it worked again! I reported back to the kind people who helped me,
 and it seemed like this issue was also pretty common, which was a bit of a relief.
 
+I also experimented with different blending modes, which is why the 3D model now looks transparent.
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter08.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​08​])
+
 In the ninth iteration, I addded image textures to the 3D model, which was also pretty similar to how it was done in the SDL3 prototype.
 Except with more manual work, of course.
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter09.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​09​])
 
 From here, I went off the rails of the guide, and started going towards my own goal.
 I had a funny idea that I wanted to try.
@@ -716,6 +755,8 @@ I had a funny idea that I wanted to try.
 But for that idea, I first needed a lot of extra functionality that the guide did not cover.
 So for the tenth iteration, I started by adding a new background effect to the compute shaders.
 One that sampled an image texture. I reused one of the textures that was already loaded in GPU memory anyway: the one of the 3D model.
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter10.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​10​])
 
 For the eleventh iteration, I generated a random texture on the CPU, which I uploaded to the GPU, to be displayed in the background.
 
@@ -726,13 +767,15 @@ After a break, I got the idea to include the image data in the swapchain's Frame
 This does cost more memory because now the image needs to be stored multiple times, for each frame in the swapchain,
 but it made things a lot more stable.
 
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter11-12.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iterations #sym.hash​11​ and #sym.hash​12​])
+
 And for the last, and thirteenth iteration, I pulled off the coolest trick of all:
 I ported Doom (1993) to it!
-This required an extreme amount of work, even _with_ the #link("https://github.com/ozkl/doomgeneric")["doomgeneric"] project
+This required an extreme amount of work, even _with_ the "#link("https://github.com/ozkl/doomgeneric")[doomgeneric]" project
 that I had found that is specifically made to be easily ported.
 I had to first integrate that project into my build system, which took a lot of effort, because it was written in a very old style of C,
 and my project is written using very modern C++.
-But after a lot of headscratching, and making concessions, I finally got it to build and compile!
+But after a lot of headscratching, and making concessions (like switching to a different compiler), I finally got it to build and compile!
 
 But this was only step 1. After that, I had to implement its interfaces on my own code.
 Most of that was super simple, because it's all handled by the windowing and input library I was using (SDL3).
@@ -747,6 +790,8 @@ Except doomgeneric is in C, and my functions are in C++.
 After a lot of searching, I found out that I could use `extern "C"` to make my C++ functions callable from C code.
 And after all that, it finally worked!
 I had Doom running in my Vulkan program!
+
+#figure(image("Images/Implementation Steps/Vulkan_Helpers/iter13.png"), caption: [Screenshot of the Vulkan\_Helpers Prototype, Iteration #sym.hash​13​])
 
 
 #pagebreak()
