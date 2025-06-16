@@ -15,7 +15,7 @@ dataDir = pathlib.Path("Data")
 outputDir = pathlib.Path("Output")
 outputDir.mkdir(parents=True, exist_ok=True)
 alpha = 0.8
-figSize = (8, 5)
+figSize = (7, 5)
 
 tableTemplate = """
 #let table{att} = [
