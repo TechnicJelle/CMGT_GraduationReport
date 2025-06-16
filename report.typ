@@ -632,18 +632,121 @@ But it teaches you how to do everything from scratch, and only teaches Vulkan 1.
 
 There is another popular resource for learning Vulkan, called VkGuide @vkguide, which uses some helper libraries,
 namely Vulkan Memory Allocator and VkBootstrap, but not Volk, so I had to add that myself.
-//TODO: Write more
 
-// Things VkGuide taught me:
-// - No more vertex attributes, vertex pull only.
-// - No renderpasses, dynamic rendering only.
-// - Imgui as part of the main tutorial.
-// - Loading entire glTF scenes from blender and rendering them at high performance in a fully dynamic way.
-// - The first draw operations are done through compute shaders, demonstrating them.
-// - Window resizing.
-// - Vertex buffers are done through Buffer Device Address, no binding needed
-// - Descriptor set abstractions in the main tutorial
-// Source: https://www.reddit.com/r/vulkan/comments/18sxbto/vkguide_new_version_released_with_a_complete/
+That guide gives out a startup template, from which you're expected to follow along. I did not do that,
+because I wanted to do it my own way: putting everything into a single file.
+It had worked for the SDL3 prototype, so why not for this one?
+
+Naturally, this ended up not being a great idea, because it became way too cluttered and messy.
+
+I also had skipped some steps that I thought were not important, like the compute shaders and the Dear ImGui integration.
+However, halfway through the graphics chapter, it kept referring to functions I did not have,
+that were written in the earlier chapters that I had skipped.
+
+So I went back to the start of the guide, and replicated the most important parts of the startup template,
+and then followed along with the guide more closely from that point onwards.
+
+Luckily, I could reuse a lot of the code I had written for the first iteration. I just had to move it into the right places.
+
+It took a few more times of deviating from the guide, and then going back to the start to fix it,
+before I had learnt my lesson to not deviate too much from the guide. I could refactor _later_, if I had the time.
+
+There was also a strange bug that the Vulkan Validation Layers suddenly started complaining about,
+from one day to the next, without me having changed anything.
+Except I had: I had updated my system, which came with a new version of the Vulkan SDK, with new validations.
+I started researching, and found out that this was a very common mistake to make with Vulkan,
+and that almost everyone had been doing it wrong.
+I saw that someone else who had been following the VkGuide had the same issue,
+on #link("https://github.com/vblanco20-1/vulkan-guide/issues/149")[the GitHub Issue tracker for the guide].
+I responded that I had the same issue, and with some more info, and continue to investigate it.
+This is when I found out that this issue was so common.
+I then found a tweet from someone who claimed to have reported this issue ages ago.
+The comments there linked to a repository that had implemented a fix for the issue, which I was able to adapt to my own code.
+Of course I responded on the GitHub Issue tracker with this solution, so that others could benefit from it, too.
+
+The guide did not start by making a triangle, like most graphics programming tutorials do,
+but instead started with a compute shader that fills the entire screen with a gradient, based on the pixel coordinates.
+This was the first time I had ever used compute shaders, so it was a very interesting experience.
+I quite like them! But I do wonder how useful it was to start with compute, instead of normal graphics.
+This was the second iteration of this prototype.
+
+For the third iteration, the guide made integrate the Dear ImGui library,
+which is a very popular GUI library for C++ that allows you to make debug tools and other GUIs very quickly.
+I also added something called "Push Constants" which were an entirely new concept to me.
+They are a mechanism to pass tiny amounts of data to shaders, that is often faster than using uniform buffers,
+due to the drivers having a special fast path for them.
+With these Push Constants, I could change the color of the gradient in the compute shader, through the Dear ImGui GUI.
+
+For the fourth iteration, I added multiple compute shaders, which you could switch between with Dear ImGui.
+This taught me how to handle multiple compute pipelines, and how to switch between them.
+
+After that, I finally was able to start with the graphics part of the guide, in the fifth iteration.
+I created the triangle, hardcoded in the vertex shader again, but it was on screen!
+
+In the sixth iteration, I added a vertex buffer, and then an index buffer, to make it a quad made up of two triangles.
+It didn't work as I had expected, though, because it uses a different way to access the vertex data in the vertex shader than I am used to.
+Instead of the vertex data being an `in` parameter of the vertex shader,
+it sends a reference to the vertex buffer to the shader through a push constant,
+and then the shader accesses the vertex data for that specific vertex through that reference, like it's indexing an array.
+
+Now that I had that working, it was relatively easy to adapt the model loading from the SDL3 prototype to this one for the seventh iteration.
+I also reworked some of the `#include`s, because I was getting some complicated errors regarding them and my usage of libraries.
+It had something to do with other libraries including `vulkan/vulkan.h`, which should not be done, because I was using `volk.h` instead of that.
+I also added a depth buffer at the same time, which was actually really similar to how it was done in the SDL3 prototype.
+
+For the eighth iteration, it was time to add window resizing.
+This was of course not as simple as it was in the SDL3 prototype, because in Vulkan, you have to recreate the swapchain yourself.
+But even after following the guide _exactly_, it still did not work. It kept segfaulting on the `vkQueueSubmit2` call.
+I had a sinking feeling that it had to do with my earlier fix for the issue with the guide.
+I spent many, many hours trying to figure out what was going wrong, but I could not find it.
+So I turned to ask for help in the Vulkan Discord server, and very quickly got a response.
+After a bit of back and forth, that consisted mostly of me learning new terms, I got an idea!
+I double checked my code, and indeed, I was only creating the `readyForPresentSemaphores` once, at the start of the program,
+while they should be created every time the swapchain is recreated.
+So by just moving those four lines of code from the `InitSyncStructures()` function to the `CreateSwapchain()` function,
+it worked again! I reported back to the kind people who helped me,
+and it seemed like this issue was also pretty common, which was a bit of a relief.
+
+In the ninth iteration, I addded image textures to the 3D model, which was also pretty similar to how it was done in the SDL3 prototype.
+Except with more manual work, of course.
+
+From here, I went off the rails of the guide, and started going towards my own goal.
+I had a funny idea that I wanted to try.
+
+But for that idea, I first needed a lot of extra functionality that the guide did not cover.
+So for the tenth iteration, I started by adding a new background effect to the compute shaders.
+One that sampled an image texture. I reused one of the textures that was already loaded in GPU memory anyway: the one of the 3D model.
+
+For the eleventh iteration, I generated a random texture on the CPU, which I uploaded to the GPU, to be displayed in the background.
+
+For the twelfth iteration, I made that image texture regenerate every single frame, and upload to the GPU every single frame.
+This required a lot of care, to not leak memory, and to ensure that the order of things is correct.
+I cannot just edit the image data that the GPU is currently reading from.
+After a break, I got the idea to include the image data in the swapchain's FrameData.
+This does cost more memory because now the image needs to be stored multiple times, for each frame in the swapchain,
+but it made things a lot more stable.
+
+And for the last, and thirteenth iteration, I pulled off the coolest trick of all:
+I ported Doom (1993) to it!
+This required an extreme amount of work, even _with_ the #link("https://github.com/ozkl/doomgeneric")["doomgeneric"] project
+that I had found that is specifically made to be easily ported.
+I had to first integrate that project into my build system, which took a lot of effort, because it was written in a very old style of C,
+and my project is written using very modern C++.
+But after a lot of headscratching, and making concessions, I finally got it to build and compile!
+
+But this was only step 1. After that, I had to implement its interfaces on my own code.
+Most of that was super simple, because it's all handled by the windowing and input library I was using (SDL3).
+However, naturally, the tricky part was the rendering.
+Luckily, the work I had done in the previous iterations of this prototype had already prepared me for this,
+so it ultimately did not take that much more code to get it working.
+However, the doomgeneric framework requires control over the main game loop, which I initially did not have,
+because I was using a special feature of SDL3 that automatically handles the main game loop for you in a super cross-platform way.
+So I had to give up on that, and implement the main loop like how doomgeneric needed it to be.
+Then the last issue was that the doomgeneric needs to call my custom functions.
+Except doomgeneric is in C, and my functions are in C++.
+After a lot of searching, I found out that I could use `extern "C"` to make my C++ functions callable from C code.
+And after all that, it finally worked!
+I had Doom running in my Vulkan program!
 
 
 #pagebreak()
