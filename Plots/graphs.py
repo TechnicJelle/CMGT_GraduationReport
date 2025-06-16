@@ -14,7 +14,7 @@ plt.rcParams.update({
 dataDir = pathlib.Path("Data")
 outputDir = pathlib.Path("Output")
 outputDir.mkdir(parents=True, exist_ok=True)
-alpha = 0.9
+alpha = 0.8
 figSize = (8, 5)
 
 tableTemplate = """
@@ -23,7 +23,8 @@ tableTemplate = """
 *SDL3 GPU*
 
 Average: {a0} µs/frame\\
-Standard Deviation: {b0} µs/frame
+Standard Deviation: {b0} µs/frame\\
+Average frame-to-frame deviation: {c0} µs/frame
 
 #table(
 	columns: 3,
@@ -38,7 +39,8 @@ Standard Deviation: {b0} µs/frame
 *Vulkan Helpers*
 
 Average: {d0} µs/frame\\
-Standard Deviation: {e0} µs/frame
+Standard Deviation: {e0} µs/frame\\
+Average frame-to-frame deviation: {f0} µs/frame
 
 #table(
 	columns: 3,
@@ -127,6 +129,8 @@ for attemptDir in dataDir.iterdir():
 		vulkan_helpers__average = np.average(vulkan_helpers__data).astype(int)
 		sdl3_gpu__standard_deviation = np.std(sdl3_gpu__data).astype(int)
 		vulkan_helpers__standard_deviation = np.std(vulkan_helpers__data).astype(int)
+		sdl3_gpu__frame_to_frame_deviation = np.mean(np.abs(np.diff(sdl3_gpu__data))).astype(int)
+		vulkan_helpers__frame_to_frame_deviation = np.mean(np.abs(np.diff(vulkan_helpers__data))).astype(int)
 		sdl3_gpu__highs = np.percentile(sdl3_gpu__data, [99, 99.9, 99.99]).astype(int)
 		sdl3_gpu__lows = np.percentile(sdl3_gpu__data, [1, 0.1, 0.01]).astype(int)
 		vulkan_helpers__highs = np.percentile(vulkan_helpers__data, [99, 99.9, 99.99]).astype(int)
@@ -134,14 +138,18 @@ for attemptDir in dataDir.iterdir():
 
 		table = tableTemplate.format(
 			att=attemptNumber,
-			a0=sdl3_gpu__average, d0=vulkan_helpers__average,
-			b0=sdl3_gpu__standard_deviation, e0=vulkan_helpers__standard_deviation,
-			a1=sdl3_gpu__highs[0], a2=vulkan_helpers__highs[0],
-			b1=sdl3_gpu__highs[1], b2=vulkan_helpers__highs[1],
-			c1=sdl3_gpu__highs[2], c2=vulkan_helpers__highs[2],
-			d1=sdl3_gpu__lows[0], d2=vulkan_helpers__lows[0],
-			e1=sdl3_gpu__lows[1], e2=vulkan_helpers__lows[1],
-			f1=sdl3_gpu__lows[2], f2=vulkan_helpers__lows[2]
+			a0=sdl3_gpu__average,
+			b0=sdl3_gpu__standard_deviation,
+			c0=sdl3_gpu__frame_to_frame_deviation,
+			a1=sdl3_gpu__highs[0], a2=sdl3_gpu__lows[0],
+			b1=sdl3_gpu__highs[1], b2=sdl3_gpu__lows[1],
+			c1=sdl3_gpu__highs[2], c2=sdl3_gpu__lows[2],
+			d0=vulkan_helpers__average,
+			e0=vulkan_helpers__standard_deviation,
+			f0=vulkan_helpers__frame_to_frame_deviation,
+			d1=vulkan_helpers__highs[0], d2=vulkan_helpers__lows[0],
+			e1=vulkan_helpers__highs[1], e2=vulkan_helpers__lows[1],
+			f1=vulkan_helpers__highs[2], f2=vulkan_helpers__lows[2],
 		)
 		with open(attemptOutputDir / "table.typ", "w") as f:
 			f.write(table)

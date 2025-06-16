@@ -28,8 +28,31 @@ iterations you made, and your conclusions and recommendations. You can use the g
 How to Write an Abstract_
 ]
 
-\/\/TODO
+In this report, I describe the assignment I did for my Graduation Internship at Rythe Interactive,
+namely to create the prototype for the rewrite of GPU API abstraction layer for the Rythe Game Engine,
+the Rythe Low Level Rendering Interface (LLRI).
 
+This project was focused on finding the best way to create a new modern and flexible, yet not too verbose GPU API abstraction layer,
+that is cross-platform and can be used for both Graphics and Compute.
+
+I first did theoretical research into existing GPU APIs and abstraction layers, and through that,
+I found that the Vulkan API is the most cross-platform API available today, and has the most potential for optimization.
+So I decided to use that as the first base for the LLRI2. Later it will cover more GPU APIs.
+With that research, I also found many other existing GPU API abstraction layers, many of which use the same paradigm as Vulkan.
+
+After the theoretical research, and decision to use Vulkan, I did practical research by making multiple prototypes with SDL3's new GPU API,
+and with Vulkan directly (but with some helper libraries).
+I then made both prototypes do the exact same thing: rendering a spinning 3D model with a texture on it.
+Then I benchmarked both prototypes, and compared the results.
+
+From those benchmarks, I found that the SDL3 GPU API is almost as performant as the raw Vulkan API,
+while being much more user-friendly and easier to use.
+But sometimes it is not quite as clear as what is actually happening under the hood,
+which can make it harder to debug and optimize.
+It also does not support all of the latest Vulkan features, like hardware raytracing and bindless resources,
+which the LLRI2 does want to support in the future.
+As such, I propose to use Vulkan (with some helper libraries) for the LLRI2,
+but to use take inspiration from SDL3's GPU API for the API design and usability.
 
 #pagebreak()
 #import "lib/02-toc.typ": toc
@@ -46,28 +69,31 @@ These aren't explained in-text, to not disrupt the flow of the text for people w
 - *GPU:* Graphics Processing Unit. An Acceleration Device that specializes in graphics calculations, but can also be used for more general purpose computing.
 - *API:* Application Programming Interface. The "rules"/"contract" that a certain programming system offers; usually a set of functions that are able to be called by the programmer.
 - *Graphics API:* API that is specifically designed for rendering graphics.
-- *Compute API:* API that is specifically designed for general purpose computing. Often an Acceleration Device, like a GPU.
+- *Compute API:* API that is specifically designed for general purpose computing. Often using an Acceleration Device, like a GPU.
 - *GPU API:* An API that is specifically designed for interfacing with a GPU. Often a combination of a Graphics API and a Compute API. Many older GPU APIs did not have Compute support.
-- *Low-level:* Offers a lot of control, at the cost of complexity. Is "closer" to the hardware, and thus can be very performant if used correctly.
+- *Low-level:* Offers a lot of control, at the cost of complexity. Is "closer" to the hardware, and thus can be very performant if used correctly, because it requires less translation to how the hardware actually works.
 - *High-level:* Offers little control, but is often simpler #footnote[but *not* necessarily _easier_] to use. Is "further away" from the hardware, and thus can be less performant, due to less optimization potential.
 - *Driver:* Software that allows the operating system to communicate with hardware devices, like a GPU.
 - *Performance (Performant):* How fast a program is able to do its work, and how much resources it uses to do so.
 - *Flexible:* How easy it is to change a program to do something else, or to add new features to it.
 - *Parallel:* The process of doing multiple things at the same time, in parallel.
+- *Retro:* Something that is old and outdated. Usually not used anymore, outside of specific communities.
+- *Thread:* Sequence of instructions that can be executed independently of other threads. Threads can run in parallel on a multi-core CPU.
 - *Multi-threading:* Specific way to run things in parallel, by using multiple threads on the CPU.
 - *Boilerplate:* Code that is needed to set up something, but does not actually do anything on its own.
 - *Abstraction:* Process of making something more general, by removing some details that are not relevant for the current context.
 - *Thin Abstraction:* An abstraction that is very close to the original API, and does not hide much of the original API's functionality.
-- *Wrapper:* Library that wraps around another library or API, to make it easier to use, or to add some extra functionality.
+- *Wrapper:* Library that wraps around another library or API, to make it easier to use, to add some extra functionality, to inject extra debugging information or to add additional safety checks.
 - *Initialization:* Process of setting up something. In the context of this report, usually means setting up the GPU API, so that it is ready to be used.
 - *Synchronization:* Process where multiple threads or devices wait for each other to finish their work, before continuing.
-- *Barrier:* Synchronization point in the GPU pipeline, where the GPU waits for all previous operations to finish before continuing.
+- *Barrier:* Synchronization point in the GPU pipeline, where the GPU waits for previous operations to finish before continuing. It doesn't necessarily have to block all operations of all types; you can also specify which types of operations to wait for. This allows multiple operations of the same time to happen without issues.
 - *Verbose:* Programming style that is very explicit and detailed, that requires a lot of code to do something.
 - *Obtuse:* Programming style that is very difficult to understand, or that requires a lot of effort to understand.
-- *At compile-time:* Moment when the code is compiled, before it is run. This only needs to happen once, ever.
-- *At startup-time:* Moment when the program is started, after it has been compiled. This happens every time the program is run.
-- *At run-time:* Moment(s) when the program is actually running, after it has been started. This can happen multiple times, during the program's execution.
-- *Proprietary:* Software or hardware that is owned by a specific company, and is not open source or open hardware. Often requires a license to use.
+- *Compile-time:* Moment when the code is compiled, before it is run. This only needs to happen once, ever.
+- *Startup-time:* Moment when the program is started, after it has been compiled. This happens every time the program is run.
+- *Run-time:* Moment(s) when the program is actually running, after it has been started. This can happen multiple times, during the program's execution. Technically, this includes startup-time, but for the purposes of this report, I consider the two as separate.
+- *Black box:* System or library or API you can use, but not see how it works internally.
+- *Proprietary:* Software or hardware that is owned by a specific company, and is not open source or open hardware. Often requires a license to use. Usually a black box with no transparency for internal workings.
 - *Cross-platform:* Being able to run on multiple different platforms.
 - *NDA:* Non-Disclosure Agreement. A legal contract that prevents the parties involved from disclosing certain information to third parties. Often used to protect proprietary software and hardware.
 - *(Game) Console:* Specialized computer that is designed to run games, and usually has a custom, proprietary GPU API that you have to sign an NDA to get access to.
@@ -138,7 +164,7 @@ The goal of the LLRI is to:
   from the perspective of an engine user, who is implementing new graphics features into their game.
 - Guarantee some safety checks that make it a bit harder for engineers to shoot themselves in the foot
   #footnote[Reference to the famouse quote _#quote("C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.")_ — #cite(<stroustrup-footguns>, form: "prose")],
-  like ensuring that data is in the correct format and commands are sent in the correct order,
+  like ensuring that data is in the correct format and commands are sent in the correct order.
 - Allow enough low level access to not restrict engineers from being able to design their own renderer architecture.
 - Minimise overhead of the abstraction where possible, or at least move as much of it to
   compile-time or startup-time as possible.
@@ -197,10 +223,12 @@ For that reason, OpenGL will not be mentioned much in this report, as it cannot 
 
 *Vulkan* is a very low-level Acceleration Device API. #footnote[For the purposes of this report, I will consider it a GPU API.]
 It was originally designed by researchers at AMD, under the codename "Mantle" @khronos-release-vulkan-1.0.
-It was later donated to the Khronos Group, a consortium of many organizations that focuses on graphics @khronos-about.\
+It was later donated to the Khronos Group, a consortium of many organizations that focuses on graphics @khronos-about,
+who then developed it further into the Vulkan API that we know today.\
 Vulkan is known as the most verbose GPU API, which is often used as ammunition to ridicule it, but being verbose has many advantages.
-It is much clearer about what it actually does, for example, and you have more control over what happens and when.
-This means it allows for a lot of control and thus optimization, at the cost of development effort.
+For example, being verbose means that it is much clearer about what it _actually does_.
+And you also have more control over _what_ happens and _when_, which allows for extra optimization.
+Of course that does come at the cost of development time and effort.
 Vulkan is actually not exactly a GPU API, because it is more of a general-purpose Acceleration Device API.
 GPUs are just one type of Acceleration Device.
 However, for the purposes of this report, I will consider only the GPU aspects of Vulkan.
@@ -212,7 +240,8 @@ It is technically possible to run DirectX on Linux, through compatibility layers
 However, it should be noted that these compatibility layers are not officially supported or endorsed by Microsoft, the developers of DirectX.
 
 *Metal* is for Apple devices, which also don't (natively) support anything else.
-#footnote[Technically, macOS does also support OpenGL, but only an old version (4.1 from 2011 @macos-opengl).
+#footnote[Technically, OpenGL does also work on macOS, but it is deprecated and thus not officially supported anymore.\
+On top of that, it is limited to an older version (4.1 from 2011 @macos-opengl).
 And the latest _normal_ OpenGL version is already old! (4.6 from 2017 @opengl46-release)]\
 However, there is a very popular translation layer for running Vulkan on Apple devices, called MoltenVK.
 MoltenVK is not officially supported by Apple, but it is part of the Khronos Vulkan Portability Initiative @moltenvk-2017.
@@ -274,11 +303,12 @@ because then you would be right back at the original API.
 
 There are many people who have gone before us in making abstraction layers,
 so in this section, I will explore and research some of these GPU API abstraction layers that already exist.
-Many of these abstraction layers use different wildily different programming styles (paradigms), so I have categorised them.
-After that, I will compare them and pick one or a few to actually research practically, which I will do by prototyping with them.
+Many of these abstraction layers use wildly different programming styles (paradigms), so I have categorised them.
+After that, I will compare them and pick one (or a few) to do practical research with.
+That entails making prototypes with them, to get hands-on experience with them, and to see how they work in practice.
 
 I will be discussing the following paradigms:
-Global State Machine, Pipelines and Passes (Mantle-descendants), Partial Abstractions, Rendergraph-based Abstractions, and Scenegraph-based Abstractions.
+Global State Machine, "Pipelines and Passes", Partial Abstractions, Rendergraph-based Abstractions, and Scenegraph-based Abstractions.
 For each I will give a (small) description, list some already-existing implementations of it, and evalute its usefulness for this project.
 
 After the prototyping, I will choose the paradigm to go ahead with for our own abstraction layer.
@@ -306,9 +336,11 @@ This is *extremely* slow, because modern GPUs much prefer chewing through large 
 rather than receiving one single instruction per call.
 
 This is why the newer paradigm introduced buffers. Buffers are large sets of data that are copied to the GPU in one go.
-The instructions of what to do with that data are usually still pretty small and separate calls, though.
+The binding instructions of what to actually do with that data are usually still pretty small and separate calls, though,
+and many are required at the beginning of each frame to set up the correct state for the GPU.
 
-This is what Pipelines and Passes APIs solved by also making the instructions one large dataset, instead of small and separate instructions.
+(This is what Pipelines and Passes APIs solved by encouraging setting up all of that state beforehand in a pipeline.
+Then, at run-time, switching between pipelines is just a single call, instead of many separate ones.)
 
 OpenGL, a really old GPU API #footnote[The last release, 4.6, was in 2017, and it is not in development anymore. @opengl46-release],
 and older versions of DirectX actually were global state machines already @opengl-concepts.
@@ -330,6 +362,7 @@ Immediate-Mode paradigm API:
   Provides a pseudo-OpenGL 1.1 immediate-mode style API, overtop modern OpenGL, with some optimizations, like batching.
   Supports both Graphics and Compute.
 
+#pagebreak()
 Buffer-paradigm APIs:
 - OpenGL Modern (3.0 and later)
 - Direct3D 8 to 11 (12 is a Pipelines and Passes-paradigm API)
@@ -340,40 +373,52 @@ Buffer-paradigm APIs:
 
 These abstractions are too high-level for Rythe, and global state is difficult to work with and reason about.
 Global state machines also don't have enough potential for optimization,
-because it is also nigh-impossible to properly multi-thread, which is a very important aspect of the Rythe Engine.
+because, depending on the specific API, it may be nigh-impossible to straight-up impossible to properly multi-thread.
+This is a problem, because multi-threading is a very important aspect of the Rythe Engine.
 
-#v(3em)
-=== Pipelines and Passes (Mantle-descendants)
+Taking OpenGL, which is the most common API of this paradigm, as an example,
+it is not possible to send commands to the GPU from multiple threads at the same time.
+Engines that use OpenGL usually just have two threads:
+one Game Thread, and one Render Thread on which essentially all OpenGL stuff happens @vkguide-multithreading.
+This definitely helps compared to running everything on a single thread, but is still very much not enough for a modern game engine.
 
-Pipelines and Passes are the two main concepts of "modern" GPU APIs.
-Specifically, they are are APIs that encourage batching big instructions together.
 
+#v(4em)
+=== Pipelines and Passes
+
+Pipelines and Passes are the two main concepts of most "modern" GPU APIs.
+Sadly I was not able to find a better actual term for this paradigm, so I will just call it "Pipelines and Passes".
+
+These APIs encourage batching big instructions together on the CPU, and then sending them to the GPU in one go,
+to reduce the amount of communication between the CPU and GPU, which in turn improves performance.
 "Pipelines" are set up beforehand (rarely at runtime), and contain a lot of static information that doesn't change every frame, like shaders.
-Then during runtime instructions and data are encounded into "command buffers" that are combined into "passes" in one go.
+Then during runtime instructions and data are encoded into "command buffers" that are combined into "passes" in one go.
 Synchronization with the CPU is minimized and explicit, instead of implicit, like many other APIs do (especially older ones, and ones that aren't meant for optimization).
 
-Back in 2016, AMD released an experimental new GPU API called Mantle.
+Back in 2016, AMD released an experimental new GPU API called Mantle @khronos-release-vulkan-1.0.
 This was the first Pipelines and Passes API.
 AMD then donated it to the Khronos Group, who turned it into Vulkan, and continued developing it.
 Khronos is also the main driving force for making it as cross-platform as it is.
 In the meantime, Microsoft and Apple were also inspired by Mantle, and created DirectX 12 and Metal, respectively, based on it.
 
-Pipelines and Passes are also the main concepts of Vulkan (and other modern GPU APIs) itself, so you could call these abstractions "flat abstractions".
+Pipelines and Passes are also the main concepts of Vulkan (and other modern GPU APIs, like DirectX12 and Metal) itself,
+so you could call abstractions that use this same paradigm "flat abstractions".
 With this I mean that these abstractions very closely mirror the original GPU API, except that they are simplified.
 However, they do contain and use the same core principles, namely the Pipelines and Passes paradigm.
 
 ==== Existing implementations
 
-- #link("https://wiki.libsdl.org/SDL3/CategoryGPU")[SDL3's GPU API]. A new GPU API that is meant to be a low-level abstraction of Vulkan, DirectX 12, and Metal,
-  but not _too_ low-level, either, where you spend a lot of time writing meaningless boilerplate. It looked at what is actually commonly used in these APIs,
-  and implemented only that. Supports both Graphics and Compute. It aims to run on as many devices as possible, even consoles.
+- #link("https://wiki.libsdl.org/SDL3/CategoryGPU")[SDL3's GPU API]. A new GPU API that is meant to be a low-level abstraction of Vulkan, DirectX 12, and Metal, and console APIs.
+  But it is not _too_ low-level, either, where you spend a lot of time writing meaningless boilerplate.
+  It looked at what is actually commonly used in these APIs, and implemented only that. Supports both Graphics and Compute.\
+  It aims to run on as many (non-retro) devices as possible, including even consoles!
   This comes at the cost of not supporting many modern GPU features, like hardware raytracing, mesh shaders, and bindless resources.
 - #link("https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API")[WebGPU]: WebGPU is officially a JavaScript API meant for web browsers,
   but there are multiple native implementations of it, like #link("https://github.com/gfx-rs/wgpu")[wgpu-native] and #link("https://dawn.googlesource.com/dawn")[Dawn].
 - #link("https://github.com/floooh/sokol")[Sokol]: A modular, but minimal application framework, of which the "gfx" component is also a "pipelines and passes" abstraction.
   Supports both Graphics and Compute.
   (Ironically enough, this one doesn't _actually_ abstract Vulkan, but _does_ abstract almost all other GPU APIs)
-- Diligent Engine's #link("https://github.com/DiligentGraphics/DiligentCore")[Core]: A GPU Abstraction layer that supports many very platforms.
+- Diligent Engine's #link("https://github.com/DiligentGraphics/DiligentCore")[Core]: A GPU Abstraction layer that supports very many platforms.
 - #link("https://github.com/facebook/igl")[IGL]: A cross-platform GPU abstraction layer by Facebook, mostly developed for their Quest VR headsets.
   It is pretty new.
 - #link("https://github.com/corporateshark/lightweightvk")[LightweightVK]: A "deeply refactored fork" of IGL, which specifically abstracts modern Vulkan,
@@ -400,20 +445,21 @@ WebGPU is almost a nice API, but due to some design decisions and internal polit
 Especially because it's officially only a JavaScript specification,
 which means that the native implementations have to just do their best to resemble it.
 This has not gone very well, and the various native implementations are not very consistent with each other.
-It also prescribes a custom shader language, of which the syntax is very like the Rust programming language,
-which is not very beloved at Rythe.
+It also prescribes a custom shader language, of which the syntax is similar to the Rust programming language,
+the style of which is too different from the style of C/C++ code that the Rythe Engine is written in to be neatly comprehensible together.
 
 However, I really ended up liking SDL3's GPU API. The documentation is excellent, and it is incredibly pleasant to use.
 It still allows for a lot of low-level access, while also being very user-friendly and cross-platform.
 It achieves this by not just abstracting Vulkan, but also DirectX 12 and Metal (and console APIs, as well).
 
-This the paradigm I'll go with for our own abstraction layer, as it is the most flexible, powerful, and efficient.
+This is the paradigm I'll go with for our own abstraction layer, as it is the most flexible, powerful, and efficient.
 
 
 #pagebreak()
 === Partial Abstractions
 
-The abstractions mentioned before abstract the _entire thing_, and (usually) don't allow access to the internals like the raw Vulkan API it is abstracting.
+The abstractions mentioned before are abstractions over the _entire_ underlying API(s)
+and (usually) don't allow access to the internals like the raw Vulkan API it is abstracting.
 
 But these "partial abstractions" are libraries that abstract only _parts_ of the Vulkan API,
 while still allowing direct access to the raw Vulkan API in other places.
@@ -440,7 +486,11 @@ after I have conducted some experiments with them.
 === Other types of Abstractions
 
 There are other types of abstractions that are not really relevant for this project, because they are too high-level,
-but they are still interesting technologies that I want to mention.
+and hide too much of the underlying API to be able to create our own architecture on top of.
+Opinions are good in libraries, but Rythe also wants users to be able to have their own opinions too,
+and these abstractions take away some of that agency.
+
+Nevertheless, they are still interesting technologies that I want to mention.
 
 - #link("https://github.com/martty/vuk")[vuk]: A render-graph-based abstraction layer for Vulkan.
 - AMD's #link("https://github.com/GPUOpen-LibrariesAndSDKs/RenderPipelineShaders")[Render Pipeline Shaders]: A render-graph-based abstraction layer for Vulkan and DirectX 12.
@@ -462,7 +512,11 @@ and it is relatively easy to interface with from other languages.
 
 However, the Rythe Engine is written in C++, which can easily use C libraries.
 So the LLRI2 library will be written in C++, so it might be able to benefit from some C++ features,
-like RAII, templates, and smart pointers,
+like classes, RAII, and templates, for example.\
+But the biggest reason to stick to C++ is the ability to use the Rythe Standard Library, which is written in C++,
+and to be able to interface with existing Rythe code in a two-way manner.\
+Rythe is not against writing C libraries nor against using them,
+but C code generally does not invoke and use C++ code, unless the C++ code is specifically designed to be used from C code.
 
 
 #v(5em)
@@ -519,7 +573,7 @@ So I decided to focus on just two prototypes: one with SDL3's GPU API, and one w
 (with partial abstractions, hereafter also referred to as "helper libraries").
 
 
-== SDL3's GPU API Prototype (Iteration 1)
+== SDL3's GPU API Prototype
 
 I started with this prototype, because it is the one I was most curious about at that time.
 I had already used Vulkan in the past, so I wanted to first try something new that promised to be more user-friendly.
@@ -531,9 +585,44 @@ if you want to follow them closely, because they pack a lot of functionality int
 There is sadly also no full guide, yet, like LearnOpenGL @learnopengl, Vulkan Tutorial @vulkan-tutorial, or VkGuide @vkguide.
 
 Nevertheless, I managed to get a triangle on screen pretty quickly, after which I started adding more features.
-//TODO: Write more
 
-== Vulkan with Helper Libraries Prototype (Iteration 2)
+The first iteration of this was a simple RGB triangle, where its vertices were hardcoded in the vertex shader.
+This is of course not very useful, so I added a vertex buffer, and then an index buffer as well,
+with which I changed the triangle to a quad.
+
+For this, I needed to create a "transfer buffer", which is a special type of buffer that is used to transfer data to the GPU.
+The memory of this buffer is accessible from both the CPU and GPU, so the data can be written to it from the CPU,
+and then the GPU can read it into its own private memory region, which is faster than the shared region.
+
+In the second iteration, I added a texture to the quad, by loading the image file from disk, and then adding those bytes to the transfer buffer.
+The texture coordinates also had to be added to the vertex buffer, so that the GPU knows where the texture goes onto the quad.
+I also had to manually create a sampler, which is a special object that tells the GPU _how_ to sample the texture,
+like what filtering to use, whether to repeat the texture or clamp it to the edges, and the mipmapping.
+
+In the third iteration, I wanted to make the quad spin in 3D space. For this, I needed some matrices and other assorted 3D maths.
+The matrices would be passed to the shaders as uniform buffers.
+
+The Rythe Standard Library (RSL) has a maths library, so I included that in my build system.
+This took a lot of time and effort, from both me and Glyn, who is the main developer of the RSL,
+because the Rythe Engine uses a cusrom build system based on Premake5, which does not work very nicely on Linux, which is what I use to develop.
+Instead, I use CMake, but that did mean we had to make the RSL build through CMake.
+We also had to fix some compiler warnings and errors, because the RSL had not really been tested on Linux before.
+Small bugs in the RSL were a common occurrence throughout this project, but every time I reported one, Glyn fixed it very quickly.
+This way, not only the LLRI got better, but also the RSL itself.
+
+Once I had the quad spinning in 3D space, it was time for the fourth iteration, which was to make it render a 3D model loaded from disk, instead of a hardcoded model.
+For this, I used Assimp, which is a very commonly used library for loading 3D models, but I had not used it before.
+It ended up being relatively easy to use, and I was able to load the data into the transfer buffer, and then render it with the same vertex and index buffers as before.
+
+At this point, it was almost done, but there was one glaring issue: some faces were shining through other faces that were supposed to be in front of them.
+This was due to the lack of a depth buffer, which is used to determine which faces are in front of which.
+So in the fifth iteration, I added that, by creating a new GPU Texture on program startup, and passing it into the render pass.
+This seemed to fix the issue, until I resized the window. Normally, SDL3's GPU API automatically resizes the swapchain image for you,
+but it does not do that for the depth buffer, because that is a GPU resource made by the user, and not by SDL3 itself.
+And because the swapchain image and depth buffer image were not the same size anymore, the program crashed.
+The solution to this was to recreate the depth buffer every time the depth buffer's size is different from the swapchain image size.
+
+== Vulkan with Helper Libraries Prototype
 
 After I was in a nice place with the SDL3 prototype, I started working on the Vulkan prototype.
 I had already used Vulkan in the past, so I was at least a bit familiar with it already.
@@ -541,20 +630,123 @@ I had already used Vulkan in the past, so I was at least a bit familiar with it 
 Last time, I followed the Vulkan Tutorial @vulkan-tutorial, which is a very good resource for learning Vulkan.
 But it teaches you how to do everything from scratch, and only teaches Vulkan 1.0.
 
-There is anothr popular resource for learning Vulkan, called VkGuide @vkguide, which uses some helper libraries,
+There is another popular resource for learning Vulkan, called VkGuide @vkguide, which uses some helper libraries,
 namely Vulkan Memory Allocator and VkBootstrap, but not Volk, so I had to add that myself.
-//TODO: Write more
 
-// Things VkGuide taught me:
-// - No more vertex attributes, vertex pull only.
-// - No renderpasses, dynamic rendering only.
-// - Imgui as part of the main tutorial.
-// - Loading entire glTF scenes from blender and rendering them at high performance in a fully dynamic way.
-// - The first draw operations are done through compute shaders, demonstrating them.
-// - Window resizing.
-// - Vertex buffers are done through Buffer Device Address, no binding needed
-// - Descriptor set abstractions in the main tutorial
-// Source: https://www.reddit.com/r/vulkan/comments/18sxbto/vkguide_new_version_released_with_a_complete/
+That guide gives out a startup template, from which you're expected to follow along. I did not do that,
+because I wanted to do it my own way: putting everything into a single file.
+It had worked for the SDL3 prototype, so why not for this one?
+
+Naturally, this ended up not being a great idea, because it became way too cluttered and messy.
+
+I also had skipped some steps that I thought were not important, like the compute shaders and the Dear ImGui integration.
+However, halfway through the graphics chapter, it kept referring to functions I did not have,
+that were written in the earlier chapters that I had skipped.
+
+So I went back to the start of the guide, and replicated the most important parts of the startup template,
+and then followed along with the guide more closely from that point onwards.
+
+Luckily, I could reuse a lot of the code I had written for the first iteration. I just had to move it into the right places.
+
+It took a few more times of deviating from the guide, and then going back to the start to fix it,
+before I had learnt my lesson to not deviate too much from the guide. I could refactor _later_, if I had the time.
+
+There was also a strange bug that the Vulkan Validation Layers suddenly started complaining about,
+from one day to the next, without me having changed anything.
+Except I had: I had updated my system, which came with a new version of the Vulkan SDK, with new validations.
+I started researching, and found out that this was a very common mistake to make with Vulkan,
+and that almost everyone had been doing it wrong.
+I saw that someone else who had been following the VkGuide had the same issue,
+on #link("https://github.com/vblanco20-1/vulkan-guide/issues/149")[the GitHub Issue tracker for the guide].
+I responded that I had the same issue, and with some more info, and continue to investigate it.
+This is when I found out that this issue was so common.
+I then found a tweet from someone who claimed to have reported this issue ages ago.
+The comments there linked to a repository that had implemented a fix for the issue, which I was able to adapt to my own code.
+Of course I responded on the GitHub Issue tracker with this solution, so that others could benefit from it, too.
+
+The guide did not start by making a triangle, like most graphics programming tutorials do,
+but instead started with a compute shader that fills the entire screen with a gradient, based on the pixel coordinates.
+This was the first time I had ever used compute shaders, so it was a very interesting experience.
+I quite like them! But I do wonder how useful it was to start with compute, instead of normal graphics.
+This was the second iteration of this prototype.
+
+For the third iteration, the guide made integrate the Dear ImGui library,
+which is a very popular GUI library for C++ that allows you to make debug tools and other GUIs very quickly.
+I also added something called "Push Constants" which were an entirely new concept to me.
+They are a mechanism to pass tiny amounts of data to shaders, that is often faster than using uniform buffers,
+due to the drivers having a special fast path for them.
+With these Push Constants, I could change the color of the gradient in the compute shader, through the Dear ImGui GUI.
+
+For the fourth iteration, I added multiple compute shaders, which you could switch between with Dear ImGui.
+This taught me how to handle multiple compute pipelines, and how to switch between them.
+
+After that, I finally was able to start with the graphics part of the guide, in the fifth iteration.
+I created the triangle, hardcoded in the vertex shader again, but it was on screen!
+
+In the sixth iteration, I added a vertex buffer, and then an index buffer, to make it a quad made up of two triangles.
+It didn't work as I had expected, though, because it uses a different way to access the vertex data in the vertex shader than I am used to.
+Instead of the vertex data being an `in` parameter of the vertex shader,
+it sends a reference to the vertex buffer to the shader through a push constant,
+and then the shader accesses the vertex data for that specific vertex through that reference, like it's indexing an array.
+
+Now that I had that working, it was relatively easy to adapt the model loading from the SDL3 prototype to this one for the seventh iteration.
+I also reworked some of the `#include`s, because I was getting some complicated errors regarding them and my usage of libraries.
+It had something to do with other libraries including `vulkan/vulkan.h`, which should not be done, because I was using `volk.h` instead of that.
+I also added a depth buffer at the same time, which was actually really similar to how it was done in the SDL3 prototype.
+
+For the eighth iteration, it was time to add window resizing.
+This was of course not as simple as it was in the SDL3 prototype, because in Vulkan, you have to recreate the swapchain yourself.
+But even after following the guide _exactly_, it still did not work. It kept segfaulting on the `vkQueueSubmit2` call.
+I had a sinking feeling that it had to do with my earlier fix for the issue with the guide.
+I spent many, many hours trying to figure out what was going wrong, but I could not find it.
+So I turned to ask for help in the Vulkan Discord server, and very quickly got a response.
+After a bit of back and forth, that consisted mostly of me learning new terms, I got an idea!
+I double checked my code, and indeed, I was only creating the `readyForPresentSemaphores` once, at the start of the program,
+while they should be created every time the swapchain is recreated.
+So by just moving those four lines of code from the `InitSyncStructures()` function to the `CreateSwapchain()` function,
+it worked again! I reported back to the kind people who helped me,
+and it seemed like this issue was also pretty common, which was a bit of a relief.
+
+In the ninth iteration, I addded image textures to the 3D model, which was also pretty similar to how it was done in the SDL3 prototype.
+Except with more manual work, of course.
+
+From here, I went off the rails of the guide, and started going towards my own goal.
+I had a funny idea that I wanted to try.
+
+But for that idea, I first needed a lot of extra functionality that the guide did not cover.
+So for the tenth iteration, I started by adding a new background effect to the compute shaders.
+One that sampled an image texture. I reused one of the textures that was already loaded in GPU memory anyway: the one of the 3D model.
+
+For the eleventh iteration, I generated a random texture on the CPU, which I uploaded to the GPU, to be displayed in the background.
+
+For the twelfth iteration, I made that image texture regenerate every single frame, and upload to the GPU every single frame.
+This required a lot of care, to not leak memory, and to ensure that the order of things is correct.
+I cannot just edit the image data that the GPU is currently reading from.
+After a break, I got the idea to include the image data in the swapchain's FrameData.
+This does cost more memory because now the image needs to be stored multiple times, for each frame in the swapchain,
+but it made things a lot more stable.
+
+And for the last, and thirteenth iteration, I pulled off the coolest trick of all:
+I ported Doom (1993) to it!
+This required an extreme amount of work, even _with_ the #link("https://github.com/ozkl/doomgeneric")["doomgeneric"] project
+that I had found that is specifically made to be easily ported.
+I had to first integrate that project into my build system, which took a lot of effort, because it was written in a very old style of C,
+and my project is written using very modern C++.
+But after a lot of headscratching, and making concessions, I finally got it to build and compile!
+
+But this was only step 1. After that, I had to implement its interfaces on my own code.
+Most of that was super simple, because it's all handled by the windowing and input library I was using (SDL3).
+However, naturally, the tricky part was the rendering.
+Luckily, the work I had done in the previous iterations of this prototype had already prepared me for this,
+so it ultimately did not take that much more code to get it working.
+However, the doomgeneric framework requires control over the main game loop, which I initially did not have,
+because I was using a special feature of SDL3 that automatically handles the main game loop for you in a super cross-platform way.
+So I had to give up on that, and implement the main loop like how doomgeneric needed it to be.
+Then the last issue was that the doomgeneric needs to call my custom functions.
+Except doomgeneric is in C, and my functions are in C++.
+After a lot of searching, I found out that I could use `extern "C"` to make my C++ functions callable from C code.
+And after all that, it finally worked!
+I had Doom running in my Vulkan program!
 
 
 #pagebreak()
@@ -595,15 +787,13 @@ I will create a line plot and a histogram of all the frametimes, and calculate t
 - The standard deviation
 - Highs (1%, 0.1%, 0.01%)
 - Lows (1%, 0.1%, 0.01%)
-- The frame-to-frame deviation of the frametimes //TODO
+- The frame-to-frame deviation of the frametimes
 
 I will also graph the occurrences of each frametime, to see how many frames were rendered with which times.
 This is useful to see the grouping of the frametimes, and to see if there are any outliers.
 
 These plots will be made with the Python library Matplotlib, which I also used for a previous project,
-so I can largely re-use the scripts I wrote for that project,
-with the help of a friend who is a data scientist #footnote[PhD student in the field of Astronomy],
-who again helped me adapt the code from back then to now.
+so I can largely re-use the scripts I wrote for that project.
 
 
 #pagebreak()
@@ -670,6 +860,10 @@ They were run on:
 #pagebreak()
 === Attempt 004
 
+In this measurement, the first frametimes of the SDL3\_GPU prototype was very high.
+But I suspect that that is the cause of the high standard deviation.
+I did not remove it from the data, though, because I wanted to keep the data as raw as possible.
+
 #import "Plots/Output/Attempt 004 - Same again/table.typ": table004
 #figure(
 	table004,
@@ -720,7 +914,8 @@ and recommendations. You will find this information in the relevant section on B
 ]
 
 I recommend that Rythe continue with the development of the LLRI2 library, using Vulkan as the first base GPU API to build on top of.
-Because one of the goals of Rythe Engine is to do as much as possible in-house, to be able to squeeze out the utmost performance as possible.
+Because one of the goals of Rythe Engine is to do as much as possible in-house,
+to be able to squeeze out the utmost performance as possible, and for transparency reasons that make debugging easier.
 Some partial abstractions can be used to make the development easier, like Volk, Vulkan Memory Allocator and VkBootstrap.
 
 But it might also be considered to use SDL3's GPU API as the base for the LLRI2 library in the form of a fork,
@@ -765,8 +960,7 @@ It might also be worth looking into the other promising frameworks and abstracti
 They might provide interesting insights into how to structure the LLRI2 library.
 
 Or perhaps they could even be used as a base for the LLRI2 library as a layer on top, or as a fork.
-If they are permissively licensed enough, of course.
-
+If the license is permissive enough, of course.
 
 #v(5em)
 = Discussion
@@ -784,7 +978,7 @@ _You can ask questions such as:_
 _It’s important to show a critical but fair view on these topics._
 ]
 
-Looking back, I am very content with the way I reseasrched, and the things I found and learned.
+Looking back, I am very content with the way I researched, and the things I found and learned.
 I have learned a lot about modern GPU APIs, and how to use them.
 
 I feel like the test results are quite reliable, as I tried my best to keep the testing conditions between both as similar as possible.
@@ -862,6 +1056,19 @@ https://github.com/Rythe-Interactive/LLRI2-Experiments
 You can see the prototypes in action on YouTube:
 https://youtu.be/a92zA46ItHg
 
+
+#v(3em)
+== Acknowledgements
+
+I'd like to take this moment to thank my friends and family who helped and supported me during this project
+with their advice, rubber ducking, and moral support!
+
+A special thanks to my data data scientist #footnote[PhD student in the field of Astronomy] friend,
+who helped me write and adapt my graphing scripts.
+
+And more special thanks to the friends who proofread this report, and provided me with valuable feedback.
+
+And thanks to Glyn, my Company Coach, and Yiwei, my Internship Coach, for their guidance and support during this project.
 
 #pagebreak()
 == Competences Reflection
@@ -941,7 +1148,7 @@ Glyn lent me a few Vulkan books, too, which I read a bit of, but I didn't have t
 
 Last year, I even attended The Graphics Programming Conference 2024 in person, where I also learnt a lot.
 
-I always specifically always prioritized up-to-date sources, because graphics programming is a very fast-moving field.
+I specifically always prioritized up-to-date sources, because graphics programming is a very fast-moving field.
 
 I also did a lot of practical research, by making prototypes with various APIs and libraries.
 
@@ -988,9 +1195,6 @@ about choices and progress in the design process._
 I always kept Glyn up to date with my progress, and I often asked him for feedback on my prototypes.
 Other than that, there were no other stakeholders involved in this project, to communicate with.
 
-I haven't made the presentation yet, but I am sure I will make that look very nice and professional, too.
-Graphic design is one of my hobbies, after all.
-
 === IV. Professional competences
 ==== 11. Learning ability and reflectivity
 
@@ -1021,7 +1225,7 @@ to hopefully one day make their lives easier, too, with the engine, built with t
 
 I also always did my best to create the best possible code I could,
 even though sometimes that came back to bite me later on.
-From those moments, I learnt that sometimes you should not try to make things to pretty the first time around,
+From those moments, I learnt that sometimes you should not try to make things too pretty the first time around,
 and to leave the refactoring for later, once you have a better idea of what needs to be done.
 
 There are no proprietary technologies used in the prototypes, so there are no ethical issues there.
